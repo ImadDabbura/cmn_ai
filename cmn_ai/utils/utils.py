@@ -15,3 +15,10 @@ def listify(obj: Any) -> list:
     elif isinstance(obj, Iterable):
         return list(obj)
     return [obj]
+
+
+def tuplify(obj: Any) -> tuple:
+    "Change type of any object into a tuple."
+    if isinstance(obj, tuple):
+        return obj
+    return tuple(listify(obj))
