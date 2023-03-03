@@ -1,4 +1,4 @@
-from dl_utils.utils import listify, setify, tuplify
+from cmn_ai.utils.utils import listify, setify, tuplify, uniqueify
 
 
 def test_listify():
@@ -33,3 +33,10 @@ def test_setify():
     assert setify((1,)) == {1}
     assert setify("") == {""}
     assert setify("str") == {"str"}
+
+
+def test_uniqueify():
+    assert uniqueify([1, 1]) == [1]
+    assert uniqueify((1, 1)) == [1]
+    assert uniqueify([1, -1, 3], True) == [-1, 1, 3]
+    assert uniqueify((1.0, 2.0, -100), True)
