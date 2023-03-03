@@ -22,3 +22,10 @@ def tuplify(obj: Any) -> tuple:
     if isinstance(obj, tuple):
         return obj
     return tuple(listify(obj))
+
+
+def setify(obj: any) -> set:
+    "change type of any object into a set."
+    if isinstance(obj, set):
+        return obj
+    return set(listify(obj))
