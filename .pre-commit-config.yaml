@@ -1,3 +1,4 @@
+# Run `pre-commit autoupdate` to use the latest versions of the below hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -9,11 +10,20 @@ repos:
     -   id: check-executables-have-shebangs
     -   id: check-json
     -   id: check-yaml
+    -   id: check-merge-conflict
     -   id: debug-statements
     -   id: detect-private-key
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
     -   id: mixed-line-ending
+    -   id: detect-private-key
+    -   id: check-symlinks
+    -   id: check-toml
+    -   id: check-shebang-scripts-are-executable
+    -   id: debug-statements
+    -   id: name-tests-test
+    -   id: check-added-large-files
+        args: ["--maxkb=1000"]
 -   repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
