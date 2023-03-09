@@ -22,6 +22,7 @@ repos:
     -   id: check-shebang-scripts-are-executable
     -   id: debug-statements
     -   id: name-tests-test
+        args: ["--pytest-test-first"]
     -   id: check-added-large-files
         args: ["--maxkb=1000"]
 -   repo: https://github.com/PyCQA/flake8
@@ -52,3 +53,11 @@ repos:
       - id: poetry-check
       - id: poetry-lock
         args: ["--no-update"]
+-   repo: local
+    hooks:
+        - id: test
+          name: test
+          entry: make
+          args: ["test"]
+          language: system
+          pass_filename: false
