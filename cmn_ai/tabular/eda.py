@@ -57,3 +57,33 @@ def get_ecdf(a: list | np.array | pd.Series) -> np.array:
     x = np.sort(a)
     y = np.arange(1, len(a) + 1) / len(a)
     return x, y
+
+
+def plot_ecdf(a: list | np.array | pd.Series, xlabel: str = "X"):
+    """
+    Plot empirical cumulative distribution of `a`.
+
+    Parameters
+    ----------
+    a : list, Array, or pd.Series
+        Array to compute ECDF on.
+    xlabel : str, default="X"
+        XlLabel of the plot.
+
+    Returns
+    -------
+    axes : matplotlib Axes
+        Returns the Axes object with the plot drawn onto it.
+    """
+    # Check empirical cumulative distribution
+    a = np.array(a)
+    x, y = get_ecdf(a)
+    _, axes = plt.subplots(1)
+    axes.plot(x, y, marker=".", linestyle="none")
+    # Get normal distributed data
+    x_norm = np.random.normal(a.mean(), a.std(), size=len(x))
+    x, y = get_ecdf(x_norm)
+    axes.plot(x, y, marker=".", linestyle="none")
+    axes.set_xlabel(xlabel)
+    axes.legend(["Empirical CDF", "Normal CDF"])
+    return axes
