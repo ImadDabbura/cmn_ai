@@ -10,6 +10,9 @@ packages = [{include = "cmn_ai"}]
 python = "^3.10"
 pandas = "^1.5.3"
 seaborn = "^0.12.2"
+numpy = "^1.24.2"
+matplotlib = "^3.7.1"
+scikit-learn = "^1.2.2"
 
 
 [tool.poetry.group.dev.dependencies]

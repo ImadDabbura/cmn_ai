@@ -33,7 +33,7 @@ def na_percentages(
         pd.DataFrame(res)
         .reset_index()
         .rename(columns={"index": "feature", 0: "na_percentages"})
-        .style.hide_index()
+        .style.hide(axis="index")
         .background_gradient(cmap=sns.light_palette("red", as_cmap=True))
         .format({"na_percentages": "{:.3%}"})
     )
@@ -60,7 +60,7 @@ def get_ecdf(a: list | np.array | pd.Series) -> np.array:
     return x, y
 
 
-def plot_ecdf(a: list | np.array | pd.Series, xlabel: str = "X"):
+def plot_ecdf(a: list | np.array | pd.Series, xlabel: str = "X") -> None:
     """
     Plot empirical cumulative distribution of `a`.
 
@@ -70,24 +70,18 @@ def plot_ecdf(a: list | np.array | pd.Series, xlabel: str = "X"):
         Array to compute ECDF on.
     xlabel : str, default="X"
         XlLabel of the plot.
-
-    Returns
-    -------
-    axes : matplotlib Axes
-        Returns the Axes object with the plot drawn onto it.
     """
     # Check empirical cumulative distribution
     a = np.array(a)
     x, y = get_ecdf(a)
-    _, axes = plt.subplots(1)
-    axes.plot(x, y, marker=".", linestyle="none")
+    plt.plot(x, y, marker=".", linestyle="none")
     # Get normal distributed data
     x_norm = np.random.normal(a.mean(), a.std(), size=len(x))
     x, y = get_ecdf(x_norm)
-    axes.plot(x, y, marker=".", linestyle="none")
-    axes.set_xlabel(xlabel)
-    axes.legend(["Empirical CDF", "Normal CDF"])
-    return axes
+    plt.plot(x, y, marker=".", linestyle="none")
+    plt.xlabel(xlabel)
+    plt.legend(["Empirical CDF", "Normal CDF"])
+    plt.title("Empirical vs Normal CDF")
 
 
 def plot_pca_var_explained(
@@ -106,22 +100,62 @@ def plot_pca_var_explained(
     """
     var_ratio = pca_transformer.explained_variance_ratio_
     cum_var_exp = np.cumsum(var_ratio)
-    _, axes = plt.subplots(1, figsize=figsize)
-    axes.bar(
+    plt.figure(figsize=figsize)
+    plt.bar(
         range(1, len(cum_var_exp) + 1),
         var_ratio,
         align="center",
         color="red",
         label="Individual explained variance",
     )
-    axes.step(
+    plt.step(
         range(1, len(cum_var_exp) + 1),
         cum_var_exp,
         where="mid",
         label="Cumulative explained variance",
     )
-    axes.set_xticks(range(1, len(cum_var_exp)))
-    axes.legend(loc="best")
-    axes.set_xlabel("Principal component index", {"fontsize": 14})
-    axes.set_ylabel("Explained variance ratio", {"fontsize": 14})
-    axes.set_title("PCA on training data", {"fontsize": 18})
+    plt.xticks(range(1, len(cum_var_exp)))
+    plt.legend(loc="best")
+    plt.xlabel("Principal component index", {"fontsize": 14})
+    plt.ylabel("Explained variance ratio", {"fontsize": 14})
+    plt.title("PCA on training data", {"fontsize": 18})
+
+
+def plot_corr_matrix(
+    df: pd.DataFrame, method: str = "pearson", figsize: tuple = (12, 6)
+) -> None:
+    """
+    Plot correlation matrix using `method`.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to compute correlation.
+    method : str, default='pearson'
+        Method of correlation.
+    figsize : tuple, default=(12, 6)
+        Figure size
+    """
+    corr_matrix = df.corr(method=method).round(2)
+    mask = np.zeros_like(corr_matrix)
+    mask[np.triu_indices_from(mask, k=1)] = True
+
+    # Plot the heat map
+    sns.set(font_scale=1.2)
+    plt.style.use("seaborn-v0_8-white")
+    plt.figure(figsize=figsize)
+    cmap = sns.diverging_palette(0, 120, as_cmap=True)
+    sns.heatmap(
+        corr_matrix,
+        mask=mask,
+        annot=True,
+        cmap=cmap,
+        center=0,
+        square=True,
+        linewidths=0.1,
+        cbar_kws={"shrink": 0.5},
+        xticklabels=df.columns,
+        yticklabels=df.columns,
+        annot_kws={"size": 12},
+    )
+    plt.title(f"{method.capitalize()} Correlation", {"fontsize": 18})
