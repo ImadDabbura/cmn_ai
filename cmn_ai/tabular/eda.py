@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 
@@ -34,3 +36,24 @@ def na_percentages(
         .background_gradient(cmap=sns.light_palette("red", as_cmap=True))
         .format({"na_percentages": "{:.3%}"})
     )
+
+
+def get_ecdf(a: list | np.array | pd.Series) -> np.array:
+    """
+    Compute empirical cumulative distribution function of `a`.
+
+    Parameters
+    ----------
+    a : list, Array, or pd.Series
+        Array to compute ECDF on.
+
+    Returns
+    -------
+    x : np.array
+        Sorted version of given array in ascending order.
+    y : np.array
+        Cumulative probability of each value if the sorted array.
+    """
+    x = np.sort(a)
+    y = np.arange(1, len(a) + 1) / len(a)
+    return x, y
