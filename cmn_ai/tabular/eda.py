@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from sklearn.decomposition import PCA
 
 
 def na_percentages(
@@ -87,3 +88,40 @@ def plot_ecdf(a: list | np.array | pd.Series, xlabel: str = "X"):
     axes.set_xlabel(xlabel)
     axes.legend(["Empirical CDF", "Normal CDF"])
     return axes
+
+
+def plot_pca_var_explained(
+    pca_transformer: PCA, figsize: tuple = (12, 6)
+) -> None:
+    """
+    Plot individual and cumulative of the variance explained by each PCA
+    component.
+
+    Parameters
+    ----------
+    pca_transformer : PCA
+        PCA transformer.
+    figsize : tuple, default=(12, 6)
+        Figure size.
+    """
+    var_ratio = pca_transformer.explained_variance_ratio_
+    cum_var_exp = np.cumsum(var_ratio)
+    _, axes = plt.subplots(1, figsize=figsize)
+    axes.bar(
+        range(1, len(cum_var_exp) + 1),
+        var_ratio,
+        align="center",
+        color="red",
+        label="Individual explained variance",
+    )
+    axes.step(
+        range(1, len(cum_var_exp) + 1),
+        cum_var_exp,
+        where="mid",
+        label="Cumulative explained variance",
+    )
+    axes.set_xticks(range(1, len(cum_var_exp)))
+    axes.legend(loc="best")
+    axes.set_xlabel("Principal component index", {"fontsize": 14})
+    axes.set_ylabel("Explained variance ratio", {"fontsize": 14})
+    axes.set_title("PCA on training data", {"fontsize": 18})
