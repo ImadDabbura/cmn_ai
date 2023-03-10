@@ -8,6 +8,8 @@ packages = [{include = "cmn_ai"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+pandas = "^1.5.3"
+seaborn = "^0.12.2"
 
 
 [tool.poetry.group.dev.dependencies]
