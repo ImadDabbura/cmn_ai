@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+from typing import Any
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy.cluster import hierarchy
+from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 
 
@@ -134,7 +138,7 @@ def plot_corr_matrix(
     method : str, default='pearson'
         Method of correlation.
     figsize : tuple, default=(12, 6)
-        Figure size
+        Figure size.
     """
     corr_matrix = df.corr(method=method).round(2)
     mask = np.zeros_like(corr_matrix)
@@ -159,3 +163,33 @@ def plot_corr_matrix(
         annot_kws={"size": 12},
     )
     plt.title(f"{method.capitalize()} Correlation", {"fontsize": 18})
+
+
+def plot_featurebased_hier_clustering(
+    X: np.ndarray | pd.DataFrame,
+    feature_names: np.ndarray | list | None = None,
+    linkage_method: str = "single",
+    figsize: tuple = (16, 12),
+) -> None:
+    """
+    Plot features-based hierarchical clustering based on spearman correlation
+    matrix.
+
+    Parameters
+    ----------
+    X : np.ndarray | pd.DataFrame
+        Data to compute hierarchical clustering.
+    feature_names : np.ndarray | list | None, default=None
+        Feature names to use as labels with plotting.
+    linkage_method : str, default="single"
+        method for calculating the distance between clusters.
+    figsize : tuple, optional
+        Figure size.
+    """
+    corr = np.round(spearmanr(X).correlation, 4)
+    corr_densed = hierarchy.distance.squareform(1 - corr)
+    z = hierarchy.linkage(corr_densed, linkage_method)
+    plt.figure(figsize=figsize)
+    hierarchy.dendrogram(
+        z, orientation="left", labels=feature_names, leaf_font_size=16
+    )
