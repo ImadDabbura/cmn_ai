@@ -14,9 +14,6 @@ on:
 jobs:
   test-code:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -25,6 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
+          python-version: "3.10"
           cache: "poetry"
       - name: Install self
         run: poetry install
