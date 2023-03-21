@@ -80,8 +80,6 @@ class DateTransformer(TransformerMixin, BaseEstimator):
             self.date_feats = [
                 col for col in X.columns if types.is_datetime64_dtype(X[col])
             ]
-        for col in self.date_feats:
-            self.dates_min[col] = X[col].min()
         return self
 
     def transform(
@@ -105,17 +103,16 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         """
         X_tr = X.copy()
         for col, attr in product(self.date_feats, self.attrs):
-            if attr == "Week" and hasattr(X[col].dt, "isocalendar"):
-                X[f"{col}_{attr}"] = (
-                    X[col].dt.isocalendar().week.astype(X[col].dt.day.dtype)
+            if attr == "Week" and hasattr(X_tr[col].dt, "isocalendar"):
+                X_tr[f"{col}_{attr}"] = (
+                    X_tr[col]
+                    .dt.isocalendar()
+                    .week.astype(X_tr[col].dt.day.dtype)
                 )
                 continue
-            X[f"{col}_{attr}"] = getattr(X[col].dt, attr.lower())
-            if not hasattr(X, f"{col}_Days_diff_to_min"):
-                X[f"{col}_Days_diff_to_min"] = (
-                    X[col] - self.dates_min[col]
-                ).dt.days
-                X[f"{col}_na_indicator"] = X[col].isna().astype(np.int8)
+            X_tr[f"{col}_{attr}"] = getattr(X_tr[col].dt, attr.lower())
+        for col in self.date_feats:
+            X_tr[f"{col}_na_indicator"] = X_tr[col].isna().astype(np.int8)
         if self.drop:
-            return X.drop(columns=self.date_feats)
-        return X
+            return X_tr.drop(columns=self.date_feats)
+        return X_tr
