@@ -13,6 +13,10 @@ seaborn = "^0.12.2"
 numpy = "^1.24.2"
 matplotlib = "^3.7.1"
 scikit-learn = "^1.2.2"
+torch = "^2.0.0"
+torchvision = "^0.15.1"
+fastprogress = "^1.0.3"
+fastcore = "^1.5.29"
 
 
 [tool.poetry.group.dev.dependencies]
