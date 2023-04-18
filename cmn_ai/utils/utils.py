@@ -1,7 +1,14 @@
 from __future__ import annotations
 
+import gc
+import random
+import sys
+import traceback
 from collections.abc import Iterable
 from typing import Any
+
+import numpy as np
+import torch
 
 
 def listify(obj: Any) -> list:
@@ -87,3 +94,21 @@ def uniqueify(x: Iterable, sort: bool = False) -> list:
     if sort:
         output.sort()
     return output
+
+
+def set_seed(seed: int = 42, deterministic: bool = False) -> None:
+    """
+    Set seeds for generating random numbers for pytorch, numpy, and random
+    packages.
+
+    Parameters
+    ----------
+    seed : int, default=42
+        Desired seed.
+    deterministic : bool, default=False
+        Whether pytorch uses deterministic algorithms.
+    """
+    torch.use_deterministic_algorithms(deterministic)
+    torch.manual_seed(seed)
+    random.seed(seed)
+    np.random.seed(seed)
