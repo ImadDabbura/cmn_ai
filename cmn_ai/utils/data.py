@@ -91,3 +91,34 @@ def collate_dict(ds: DatasetDict):
         return get(default_collate(batch))
 
     return _f
+
+
+class DataLoaders:
+    def __init__(self, *dls):
+        self.train, self.valid = dls[:2]
+
+    @classmethod
+    def from_dd(cls, dd: DatasetDict, batch_size: int, **kwargs):
+        """
+        Create train/valid data loaders from HF Dataset dictionary.
+
+        Parameters
+        ----------
+        dd : DatasetDict
+            HF Dataset dictionary.
+        batch_size : int
+            batch size passed to DataLoader.
+
+        Returns
+        -------
+        DataLoaders
+            Train/valid data loaders.
+        """
+        return cls(
+            *get_dls(
+                *dd.values(),
+                bs=batch_size,
+                collate_fn=collate_dict(dd["train"]),
+                **kwargs
+            )
+        )
