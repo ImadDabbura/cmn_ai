@@ -26,3 +26,30 @@ def_device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
+
+
+def to_device(
+    x: Tensor | Iterable[Tensor] | Mapping[str, Tensor],
+    device: str = def_device,
+):
+    """
+    Copy tensor(s) to device. If the tensor is already on the device,
+    returns the tensor itself.
+
+    Parameters
+    ----------
+    x : Tensor | Iterable[Tensor] | Mapping[str, Tensor]
+        Tensor or collection of tensors to move to devive.
+    device : str, default='cuda` if available else 'cpu'
+        _description_, by default def_device
+
+    Returns
+    -------
+    out : Tensor | Iterable[Tensor] | Mapping[str, Tensor]
+        Copied tensor(s) on the `device`.
+    """
+    if isinstance(x, torch.Tensor):
+        return x.to(device)
+    if isinstance(x, Mapping):
+        return {k: v.to(device) for k, v in x.items()}
+    return type(x)(to_device(o, device) for o in x)
