@@ -68,3 +68,26 @@ def to_cpu(x: Tensor | Iterable[Tensor] | Mapping[str, Tensor]):
         return tuple(to_cpu(list(x)))
     res = x.detach().cpu()
     return res.float() if res.dtype == torch.float16 else res
+
+
+def collate_dict(ds: DatasetDict):
+    """
+    Collate inputs from HF Dataset dictionary and returns list of inputs after
+    applying pytorch's defacult collate function.
+
+    Parameters
+    ----------
+    ds : DatasetDict
+        HF Dataset dictionary.
+
+    Returns
+    -------
+    function : tuple
+        Wrapper function that returns tuple of collated inputs.
+    """
+    get = itemgetter(*ds.features)
+
+    def _f(batch):
+        return get(default_collate(batch))
+
+    return _f
