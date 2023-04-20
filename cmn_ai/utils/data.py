@@ -53,3 +53,18 @@ def to_device(
     if isinstance(x, Mapping):
         return {k: v.to(device) for k, v in x.items()}
     return type(x)(to_device(o, device) for o in x)
+
+
+def to_cpu(x: Tensor | Iterable[Tensor] | Mapping[str, Tensor]):
+    """
+    Copy tensor(s) to CPU. If a tensor is already on the CPU, returns the
+    tensor itself; otherwise, returns a copy of the tensor.
+    """
+    if isinstance(x, Mapping):
+        return {k: to_cpu(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [to_cpu(o) for o in x]
+    if isinstance(x, tuple):
+        return tuple(to_cpu(list(x)))
+    res = x.detach().cpu()
+    return res.float() if res.dtype == torch.float16 else res
