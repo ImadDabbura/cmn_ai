@@ -1,4 +1,11 @@
-from torch.utils.data import DataLoader
+from collections.abc import Iterable
+from operator import itemgetter
+from typing import Mapping
+
+import torch
+from datasets.dataset_dict import DatasetDict
+from torch import Tensor
+from torch.utils.data import DataLoader, default_collate
 
 
 def get_dls(train_ds, valid_ds, bs, **kwargs):
@@ -10,3 +17,12 @@ def get_dls(train_ds, valid_ds, bs, **kwargs):
         DataLoader(train_ds, batch_size=bs, shuffle=True, **kwargs),
         DataLoader(valid_ds, batch_size=bs * 2, shuffle=False, **kwargs),
     )
+
+
+def_device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
