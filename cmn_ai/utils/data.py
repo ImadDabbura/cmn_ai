@@ -23,18 +23,12 @@ def get_dls(
     )
 
 
-def_device = (
-    "cuda"
-    if torch.cuda.is_available()
-    else "mps"
-    if torch.backends.mps.is_available()
-    else "cpu"
-)
+default_device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def to_device(
     x: Tensor | Iterable[Tensor] | Mapping[str, Tensor],
-    device: str = def_device,
+    device: str = default_device,
 ):
     """
     Copy tensor(s) to device. If the tensor is already on the device,
@@ -45,7 +39,7 @@ def to_device(
     x : Tensor | Iterable[Tensor] | Mapping[str, Tensor]
         Tensor or collection of tensors to move to devive.
     device : str, default='cuda` if available else 'cpu'
-        _description_, by default def_device
+        Device to copy the tensor to.
 
     Returns
     -------
