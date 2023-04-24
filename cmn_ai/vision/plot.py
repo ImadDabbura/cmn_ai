@@ -150,3 +150,31 @@ def get_grid(
     if title is not None:
         fig.suptitle(title, weight=weight, size=size)
     return fig, axs
+
+
+@fc.delegates(subplots)
+def show_images(
+    images: list,
+    nrows: int | None = None,
+    ncols: int | None = None,
+    titles: list | None = None,
+    **kwargs,
+):
+    """
+    Show all images as subplots with `nrows` x `ncols` using `titles`.
+
+    Parameters
+    ----------
+    images : list or array-like
+        List of images to show.
+    nrows : int, default=None
+        Number of rows in the grid.
+    ncols : int, default=None
+        Number of columns in the grid.
+    titles : list, default=None
+        List of titles for each image.
+    """
+    "Show all images `ims` as subplots with `rows` using `titles`"
+    axs = get_grid(len(images), nrows, ncols, **kwargs)[1].flat
+    for im, t, ax in zip_longest(images, titles or [], axs):
+        show_image(im, ax=ax, title=t)
