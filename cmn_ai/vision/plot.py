@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.axes._axes import Axes
 from matplotlib.figure import Figure
+from matplotlib.image import AxesImage
 
 
 @fc.delegates(plt.Axes.imshow)
@@ -16,7 +17,7 @@ def show_image(
     title: str | None = None,
     noframe: bool = True,
     **kwargs,
-) -> plt.image.AxesImage:
+) -> AxesImage:
     """
     Show a PIL or PyTorch image on `ax`.
 
@@ -35,7 +36,7 @@ def show_image(
 
     Returns
     -------
-    ax : plt.image.AxesImage
+    ax : AxesImage
         Plotted image on `ax`.
     """
     if fc.hasattrs(image, ("cpu", "permute", "detach")):
