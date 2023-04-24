@@ -98,3 +98,55 @@ def subplots(
     if nrows * ncols == 1:
         ax = np.array([ax])
     return fig, ax
+
+
+@fc.delegates(subplots)
+def get_grid(
+    n: int,
+    nrows: int = None,
+    ncols: int = None,
+    title: str = None,
+    weight: str = "bold",
+    size: int = 14,
+    **kwargs,
+) -> tuple[Figure, Axes]:
+    """
+    Return a grid of `n` axes, `rows` by `cols`. `nrows` and `ncols` are mutually
+    exclusive. This means you only need to pass one of them and the other will be
+    inferred.
+
+    Parameters
+    ----------
+    n : int
+        Number of axes.
+    nrows : int, optional
+        Number of rows, default=`int(math.sqrt(n))`.
+    ncols : int, optional
+        Number of columns, default=`ceil(n/rows)`.
+    title : str, optional
+        Title of the Figure.
+    weight : str, default='bold'
+        Title font weight.
+    size : int, default=14
+        Title font size.
+
+    Returns
+    -------
+    fig : Figure
+        Top level container for all axes.
+    ax : array of Axes
+        Array of axes.
+    """
+    if nrows:
+        ncols = ncols or int(np.floor(n / nrows))
+    elif ncols:
+        nrows = nrows or int(np.ceil(n / ncols))
+    else:
+        nrows = int(math.sqrt(n))
+        ncols = int(np.floor(n / nrows))
+    fig, axs = subplots(nrows, ncols, **kwargs)
+    for i in range(n, nrows * ncols):
+        axs.flat[i].set_axis_off()
+    if title is not None:
+        fig.suptitle(title, weight=weight, size=size)
+    return fig, axs
