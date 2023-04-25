@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 from operator import itemgetter
-from typing import Mapping
+from typing import Callable, Mapping
 
 import torch
 from datasets.dataset_dict import DatasetDict
@@ -68,10 +68,10 @@ def to_cpu(x: Tensor | Iterable[Tensor] | Mapping[str, Tensor]):
     return res.float() if res.dtype == torch.float16 else res
 
 
-def collate_dict(ds: DatasetDict):
+def collate_dict(ds: DatasetDict) -> Callable:
     """
     Collate inputs from HF Dataset dictionary and returns list of inputs after
-    applying pytorch's defacult collate function.
+    applying pytorch's default collate function.
 
     Parameters
     ----------
@@ -87,6 +87,27 @@ def collate_dict(ds: DatasetDict):
 
     def _f(batch):
         return get(default_collate(batch))
+
+    return _f
+
+
+def collate_device(device: torch.device) -> Callable:
+    """
+    Collate inputs from batch and copy it to `device`.
+
+    Parameters
+    ----------
+    device : torch.device
+        Device to copy batch to.
+
+    Returns
+    -------
+    function : callable
+        Wrapper function that returns tuple of collated inputs.
+    """
+
+    def _f(batch):
+        return to_device(default_collate(batch), device)
 
     return _f
 
