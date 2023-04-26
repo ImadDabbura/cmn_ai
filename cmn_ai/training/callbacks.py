@@ -296,3 +296,28 @@ class ModelResetter(Callback):
 
     def after_fit(self):
         self.model.reset()
+
+
+class ParamScheduler(Callback):
+    _order = 60
+
+    def __init__(self, pname, sched_funcs):
+        self.pname = pname
+        self.sched_funcs = sched_funcs
+
+    def before_fit(self):
+        if not isinstance(self.sched_funcs, (list, tuple)):
+            self.sched_funcs = [self.sched_funcs] * len(self.opt.param_groups)
+
+    def set_param(self):
+        assert_msg = (
+            f"Number of schedulers should match number of parameter groups, "
+            f"{print(len(self.opt.param_groups), len(self.sched_funcs))}"
+        )
+        assert len(self.opt.param_groups) == len(self.sched_funcs), assert_msg
+        for pg, sched_func in zip(self.opt.param_groups, self.sched_funcs):
+            pg[self.pname] = sched_func(self.pct_train)
+
+    def before_batch(self):
+        if self.training:
+            self.set_param()
