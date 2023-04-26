@@ -88,3 +88,30 @@ class DeviceCallback(Callback):
 
     def before_batch(self):
         self.learner.batch = to_device(self.batch, self.device)
+
+
+class TrainEvalCallback(Callback):
+    """
+    Tracks the number of iterations and epoch done and set training and eval
+    modes.
+    """
+
+    order = -10
+
+    def before_fit(self):
+        self.learner.n_iters = 0
+        self.learner.pct_train = 0
+
+    def after_batch(self):
+        if self.training:
+            self.learner.n_iters += 1
+            self.learner.pct_train += 1 / (self.iters * self.n_epochs)
+
+    def before_train(self):
+        self.model.train()
+        self.learner.training = True
+        self.learner.pct_train = self.epoch / self.n_epochs
+
+    def before_validate(self):
+        self.model.eval()
+        self.learner.training = False
