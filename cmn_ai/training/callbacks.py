@@ -267,3 +267,15 @@ class AvgStatsCallback(Callback):
             stats += [f"{v:.6f}" for v in o.avg_stats]
         stats += [format_time(time.time() - self.start_time)]
         self.logger(stats)
+
+
+class BatchTransformXCallback(Callback):
+    """Transform X as a batch using `tfm` callable before every batch."""
+
+    _order = 2
+
+    def __init__(self, tfm):
+        self.tfm = tfm
+
+    def before_batch(self):
+        self.learner.xb = self.tfm(self.learner.xb)
