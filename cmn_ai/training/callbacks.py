@@ -75,3 +75,16 @@ class Callback:
         pattern2 = re.compile("([a-z0-9])([A-Z])")
         name = re.sub(pattern1, r"\1_\2", name)
         return re.sub(pattern2, r"\1_\2", name).lower()
+
+
+class DeviceCallback(Callback):
+    """Move batch and model to device."""
+
+    def __init__(self, device=default_device):
+        self.device = device
+
+    def before_fit(self):
+        self.model.to(self.device)
+
+    def before_batch(self):
+        self.learner.batch = to_device(self.batch, self.device)
