@@ -279,3 +279,20 @@ class BatchTransformXCallback(Callback):
 
     def before_batch(self):
         self.learner.xb = self.tfm(self.learner.xb)
+
+
+class ModelResetter(Callback):
+    """
+    Reset model's parameters. This is very useful in the context of NLP since
+    we always reset hidden state. The assumption here is that `model` has a
+    `reset` method that knows which parameters to reset and how.
+    """
+
+    def before_train(self):
+        self.model.reset()
+
+    def before_validate(self):
+        self.model.reset()
+
+    def after_fit(self):
+        self.model.reset()
