@@ -223,3 +223,47 @@ class AvgStats:
         self.tot_loss += learner.loss * bs
         for i, metric in enumerate(self.metrics):
             self.tot_metrics[i] += metric(learner.preds, learner.yb) * bs
+
+
+class AvgStatsCallback(Callback):
+    """
+    Compute average loss/metrics after every batch and log the stats after
+    every epoch.
+    """
+
+    _order = -10
+
+    def __init__(self, metrics):
+        self.train_stats = AvgStats(metrics, True)
+        self.valid_stats = AvgStats(metrics, False)
+
+    def before_fit(self):
+        metrics_names = ["loss"] + [
+            metric.__name__ for metric in self.train_stats.metrics
+        ]
+        names = (
+            ["epoch"]
+            + [f"train_{name}" for name in metrics_names]
+            + [f"valid_{name}" for name in metrics_names]
+            + ["time"]
+        )
+        self.logger(names)
+
+    def before_epoch(self):
+        """Reset metrics/loss."""
+        self.train_stats.reset()
+        self.valid_stats.reset()
+        self.start_time = time.time()
+
+    def after_loss(self):
+        """Evaluate metrics and accumulate them."""
+        stats = self.train_stats if self.training else self.valid_stats
+        with torch.no_grad():
+            stats.accumulate(self.learner)
+
+    def after_epoch(self):
+        stats = [str(self.epoch)]
+        for o in [self.train_stats, self.valid_stats]:
+            stats += [f"{v:.6f}" for v in o.avg_stats]
+        stats += [format_time(time.time() - self.start_time)]
+        self.logger(stats)
