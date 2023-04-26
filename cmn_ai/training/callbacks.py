@@ -143,3 +143,45 @@ class ProgressCallback(Callback):
     def set_pb(self):
         self.pb = progress_bar(self.dl, parent=self.mbar)
         self.mbar.update(self.epoch)
+
+
+class Recorder(Callback):
+    """
+    Keep track of losses and learning rates as training progress so we can
+    plot them later.
+    """
+
+    _order = 50
+
+    def before_fit(self):
+        self.lrs = [[] for _ in self.opt.param_groups]
+        self.losses = []
+
+    def after_batch(self):
+        if self.training:
+            for pg, lr in zip(self.opt.param_groups, self.lrs):
+                lr.append(pg["lr"])
+            self.losses.append(to_cpu(self.loss))
+
+    def plot_lr(self, pgid=-1):
+        """
+        Plot learning rates in the parameter group id `pgid`, default to the last parameter group.
+        """
+        plt.plot(self.lrs[pgid])
+
+    def plot_loss(self, skip_last=0):
+        """
+        Plot losses, optionally skip last `skip_last` losses.
+        """
+        n = len(self.losses) - skip_last
+        plt.plot(self.losses[:n])
+
+    def plot(self, skip_last=0, pgid=-1):
+        """
+        Plot both losses and learning rates.
+        """
+        losses = [o.item() for o in self.losses]
+        lrs = self.lrs[pgid]
+        n = len(losses) - skip_last
+        plt.xscale("log")
+        plt.plot(lrs[:n], losses[:n])
