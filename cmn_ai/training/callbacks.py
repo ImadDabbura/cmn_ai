@@ -185,3 +185,41 @@ class Recorder(Callback):
         n = len(losses) - skip_last
         plt.xscale("log")
         plt.plot(lrs[:n], losses[:n])
+
+
+class AvgStats:
+    """
+    Base class that compute average loss and `metrics` stats after every batch.
+    """
+
+    def __init__(self, metrics, training=True):
+        self.metrics = listify(metrics)
+        self.training = training
+
+    def reset(self):
+        self.tot_loss = torch.tensor(0.0)
+        self.count = 0
+        self.tot_metrics = [0.0] * len(self.metrics)
+
+    @property
+    def all_stats(self):
+        """Returns a list of both loss and metrics."""
+        return [self.tot_loss.item()] + self.tot_metrics
+
+    @property
+    def avg_stats(self):
+        """Returns the average of loss/metrics."""
+        return [o / self.count for o in self.all_stats]
+
+    def __repr__(self):
+        if not self.count:
+            return ""
+        return f"{'train' if self.training else 'valid'}: {self.avg_stats}"
+
+    def accumulate(self, learner):
+        """Evaluate metrics and accumulate them to at the epoch level."""
+        bs = len(learner.xb)
+        self.count += bs
+        self.tot_loss += learner.loss * bs
+        for i, metric in enumerate(self.metrics):
+            self.tot_metrics[i] += metric(learner.preds, learner.yb) * bs
