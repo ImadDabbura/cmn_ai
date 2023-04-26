@@ -115,3 +115,31 @@ class TrainEvalCallback(Callback):
     def before_validate(self):
         self.model.eval()
         self.learner.training = False
+
+
+class ProgressCallback(Callback):
+    """Add progress bar as logger for tracking metrics."""
+
+    _order = -20
+
+    def before_fit(self):
+        self.mbar = master_bar(range(self.n_epochs))
+        self.mbar.on_iter_begin()
+        # Overwrite default learner logger
+        self.learner.logger = partial(self.mbar.write, table=True)
+
+    def after_fit(self):
+        self.mbar.on_iter_end()
+
+    def after_batch(self):
+        self.pb.update(self.iter)
+
+    def before_train(self):
+        self.set_pb()
+
+    def before_validate(self):
+        self.set_pb()
+
+    def set_pb(self):
+        self.pb = progress_bar(self.dl, parent=self.mbar)
+        self.mbar.update(self.epoch)
