@@ -9,72 +9,9 @@ import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
 
 from ..utils.data import default_device, to_cpu, to_device
-from ..utils.utils import listify, setify
-
-
-class CancelFitException(Exception):
-    """Stop training and move to after_fit."""
-
-
-class CancelEpochException(Exception):
-    """Stop current epoch and move to after_epoch."""
-
-
-class CancelTrainException(Exception):
-    """Stop training current epoch and move to after_train."""
-
-
-class CancelValidException(Exception):
-    """Stop validation phase and move after_validate."""
-
-
-class CancelBatchException(Exception):
-    """Stop current batch and move to after_batch."""
-
-
-class CancelStepException(Exception):
-    """Skip stepping the optimizer."""
-
-
-class CancelBackwardException(Exception):
-    """Skip the backward pass and move to after_backward."""
-
-
-class Callback:
-    """Base class for all callbacks."""
-
-    order = 0
-
-    def set_learner(self, learner):
-        self.learner = learner
-
-    def __getattr__(self, k):
-        return getattr(self.learner, k)
-
-    @property
-    def name(self):
-        """
-        Returns the name of the callback after removing the word `callback`
-        and then convert it to snake (split words by underscores).
-        """
-        name = re.sub(r"Callback$", "", self.__class__.__name__)
-        return Callback.camel2snake(name or "callback")
-
-    def __call__(self, event_nm):
-        method = getattr(self, event_nm, None)
-        if method is not None:
-            method()
-
-    @staticmethod
-    def camel2snake(name):
-        """
-        Convert name of callback by inserting underscores between small and capital
-        letters. For example, `TestCallback` becomes `test_callback`.
-        """
-        pattern1 = re.compile("(.)([A-Z][a-z]+)")
-        pattern2 = re.compile("([a-z0-9])([A-Z])")
-        name = re.sub(pattern1, r"\1_\2", name)
-        return re.sub(pattern2, r"\1_\2", name).lower()
+from ..utils.utils import listify
+from .core import Callback, CancelFitException, CancelValidException
+from .schedule import exp_sched
 
 
 class DeviceCallback(Callback):
@@ -309,15 +246,68 @@ class ParamScheduler(Callback):
         if not isinstance(self.sched_funcs, (list, tuple)):
             self.sched_funcs = [self.sched_funcs] * len(self.opt.param_groups)
 
-    def set_param(self):
-        assert_msg = (
-            f"Number of schedulers should match number of parameter groups, "
-            f"{print(len(self.opt.param_groups), len(self.sched_funcs))}"
-        )
-        assert len(self.opt.param_groups) == len(self.sched_funcs), assert_msg
+    # def set_param(self, pos=None):
+    #     assert_msg = (
+    #         f"Number of schedulers should match number of parameter groups, "
+    #         f"{print(len(self.opt.param_groups), len(self.sched_funcs))}"
+    #     )
+    #     assert len(self.opt.param_groups) == len(self.sched_funcs), assert_msg
+    #     for pg, sched_func in zip(self.opt.param_groups, self.sched_funcs):
+    #         pg[self.pname] = sched_func(self.pct_train if pos is None else pos)
+
+    def _update_value(self, pos):
         for pg, sched_func in zip(self.opt.param_groups, self.sched_funcs):
-            pg[self.pname] = sched_func(self.pct_train)
+            pg[self.pname] = sched_func(pos)
+        self
 
     def before_batch(self):
         if self.training:
-            self.set_param()
+            self._update_value(self.pct_train)
+
+
+class LRFinder(ParamScheduler):
+    "Training with exponentially growing learning rate"
+
+    def __init__(self, start_lr=1e-7, end_lr=10, num_it=100, stop_div=True):
+        super().__init__("lr", exp_sched(start_lr, end_lr))
+        self.num_it = num_it
+        self.stop_div = stop_div
+
+    def before_fit(self):
+        super().before_fit()
+        path = self.path / self.model_dir
+        path.mkdir(parents=True, exist_ok=True)
+        self.tmp_d = tempfile.TemporaryDirectory(dir=path)
+        self.tmp_p = Path(self.tmp_d.name).stem
+        torch.save(
+            {
+                "model_state_dict": self.model.state_dict(),
+                "optimizer_state_dict": self.opt.state_dict(),
+            },
+            path / self.tmp_p / "_tmp.pth",
+        )
+        self.best_loss = float("inf")
+
+    def before_batch(self):
+        self._update_value(self.n_iters / self.num_it)
+
+    def after_batch(self):
+        # super().after_batch()
+        if self.loss < self.best_loss:
+            self.best_loss = self.loss
+        if self.loss > 4 * self.best_loss and self.stop_div:
+            raise CancelFitException()
+        if self.n_iters >= self.num_it:
+            raise CancelFitException()
+
+    def before_validate(self):
+        raise CancelValidException()
+
+    def after_fit(self):
+        self.opt.zero_grad()
+        tmp_f = self.path / self.model_dir / self.tmp_p / "_tmp.pth"
+        if tmp_f.exists():
+            checkpoint = torch.load(tmp_f)
+            self.model.load_state_dict(checkpoint["model_state_dict"])
+            self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
+            self.tmp_d.cleanup()

@@ -1,4 +1,5 @@
 from collections.abc import Callable, Iterable
+from pathlib import Path
 
 import fastcore.all as fc
 import torch
@@ -8,7 +9,7 @@ import torch.optim as opt
 from torch import tensor
 from torch.utils.data import DataLoader
 
-from .callbacks import (
+from .callbacks.core import (
     CancelBackwardException,
     CancelBatchException,
     CancelEpochException,
@@ -16,10 +17,8 @@ from .callbacks import (
     CancelStepException,
     CancelTrainException,
     CancelValidException,
-    ProgressCallback,
-    Recorder,
-    TrainEvalCallback,
 )
+from .callbacks.training import ProgressCallback, Recorder, TrainEvalCallback
 
 
 def params_getter(model):
@@ -66,17 +65,21 @@ class Learner:
         opt_func: opt.Optimizer = opt.SGD,
         lr: float = 1e-2,
         splitter: Callable = params_getter,
+        path=".",
+        model_dir="models",
         callbacks: Iterable | None = None,
         default_callbacks: bool = True,
     ):
         self.model = model
         self.dls = dls
+        self.n_inp = n_inp
         self.loss_func = loss_func
         self.opt_func = opt_func
+        self.opt = None
         self.lr = lr
         self.splitter = splitter
-        self.opt = None
-        self.n_inp = n_inp
+        self.path = Path(path)
+        self.model_dir = Path(model_dir)
         self.logger = print
         self.callbacks = fc.L()
         if default_callbacks:
