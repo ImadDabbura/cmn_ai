@@ -3,6 +3,7 @@ from typing import Callable, Iterable
 
 import torch
 import torch.nn as nn
+from torch import Tensor
 
 
 class Hook:
@@ -97,3 +98,39 @@ class Hooks:
 
     def __del__(self):
         self.remove()
+
+
+def compute_stats(
+    hook: Hook,
+    module: nn.Module,
+    inp: Tensor,
+    outp: Tensor,
+    bins: int,
+    hist_range: list | tuple = (0, 10),
+) -> None:
+    """
+    Compute the means, std, and histogram of `module` activations/gradients
+    and the `hook` stats.
+
+    Parameters
+    ----------
+    hook : Hook
+        Registered hook on the provided module.
+    module : nn.Module
+        Module to compute the stats on.
+    inp : Tensor
+        Input of the module.
+    outp : Tensor
+        Output of the module.
+    bins : int
+        Number of histogram bins.
+    hist_range : Iterable, optional
+        lower/upper end of the histogram's bins range.
+    """
+    if not hasattr(hook, "stats"):
+        hook.stats = ([], [], [])
+    if not hook.is_forward:
+        inp = inp[0], outp = outp[0]
+    hook.stats[0].append(outp.data.mean().cpu())
+    hook.stats[1].append(outp.data.std().cpu())
+    hook.stats[2].append(outp.data.cpu().histc(bins, *hist_range))
