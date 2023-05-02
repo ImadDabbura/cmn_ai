@@ -139,3 +139,24 @@ def compute_stats(
 def get_hist(hook: Hook) -> Tensor:
     """Return matrix-ready for plotting heatmap of activations/gradients."""
     return torch.stack(hook.stats[2]).t().float().log1p()
+
+
+def get_min(hook: Hook, bins_range: list | tuple) -> Tensor:
+    """
+    Compute the percentage of activations/gradients around zero from hook's
+    histogram matrix.
+
+    Parameters
+    ----------
+    hook : Hook
+        Hook that has the stats of the activations
+    bins_range : list | tuple
+        Bins range around zero.
+
+    Returns
+    -------
+    Tensor
+        Percentage of the activations around zero.
+    """
+    res = torch.stack(hook.stats[2]).t().float()
+    return res[slice(*bins_range)].sum(0) / res.sum(0)
