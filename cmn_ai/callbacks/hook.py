@@ -134,3 +134,8 @@ def compute_stats(
     hook.stats[0].append(outp.data.mean().cpu())
     hook.stats[1].append(outp.data.std().cpu())
     hook.stats[2].append(outp.data.cpu().histc(bins, *hist_range))
+
+
+def get_hist(hook: Hook) -> Tensor:
+    """Return matrix-ready for plotting heatmap of activations/gradients."""
+    return torch.stack(hook.stats[2]).t().float().log1p()
