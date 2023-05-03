@@ -168,17 +168,32 @@ def get_min(hook: Hook, bins_range: list | tuple) -> Tensor:
 
 
 class HooksCallback(Callback):
+    """
+    Base call to run hooks on modules as a callback.
+
+    Parameters
+    ----------
+    hookfunc : Callable
+        The hook to be registered.
+    on_train : bool, default=True
+        Whether to run the hook on modules during training.
+    on_valid : bool, default=False
+        Whether to run the hook on modules during validation.
+    modules : nn.Module | Iterable[nn.Module] | None, default=None
+        Modules to register the hook on. Default to all modules.
+    is_forward : bool, default=True
+        Whether to register `func` as a forward or backward hook.
+    """
+
     def __init__(
         self,
         hookfunc: Callable,
-        # modules_filter: Callable = fc.noop,
         on_train: bool = True,
         on_valid: bool = False,
         modules: nn.Module | Iterable[nn.Module] | None = None,
         is_forward: bool = True,
     ):
         self.hookfunc = hookfunc
-        # self.modules_filter = modules_filter
         self.on_train = on_train
         self.on_valid = on_valid
         self.modules = modules
@@ -186,12 +201,9 @@ class HooksCallback(Callback):
         super().__init__()
 
     def before_fit(self):
-        if self.modules:
-            modules = self.modules
-        else:
-            # modules = fc.filter_ex(self.model.modules(), self.modules_filter)
-            modules = self.model.modules()
-        self.hooks = Hooks(modules, self._hookfunc, self.is_forward)
+        if self.modules is None:
+            self.modules = self.model.modules()
+        self.hooks = Hooks(self.modules, self._hookfunc, self.is_forward)
 
     def _hookfunc(self, *args, **kwargs):
         if (self.on_train and self.training) or (
@@ -210,13 +222,35 @@ class HooksCallback(Callback):
 
 
 class ActivationStats(HooksCallback):
+    """
+    Plot the means, std, histogram, and dead activations of all modules'
+    activations if `is_forward` else gradients.
+
+    Parameters
+    ----------
+    modules : nn.Module | Iterable[nn.Module] | None, default=None
+        Modules to register the hook on. Default to all modules.
+    is_forward : bool, default=True
+        Whether to register `func` as a forward or backward hook.
+    bins : int, default=40
+        Number of histogram bins.
+    bins_range : Iterable, default=(0, 10)
+        lower/upper end of the histogram's bins range.
+    """
+
     def __init__(
-        # self, modules_filter: Callable = fc.noop, is_forward: bool = True
         self,
+        modules: nn.Module | Iterable[nn.Module] | None = None,
         is_forward: bool = True,
+        bins: int = 40,
+        bins_range: list | tuple = (0, 10),
     ):
-        # super().__init__(compute_stats, modules_filter, is_forward=is_forward)
-        super().__init__(compute_stats, is_forward=is_forward)
+        self.bins_range = bins_range
+        super().__init__(
+            partial(compute_stats, bins=bins, bins_range=bins_range),
+            is_forward=is_forward,
+            modules=modules,
+        )
 
     def color_dim(self, figsize=(11, 5)):
         _, axes = get_grid(len(self), figsize=figsize)
@@ -226,7 +260,7 @@ class ActivationStats(HooksCallback):
     def dead_chart(self, figsize=(11, 5)):
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flatten(), self):
-            ax.plot(get_min(h))
+            ax.plot(get_min(h, self.bins_range))
             ax.set_ylim(0, 1)
 
     def plot_stats(self, figsize=(10, 4)):
