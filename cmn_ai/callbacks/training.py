@@ -265,12 +265,13 @@ class ParamScheduler(Callback):
             self._update_value(self.pct_train)
 
 
+# TODO: Change loss to smooth_loss
 class LRFinder(ParamScheduler):
     "Training with exponentially growing learning rate"
 
-    def __init__(self, start_lr=1e-7, end_lr=10, num_it=100, stop_div=True):
+    def __init__(self, start_lr=1e-7, end_lr=10, num_iter=100, stop_div=True):
         super().__init__("lr", exp_sched(start_lr, end_lr))
-        self.num_it = num_it
+        self.num_iter = num_iter
         self.stop_div = stop_div
 
     def before_fit(self):
@@ -289,15 +290,14 @@ class LRFinder(ParamScheduler):
         self.best_loss = float("inf")
 
     def before_batch(self):
-        self._update_value(self.n_iters / self.num_it)
+        self._update_value(self.n_iters / self.num_iter)
 
     def after_batch(self):
-        # super().after_batch()
         if self.loss < self.best_loss:
             self.best_loss = self.loss
         if self.loss > 4 * self.best_loss and self.stop_div:
             raise CancelFitException()
-        if self.n_iters >= self.num_it:
+        if self.n_iters >= self.num_iter:
             raise CancelFitException()
 
     def before_validate(self):
