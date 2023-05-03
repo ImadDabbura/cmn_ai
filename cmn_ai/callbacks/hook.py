@@ -207,3 +207,37 @@ class HooksCallback(Callback):
 
     def __len__(self):
         return len(self.hooks)
+
+
+class ActivationStats(HooksCallback):
+    def __init__(
+        # self, modules_filter: Callable = fc.noop, is_forward: bool = True
+        self,
+        is_forward: bool = True,
+    ):
+        # super().__init__(compute_stats, modules_filter, is_forward=is_forward)
+        super().__init__(compute_stats, is_forward=is_forward)
+
+    def color_dim(self, figsize=(11, 5)):
+        _, axes = get_grid(len(self), figsize=figsize)
+        for ax, h in zip(axes.flat, self):
+            show_image(get_hist(h), ax, origin="lower")
+
+    def dead_chart(self, figsize=(11, 5)):
+        _, axes = get_grid(len(self), figsize=figsize)
+        for ax, h in zip(axes.flatten(), self):
+            ax.plot(get_min(h))
+            ax.set_ylim(0, 1)
+
+    def plot_stats(self, figsize=(10, 4)):
+        _, axes = plt.subplots(1, 2, figsize=figsize)
+        for h in self:
+            axes[0].plot(h.stats[0])
+            axes[1].plot(h.stats[1])
+        axes[0].set_title(
+            f"Means of {'activations' if self.is_forward else 'gradients'}"
+        )
+        axes[1].set_title(
+            f"Std deviations of {'activations' if self.is_forward else 'gradients'}"
+        )
+        plt.legend(fc.L.range(self))
