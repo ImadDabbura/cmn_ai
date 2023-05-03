@@ -110,8 +110,8 @@ def compute_stats(
     module: nn.Module,
     inp: Tensor,
     outp: Tensor,
-    bins: int,
-    hist_range: list | tuple = (0, 10),
+    bins: int = 40,
+    bins_range: list | tuple = (0, 10),
 ) -> None:
     """
     Compute the means, std, and histogram of `module` activations/gradients
@@ -127,9 +127,9 @@ def compute_stats(
         Input of the module.
     outp : Tensor
         Output of the module.
-    bins : int
+    bins : int, default=40
         Number of histogram bins.
-    hist_range : Iterable, optional
+    bins_range : Iterable, default=(0, 10)
         lower/upper end of the histogram's bins range.
     """
     if not hasattr(hook, "stats"):
@@ -138,7 +138,7 @@ def compute_stats(
         inp = inp[0], outp = outp[0]
     hook.stats[0].append(outp.data.mean().cpu())
     hook.stats[1].append(outp.data.std().cpu())
-    hook.stats[2].append(outp.data.cpu().histc(bins, *hist_range))
+    hook.stats[2].append(outp.data.cpu().histc(bins, *bins_range))
 
 
 def get_hist(hook: Hook) -> Tensor:
