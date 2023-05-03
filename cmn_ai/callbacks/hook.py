@@ -1,9 +1,14 @@
 from functools import partial
 from typing import Callable, Iterable
 
+import fastcore.all as fc
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 from torch import Tensor
+
+from ..plot import get_grid, show_image
+from .core import Callback
 
 
 class Hook:
@@ -25,7 +30,7 @@ class Hook:
         module: nn.Module,
         func: Callable,
         is_forward: bool = True,
-        **kwargs
+        **kwargs,
     ):
         self.is_forward = is_forward
         if self.is_forward:
@@ -71,7 +76,7 @@ class Hooks:
         modules: nn.Module | Iterable[nn.Module],
         func: Callable,
         is_forward: bool = True,
-        **kwargs
+        **kwargs,
     ):
         self.hooks = [
             Hook(module, func, is_forward, **kwargs) for module in modules
@@ -160,3 +165,45 @@ def get_min(hook: Hook, bins_range: list | tuple) -> Tensor:
     """
     res = torch.stack(hook.stats[2]).t().float()
     return res[slice(*bins_range)].sum(0) / res.sum(0)
+
+
+class HooksCallback(Callback):
+    def __init__(
+        self,
+        hookfunc: Callable,
+        # modules_filter: Callable = fc.noop,
+        on_train: bool = True,
+        on_valid: bool = False,
+        modules: nn.Module | Iterable[nn.Module] | None = None,
+        is_forward: bool = True,
+    ):
+        self.hookfunc = hookfunc
+        # self.modules_filter = modules_filter
+        self.on_train = on_train
+        self.on_valid = on_valid
+        self.modules = modules
+        self.is_forward = is_forward
+        super().__init__()
+
+    def before_fit(self):
+        if self.modules:
+            modules = self.modules
+        else:
+            # modules = fc.filter_ex(self.model.modules(), self.modules_filter)
+            modules = self.model.modules()
+        self.hooks = Hooks(modules, self._hookfunc, self.is_forward)
+
+    def _hookfunc(self, *args, **kwargs):
+        if (self.on_train and self.training) or (
+            self.on_valid and not self.training
+        ):
+            self.hookfunc(*args, **kwargs)
+
+    def after_fit(self):
+        self.hooks.remove()
+
+    def __iter__(self):
+        return iter(self.hooks)
+
+    def __len__(self):
+        return len(self.hooks)
