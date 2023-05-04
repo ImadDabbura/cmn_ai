@@ -91,7 +91,11 @@ class Learner:
         self.callbacks = fc.L()
         if default_callbacks:
             self.add_callbacks(
-                [TrainEvalCallback(), ProgressCallback(), Recorder()]
+                [
+                    TrainEvalCallback(),
+                    ProgressCallback(),
+                    Recorder("lr"),
+                ]
             )
         self.add_callbacks(callbacks)
 
@@ -218,12 +222,13 @@ class Learner:
             Whether to stop training if the loss diverges.
         """
         n_epochs = num_iter // len(self.dls.train) + 1
-        self.fit(
-            n_epochs,
-            valid=False,
-            callbacks=LRFinder(start_lr, end_lr, num_iter, stop_div),
-        )
-        self.recorder.plot()
+        callbacks = [LRFinder(start_lr, end_lr, num_iter, stop_div)]
+        if not self.callbacks or "Recorder" not in [
+            cb.__class__.__name__ for cb in self.callbacks
+        ]:
+            callbacks.append(Recorder("lr"))
+        self.fit(n_epochs, valid=False, callbacks=callbacks)
+        self.recorder.plot_param(param="lr")
 
     @property
     def training(self):

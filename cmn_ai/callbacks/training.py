@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
 
+from ..plot import get_grid
 from ..utils.data import default_device, to_cpu, to_device
 from ..utils.utils import listify
 from .core import Callback, CancelFitException, CancelValidException
@@ -90,38 +91,57 @@ class Recorder(Callback):
 
     _order = 50
 
+    def __init__(self, *params):
+        self.params = listify(params)
+
     def before_fit(self):
-        self.lrs = [[] for _ in self.opt.param_groups]
+        self.params_records = {
+            params: [[] for _ in self.opt.param_groups]
+            for params in self.params
+        }
         self.losses = []
 
     def after_batch(self):
         if self.training:
-            for pg, lr in zip(self.opt.param_groups, self.lrs):
-                lr.append(pg["lr"])
+            for param, param_records in self.params_records.items():
+                for pg, param_record in zip(
+                    self.opt.param_groups, param_records
+                ):
+                    param_record.append(pg[param])
             self.losses.append(to_cpu(self.loss))
 
-    def plot_lr(self, pgid=-1):
+    def plot_param(self, param: str = "lr", pgid: int = -1):
         """
-        Plot learning rates in the parameter group id `pgid`, default to the last parameter group.
+        Plot loss vs `param` in the parameter group id `pgid`, default to the
+        last parameter group.
         """
-        plt.plot(self.lrs[pgid])
+        plt.plot(self.params_records[param][pgid])
 
-    def plot_loss(self, skip_last=0):
+    def plot_loss(self, skip_last: int = 0):
         """
         Plot losses, optionally skip last `skip_last` losses.
         """
         n = len(self.losses) - skip_last
         plt.plot(self.losses[:n])
 
-    def plot(self, skip_last=0, pgid=-1):
+    def plot(
+        self, skip_last: int = 0, pgid: int = -1, figsize: tuple[int] = (12, 8)
+    ):
         """
-        Plot both losses and learning rates.
+        Plot all parameters.
         """
         losses = [o.item() for o in self.losses]
-        lrs = self.lrs[pgid]
         n = len(losses) - skip_last
-        plt.xscale("log")
-        plt.plot(lrs[:n], losses[:n])
+        _, axes = get_grid(len(self.params_records), figsize=figsize)
+        for (
+            ax,
+            param,
+        ) in zip(axes.flatten(), self.params_records):
+            ax.set_xscale("log")
+            ax.plot(
+                self.params_records[param][pgid][:n], losses[:n], label=param
+            )
+            ax.legend()
 
 
 class AvgStats:
