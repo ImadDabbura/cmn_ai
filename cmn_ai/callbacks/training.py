@@ -246,9 +246,31 @@ class ParamScheduler(Callback):
 
 # TODO: Change loss to smooth_loss
 class LRFinder(ParamScheduler):
-    "Training with exponentially growing learning rate"
+    """
+    Try different learning rates using exponential schedule to help pick
+    the best learning rate following [Cyclical Learning Rates for Training
+    Neural Networks](https://arxiv.org/pdf/1506.01186.pdf). When done, plot
+    learning rate vs loss.
 
-    def __init__(self, start_lr=1e-7, end_lr=10, num_iter=100, stop_div=True):
+    Parameters
+    ----------
+    start_lr : float, default=1e-7
+        Start learning rate.
+    end_lr : float, default=10.0
+        Last learning rate in the schedule.
+    num_iter : int, default=100
+        Number of iterations to run the training.
+    stop_div : bool, default
+        Whether to stop training if loss diverges (loss > 4 * best_loss).
+    """
+
+    def __init__(
+        self,
+        start_lr: float = 1e-7,
+        end_lr: float = 10.0,
+        num_iter: int = 100,
+        stop_div: bool = True,
+    ):
         super().__init__("lr", exp_sched(start_lr, end_lr))
         self.num_iter = num_iter
         self.stop_div = stop_div
