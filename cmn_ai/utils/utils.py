@@ -115,7 +115,11 @@ def set_seed(seed: int = 42, deterministic: bool = False) -> None:
 
 
 def clean_ipython_history():
-    # Code in this function mainly copied from IPython source
+    """
+    Clean IPython history. This is very useful when we have output cells with
+    large tensors.
+    Credit: code in this function mainly copied from IPython source/
+    """
     if "get_ipython" not in globals():
         return
     ip = get_ipython()  # noqa: F821
@@ -132,8 +136,12 @@ def clean_ipython_history():
 
 
 def clean_traceback():
-    # Very useful especially when traceback has big tensors
-    # attached to a traceback while the operation raised Exception
+    """
+    Clean memory used by traceback objects. It comes in handy when traceback
+    has big tensors attached to a traceback while the operation raised
+    `Exception`. This will lead to the tensor keeps occupying GPU memory and
+    get `OOM` error even if we try to clean up the GPU memory.
+    """
     if hasattr(sys, "last_traceback"):
         traceback.clear_frames(sys.last_traceback)
         delattr(sys, "last_traceback")
@@ -144,6 +152,10 @@ def clean_traceback():
 
 
 def clean_memory():
+    """
+    Clean memory occupied by traceback objects, IPython history, and empty GPU
+    cache.
+    """
     clean_traceback()
     clean_ipython_history()
     gc.collect()
