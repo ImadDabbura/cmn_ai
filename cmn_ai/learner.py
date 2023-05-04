@@ -234,14 +234,14 @@ class Learner:
         self.model.training = v
 
     def add_callbacks(self, cbs):
-        for cb in fc.L(cbs):
+        for cb in listify(cbs):
             cb.set_learner(self)
             setattr(self, cb.name, cb)
             self.callbacks.append(cb)
 
     def remove_callbacks(self, cbs):
-        for cb in fc.L(cbs):
-            delattr(self, cb.name, cb)
+        for cb in listify(cbs):
+            delattr(self, cb.name)
             self.callbacks.remove(cb)
 
     def callback(self, event_nm):
