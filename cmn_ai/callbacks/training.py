@@ -206,18 +206,6 @@ class AvgStatsCallback(Callback):
         self.logger(stats)
 
 
-class BatchTransformXCallback(Callback):
-    """Transform X as a batch using `tfm` callable before every batch."""
-
-    _order = 2
-
-    def __init__(self, tfm):
-        self.tfm = tfm
-
-    def before_batch(self):
-        self.learner.xb = self.tfm(self.learner.xb)
-
-
 class ModelResetter(Callback):
     """
     Reset model's parameters. This is very useful in the context of NLP since
@@ -311,3 +299,34 @@ class LRFinder(ParamScheduler):
             self.model.load_state_dict(checkpoint["model_state_dict"])
             self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
             self.tmp_d.cleanup()
+
+
+class BatchTransform(Callback):
+    """
+    Transform X as a batch using `tfm` callable before every batch.
+    Apply transformation `tfm` on the batch as a whole.
+
+    Parameters
+    ----------
+    tfm : Callback
+        Transformation to apply on the batch.
+    on_train : bool, default=True
+        Whether to apply the transformation during training.
+    on_valid : bool, default=True
+        Whether to apply the transformation during validation.
+    """
+
+    _order = 2
+
+    def __init__(
+        self, tfm: Callback, on_train: bool = True, on_valid: bool = True
+    ):
+        self.tfm = tfm
+        self.on_train = on_train
+        self.on_valid = on_valid
+
+    def before_batch(self):
+        if (self.on_train and self.training) or (
+            self.on_valid and not self.training
+        ):
+            self.learner.batch = self.tfm(self.batch)
