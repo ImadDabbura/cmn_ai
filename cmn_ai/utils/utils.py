@@ -160,3 +160,25 @@ def clean_memory():
     clean_ipython_history()
     gc.collect()
     torch.cuda.empty_cache()
+
+
+def set_printoptions(
+    precision: int = 2, linewidth: int = 125, sci_mode: bool = False
+):
+    """
+    Set print options for numpy and pytorch.
+
+    Parameters
+    ----------
+    precision : int, default=2
+        Number of digits of precision for floating point output.
+    linewidth : int, default=125
+        Number of characters per line before inserting line breaks.
+    sci_mode : bool, default=False
+        Whether to enable scientific notation.
+
+    """
+    torch.set_printoptions(
+        precision=precision, linewidth=linewidth, sci_mode=sci_mode
+    )
+    np.set_printoptions(precision=precision, linewidth=linewidth)
