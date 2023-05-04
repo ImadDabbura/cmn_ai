@@ -237,7 +237,6 @@ class ParamScheduler(Callback):
     def _update_value(self, pos):
         for pg, sched_func in zip(self.opt.param_groups, self.sched_funcs):
             pg[self.pname] = sched_func(pos)
-        self
 
     def before_batch(self):
         if self.training:
