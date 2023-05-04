@@ -252,7 +252,7 @@ class ActivationStats(HooksCallback):
             modules=modules,
         )
 
-    def color_dim(self, figsize=(11, 5)):
+    def plot_hist(self, figsize=(11, 5)):
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flat, self):
             show_image(get_hist(h), ax, origin="lower")
@@ -272,6 +272,6 @@ class ActivationStats(HooksCallback):
             f"Means of {'activations' if self.is_forward else 'gradients'}"
         )
         axes[1].set_title(
-            f"Std deviations of {'activations' if self.is_forward else 'gradients'}"
+            f"Stdevs of {'activations' if self.is_forward else 'gradients'}"
         )
         plt.legend(fc.L.range(self))
