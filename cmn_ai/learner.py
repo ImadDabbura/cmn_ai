@@ -18,13 +18,20 @@ from .callbacks.core import (
     CancelTrainException,
     CancelValidException,
 )
-from .callbacks.training import ProgressCallback, Recorder, TrainEvalCallback
+from .callbacks.training import (
+    LRFinder,
+    ProgressCallback,
+    Recorder,
+    TrainEvalCallback,
+)
+from .utils.utils import listify
 
 
 def params_getter(model):
     return model.params_getter()
 
 
+# TODO: Add save & load model and optimizer
 class Learner:
     """
     Learner is a basic class that handles training loop of pytorch model
@@ -186,8 +193,37 @@ class Learner:
         finally:
             self.remove_callbacks(callbacks)
 
-    def lr_find(self):
-        pass
+    def lr_find(
+        self,
+        start_lr: float = 1e-7,
+        end_lr: float = 10.0,
+        num_iter: int = 100,
+        stop_div: bool = True,
+    ):
+        """
+        Try different learning rates using exponential schedule to help pick
+        the best learning rate following [Cyclical Learning Rates for Training
+        Neural Networks](https://arxiv.org/pdf/1506.01186.pdf). When done, plot
+        learning rate vs loss.
+
+        Parameters
+        ----------
+        start_lr : float, default=1e-7
+            Start learning rate.
+        end_lr : float, default=10.0
+            Last learning rate in the schedule.
+        num_iter : int, default=100
+            Number of iterations to run the training.
+        stop_div : bool, default
+            Whether to stop training if the loss diverges.
+        """
+        n_epochs = num_iter // len(self.dls.train) + 1
+        self.fit(
+            n_epochs,
+            valid=False,
+            callbacks=LRFinder(start_lr, end_lr, num_iter, stop_div),
+        )
+        self.recorder.plot()
 
     @property
     def training(self):
