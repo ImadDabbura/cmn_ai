@@ -198,7 +198,6 @@ class HooksCallback(Callback):
         self.on_valid = on_valid
         self.modules = modules
         self.is_forward = is_forward
-        # super().__init__()
 
     def before_fit(self):
         if self.modules is None:
