@@ -300,13 +300,7 @@ class LRFinder(ParamScheduler):
         path.mkdir(parents=True, exist_ok=True)
         self.tmp_d = tempfile.TemporaryDirectory(dir=path)
         self.tmp_p = Path(self.tmp_d.name).stem
-        torch.save(
-            {
-                "model_state_dict": self.model.state_dict(),
-                "optimizer_state_dict": self.opt.state_dict(),
-            },
-            path / self.tmp_p / "_tmp.pth",
-        )
+        self.save_model(path / self.tmp_p / "_tmp.pth", with_opt=True)
         self.best_loss = float("inf")
 
     def before_batch(self):
@@ -327,9 +321,7 @@ class LRFinder(ParamScheduler):
         self.opt.zero_grad()
         tmp_f = self.path / self.model_dir / self.tmp_p / "_tmp.pth"
         if tmp_f.exists():
-            checkpoint = torch.load(tmp_f)
-            self.model.load_state_dict(checkpoint["model_state_dict"])
-            self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
+            self.load_model(tmp_f, with_opt=True)
             self.tmp_d.cleanup()
 
 
