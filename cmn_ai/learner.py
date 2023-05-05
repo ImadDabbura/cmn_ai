@@ -1,3 +1,4 @@
+import pickle
 from collections.abc import Callable, Iterable
 from pathlib import Path
 
@@ -10,6 +11,7 @@ from torch import tensor
 from torch.utils.data import DataLoader
 
 from .callbacks.core import (
+    Callback,
     CancelBackwardException,
     CancelBatchException,
     CancelEpochException,
@@ -229,6 +231,42 @@ class Learner:
             callbacks.append(Recorder("lr"))
         self.fit(n_epochs, valid=False, callbacks=callbacks)
         self.recorder.plot_param(param="lr")
+
+    def save_model(
+        self,
+        path: str | Path,
+        with_opt: bool = False,
+        with_epoch: bool = False,
+        with_loss: bool = False,
+        pickle_protocol: int = pickle.HIGHEST_PROTOCOL,
+    ):
+        """
+        Save the model and optionally the optimizer, epoch, and the loss.
+        Useful for checkpointing.
+
+        Parameters
+        ----------
+        path : str | Path
+            File path to save the model.
+        with_opt : bool, optional
+            Whether to save the optimizer state.
+        with_epoch : bool, optional
+            Whether to save the current epoch number.
+        with_loss : bool, optional
+            Whether to save the current loss.
+        pickle_protocol : int, optional
+            Protocol used by pickler when saving the checkpoint.
+        """
+        checkpoint = {
+            "model_state_dict": self.model.state_dict(),
+        }
+        if with_opt:
+            checkpoint["optimizer_state_dict"] = self.opt.state_dict()
+        if with_epoch:
+            checkpoint["epoch"] = self.epoch
+        if with_loss:
+            checkpoint["loss"] = self.loss
+        torch.save(checkpoint, path, pickle_protocol=pickle_protocol)
 
     @property
     def training(self):
