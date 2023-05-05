@@ -1,8 +1,8 @@
-import re
 import tempfile
 import time
 from functools import partial
 from pathlib import Path
+from typing import Iterable
 
 import matplotlib.pyplot as plt
 import torch
@@ -110,12 +110,24 @@ class Recorder(Callback):
                     param_record.append(pg[param])
             self.losses.append(to_cpu(self.loss))
 
-    def plot_param(self, param: str = "lr", pgid: int = -1):
+    def plot_params(
+        self,
+        params: str | Iterable[str] = "lr",
+        pgid: int = -1,
+        skip_last: int = 0,
+        figsize: tuple = (8, 6),
+    ):
         """
-        Plot loss vs `param` in the parameter group id `pgid`, default to the
-        last parameter group.
+        Plot all `params` values across all iterations of training.
         """
-        plt.plot(self.params_records[param][pgid])
+        params = listify(params)
+        _, axes = get_grid(len(params), figsize=figsize)
+        for (
+            ax,
+            param,
+        ) in zip(axes.flatten(), params):
+            ax.plot(self.params_records[param][pgid], label=param)
+            ax.legend()
 
     def plot_loss(self, skip_last: int = 0):
         """
@@ -124,24 +136,16 @@ class Recorder(Callback):
         n = len(self.losses) - skip_last
         plt.plot(self.losses[:n])
 
-    def plot(
-        self, skip_last: int = 0, pgid: int = -1, figsize: tuple[int] = (12, 8)
-    ):
+    def plot(self, pgid: int = -1, skip_last: int = 0):
         """
-        Plot all parameters.
+        Plot loss vs lr (log-scale) across all iterations of training.
         """
-        losses = [o.item() for o in self.losses]
-        n = len(losses) - skip_last
-        _, axes = get_grid(len(self.params_records), figsize=figsize)
-        for (
-            ax,
-            param,
-        ) in zip(axes.flatten(), self.params_records):
-            ax.set_xscale("log")
-            ax.plot(
-                self.params_records[param][pgid][:n], losses[:n], label=param
-            )
-            ax.legend()
+        n = len(self.losses) - skip_last
+        plt.xscale("log")
+        plt.plot(
+            self.params_records["lr"][pgid][:n],
+            self.losses[:n],
+        )
 
 
 class AvgStats:

@@ -229,7 +229,7 @@ class Learner:
         ]:
             callbacks.append(Recorder("lr"))
         self.fit(n_epochs, valid=False, callbacks=callbacks)
-        self.recorder.plot_param(param="lr")
+        self.recorder.plot()
 
     def save_model(
         self,
