@@ -248,13 +248,13 @@ class Learner:
         ----------
         path : str | Path
             File path to save the model.
-        with_opt : bool, optional
+        with_opt : bool, default=False
             Whether to save the optimizer state.
-        with_epoch : bool, optional
+        with_epoch : bool, default=False
             Whether to save the current epoch number.
-        with_loss : bool, optional
+        with_loss : bool, default=False
             Whether to save the current loss.
-        pickle_protocol : int, optional
+        pickle_protocol : int, default=pickle.HIGHEST_PROTOCOL
             Protocol used by pickler when saving the checkpoint.
         """
         checkpoint = {
@@ -282,11 +282,11 @@ class Learner:
         ----------
         path : str | Path
             Model's file path.
-        with_opt : bool, optional
+        with_opt : bool, default=False
             Whether to load the optimizer state.
-        with_epoch : bool, optional
+        with_epoch : bool, default=False
             Whether to load the current epoch number.
-        with_loss : bool, optional
+        with_loss : bool, default=False
             Whether to load the current loss.
         """
         checkpoint = torch.load(path)
