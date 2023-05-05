@@ -33,7 +33,6 @@ def params_getter(model):
     return model.params_getter()
 
 
-# TODO: Add save & load model and optimizer
 class Learner:
     """
     Learner is a basic class that handles training loop of pytorch model
@@ -74,9 +73,9 @@ class Learner:
         opt_func: opt.Optimizer = opt.SGD,
         lr: float = 1e-2,
         splitter: Callable = params_getter,
-        path=".",
-        model_dir="models",
-        callbacks: Iterable | None = None,
+        path: str = ".",
+        model_dir: str = "models",
+        callbacks: Iterable[Callback] | None = None,
         default_callbacks: bool = True,
     ):
         self.model = model
@@ -248,13 +247,13 @@ class Learner:
         ----------
         path : str | Path
             File path to save the model.
-        with_opt : bool, optional
+        with_opt : bool, default=False
             Whether to save the optimizer state.
-        with_epoch : bool, optional
+        with_epoch : bool, default=False
             Whether to save the current epoch number.
-        with_loss : bool, optional
+        with_loss : bool, default=False
             Whether to save the current loss.
-        pickle_protocol : int, optional
+        pickle_protocol : int, default=pickle.HIGHEST_PROTOCOL
             Protocol used by pickler when saving the checkpoint.
         """
         checkpoint = {
@@ -267,6 +266,36 @@ class Learner:
         if with_loss:
             checkpoint["loss"] = self.loss
         torch.save(checkpoint, path, pickle_protocol=pickle_protocol)
+
+    def load_model(
+        self,
+        path: str | Path,
+        with_opt: bool = False,
+        with_epoch: bool = False,
+        with_loss: bool = False,
+    ):
+        """
+        Load the model and optionally the optimizer, epoch, and the loss.
+
+        Parameters
+        ----------
+        path : str | Path
+            Model's file path.
+        with_opt : bool, default=False
+            Whether to load the optimizer state.
+        with_epoch : bool, default=False
+            Whether to load the current epoch number.
+        with_loss : bool, default=False
+            Whether to load the current loss.
+        """
+        checkpoint = torch.load(path)
+        self.model.load_state_dict(checkpoint["model_state_dict"])
+        if with_opt:
+            self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
+        if with_epoch:
+            self.epoch = checkpoint["epoch"]
+        if with_loss:
+            self.loss = checkpoint["loss"]
 
     @property
     def training(self):
