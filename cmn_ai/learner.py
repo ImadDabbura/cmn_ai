@@ -268,6 +268,36 @@ class Learner:
             checkpoint["loss"] = self.loss
         torch.save(checkpoint, path, pickle_protocol=pickle_protocol)
 
+    def load_model(
+        self,
+        path: str | Path,
+        with_opt: bool = False,
+        with_epoch: bool = False,
+        with_loss: bool = False,
+    ):
+        """
+        Load the model and optionally the optimizer, epoch, and the loss.
+
+        Parameters
+        ----------
+        path : str | Path
+            Model's file path.
+        with_opt : bool, optional
+            Whether to load the optimizer state.
+        with_epoch : bool, optional
+            Whether to load the current epoch number.
+        with_loss : bool, optional
+            Whether to load the current loss.
+        """
+        checkpoint = torch.load(path)
+        self.model.load_state_dict(checkpoint["model_state_dict"])
+        if with_opt:
+            self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
+        if with_epoch:
+            self.epoch = checkpoint["epoch"]
+        if with_loss:
+            self.loss = checkpoint["loss"]
+
     @property
     def training(self):
         return self.model.training
