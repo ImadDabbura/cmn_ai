@@ -33,7 +33,6 @@ def params_getter(model):
     return model.params_getter()
 
 
-# TODO: Add save & load model and optimizer
 class Learner:
     """
     Learner is a basic class that handles training loop of pytorch model
@@ -74,9 +73,9 @@ class Learner:
         opt_func: opt.Optimizer = opt.SGD,
         lr: float = 1e-2,
         splitter: Callable = params_getter,
-        path=".",
-        model_dir="models",
-        callbacks: Iterable | None = None,
+        path: str = ".",
+        model_dir: str = "models",
+        callbacks: Iterable[Callback] | None = None,
         default_callbacks: bool = True,
     ):
         self.model = model
