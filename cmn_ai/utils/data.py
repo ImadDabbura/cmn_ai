@@ -143,7 +143,7 @@ class DataLoaders:
                 *dd.values(),
                 batch_size=batch_size,
                 collate_fn=collate_dict(dd["train"]),
-                **kwargs
+                **kwargs,
             )
         )
 
@@ -155,3 +155,58 @@ def compose(x: Any, funcs: Callable, *args, order: str = "_order", **kwargs):
     for func in sorted(listify(funcs), key=lambda x: getattr(x, order, 0)):
         x = func(x, *args, **kwargs)
     return x
+
+
+def _get_files(path, fs, extensions=None):
+    """Get filenames in `path` that have extension `extensions`."""
+    path = Path(path)
+    res = [
+        path / f
+        for f in fs
+        if not f.startswith(".")
+        and ((not extensions) or f'.{f.split(".")[-1].lower()}' in extensions)
+    ]
+    return res
+
+
+def get_files(
+    path: str | Path,
+    extensions: str | Iterable[str] | None = None,
+    include: Iterable[str] | None = None,
+    recurse: bool = False,
+) -> list[Path]:
+    """
+    Get filenames in `path` that have extension `extensions` starting
+    with `path` and optionally recurse to subdirectories.
+
+    Parameters
+    ----------
+    path : str | Path
+        Path for the root directory to search for files.
+    extensions : str | Iterable[str] | None, default=None
+        Suffixes of filenames to look for.
+    include : Iterable[str] | None, default=None
+        Top-level Director(y|ies) under `path` to use to search for files.
+    recurse : bool, default=False
+        Whether to search subdirectories recursively.
+
+    Returns
+    -------
+    list[str]
+        List of filenames that ends with `extensions` under `path`.
+    """
+    path = Path(path)
+    extensions = setify(extensions)
+    extensions = {e.lower() for e in extensions}
+    if recurse:
+        res = []
+        for i, (p, d, fs) in enumerate(os.walk(path)):
+            if include is not None and i == 0:
+                d[:] = [o for o in d if o in include]
+            else:
+                d[:] = [o for o in d if not o.startswith(".")]
+            res += _get_files(p, fs, extensions)
+        return res
+    else:
+        fs = [o.name for o in os.scandir(path) if o.is_file()]
+        return _get_files(path, fs, extensions)
