@@ -237,3 +237,50 @@ class ListContainer(UserList):
         if len(self) > 10:
             res = res[:-1] + ", ...]"
         return res
+
+
+class ItemList(ListContainer):
+    """
+    Base class for all type of datasets such as image, text, etc.
+
+    Parameters
+    ----------
+    items : Sequence
+        Items to create list.
+    path : str | Path, default="."
+        Path of the items that were used to create the list.
+    tfms : Callable | None, default=None
+        Transformations to apply items before returning them.
+    """
+
+    def __init__(
+        self,
+        items: Sequence,
+        path: str | Path = ".",
+        tfms: Callable | None = None,
+    ):
+        super().__init__(items)
+        self.path = Path(path)
+        self.tfms = tfms
+
+    def __repr__(self):
+        return super().__repr__() + f"\nPath: {self.path.resolve()}"
+
+    def new(self, items, cls=None):
+        if cls is None:
+            cls = self.__class__
+        return cls(items, self.path, self.tfms)
+
+    def get(self, item):
+        """Every class that inherits from ItemList has to override this method."""
+        return item
+
+    def _get(self, item):
+        """Returns items after applying all transforms `tfms`."""
+        return compose(self.get(item), self.tfms)
+
+    def __getitem__(self, idx):
+        items = super().__getitem__(idx)
+        if isinstance(idx, list):
+            return [self._get(item) for item in items]
+        return self._get(items)
