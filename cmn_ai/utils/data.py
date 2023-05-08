@@ -1,11 +1,16 @@
-from collections.abc import Iterable
+import os
+from collections.abc import Iterable, Sequence
 from operator import itemgetter
-from typing import Callable, Mapping
+from pathlib import Path
+from typing import Any, Callable, Mapping
 
+import fastcore.all as fc
 import torch
 from datasets.dataset_dict import DatasetDict
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset, default_collate
+
+from .utils import listify, setify
 
 
 def get_dls(
@@ -141,3 +146,12 @@ class DataLoaders:
                 **kwargs
             )
         )
+
+
+def compose(x: Any, funcs: Callable, *args, order: str = "_order", **kwargs):
+    """
+    Applies transformations in `funcs` to the input `x` in  `order` order.
+    """
+    for func in sorted(listify(funcs), key=lambda x: getattr(x, order, 0)):
+        x = func(x, *args, **kwargs)
+    return x
