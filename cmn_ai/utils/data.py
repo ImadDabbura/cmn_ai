@@ -1,4 +1,5 @@
 import os
+from collections import UserList
 from collections.abc import Iterable, Sequence
 from operator import itemgetter
 from pathlib import Path
@@ -210,3 +211,29 @@ def get_files(
     else:
         fs = [o.name for o in os.scandir(path) if o.is_file()]
         return _get_files(path, fs, extensions)
+
+
+class ListContainer(UserList):
+    """
+    Extend builtin list by changing the creation of the list from the given
+    items and and changing repr to return first 10 items along with total
+    number items and the class name. This will be the base class where other
+    containers will inherit from.
+
+    Parameters
+    ----------
+    items : Any
+        Items to create list from.
+    """
+
+    def __init__(self, items):
+        self.data = listify(items)
+
+    def __repr__(self):
+        res = (
+            f"{self.__class__.__name__}: ({len(self.data):,} items)\n"
+            f"{self.data[:10]}"
+        )
+        if len(self) > 10:
+            res = res[:-1] + ", ...]"
+        return res
