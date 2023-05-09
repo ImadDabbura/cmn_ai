@@ -336,3 +336,26 @@ def grandparent_splitter(
     elif gp == train_name:
         return False
     return
+
+
+def split_by_func(items: Iterable, func: Callable) -> tuple[list, list]:
+    """
+    Split items into train/valid lists using `func`.
+
+    Parameters
+    ----------
+    items : Iterable
+        Items to be split into train/valid.
+    func : Callable
+        Split function to split items.
+
+    Returns
+    -------
+    tuple[list, list]
+        Train and valid item lists.
+    """
+    mask = [func(o) for o in items]
+    # `None` values will be filtered out
+    val = [o for o, m in zip(items, mask) if m]
+    train = [o for o, m in zip(items, mask) if m is False]
+    return train, val
