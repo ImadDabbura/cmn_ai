@@ -487,3 +487,14 @@ def parent_labeler(f_name: str | Path):
         Filename to get the parent directory.
     """
     return Path(f_name).parent.name
+
+
+def label_by_func(splitted_data, label_func, proc_x=None, proc_y=None):
+    """Label splitted data using `label_func`."""
+    train = LabeledData.label_by_func(
+        splitted_data.train, label_func, proc_x=proc_x, proc_y=proc_y
+    )
+    valid = LabeledData.label_by_func(
+        splitted_data.valid, label_func, proc_x=proc_x, proc_y=proc_y
+    )
+    return SplitData(train, valid)
