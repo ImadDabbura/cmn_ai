@@ -475,3 +475,15 @@ class LabeledData:
             proc_x=proc_x,
             proc_y=proc_y,
         )
+
+
+def parent_labeler(f_name: str | Path):
+    """
+    Label a file based on its parent directory.
+
+    Parameters
+    ----------
+    f_name : str | Path
+        Filename to get the parent directory.
+    """
+    return Path(f_name).parent.name
