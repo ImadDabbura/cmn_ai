@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 import fastcore.all as fc
+import numpy as np
 import torch
 from datasets.dataset_dict import DatasetDict
 from torch import Tensor
@@ -284,3 +285,23 @@ class ItemList(ListContainer):
         if isinstance(items, UserList):
             return [self._get(item) for item in items]
         return self._get(items)
+
+
+def random_splitter(f_name: str, p_valid: float = 0.2) -> bool:
+    """
+    Randomly split items with `p_valid` probability to be in the validation set.
+
+    Parameters
+    ----------
+    f_name : str
+        Item's filename. Not used here, but left for API consistency with
+        other splitters.
+    p_valid : float, optional
+        Probability of the item to be in the validation set.
+
+    Returns
+    -------
+    bool
+        Whether the item is in training or validation directories.
+    """
+    return np.random.random() < p_valid
