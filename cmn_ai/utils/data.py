@@ -305,3 +305,34 @@ def random_splitter(f_name: str, p_valid: float = 0.2) -> bool:
         Whether the item is in training or validation directories.
     """
     return np.random.random() < p_valid
+
+
+def grandparent_splitter(
+    f_name: str | Path, valid_name: str = "valid", train_name: str = "train"
+) -> bool | None:
+    """
+    Split items based on whether they fall under validation or training
+    directories. This assumes that the directory structure is train/label/items
+    or valid/label/items.
+
+    Parameters
+    ----------
+    f_name : str | Path
+        Item's filename.
+    valid_name : str, default="valid"
+        Name of the directory that holds the validation items.
+    train_name : str, default="train"
+        Name of the directory that holds the training items.
+
+    Returns
+    -------
+    bool | None
+        Whether the item is in training or validation directories.
+        If neither, returns None.
+    """
+    gp = Path(f_name).parent.parent.name
+    if gp == valid_name:
+        return True
+    elif gp == train_name:
+        return False
+    return
