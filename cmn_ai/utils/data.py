@@ -359,3 +359,52 @@ def split_by_func(items: Iterable, func: Callable) -> tuple[list, list]:
     val = [o for o, m in zip(items, mask) if m]
     train = [o for o, m in zip(items, mask) if m is False]
     return train, val
+
+
+class SplitData:
+    """
+    Split Item list into train and validation data lists.
+
+    Parameters
+    ----------
+    train : ItemList
+        Training items.
+    valid : ItemList
+        Validation items.
+    """
+
+    def __init__(self, train: ItemList, valid: ItemList):
+        self.train = train
+        self.valid = valid
+
+    def __getattr__(self, k):
+        return getattr(self.train, k)
+
+    # This is needed if we want to pickle SplitData objects and be able to load
+    # it back without recursion errors
+    def __setstate__(self, data):
+        self.__dict__.update(data)
+
+    @classmethod
+    def split_by_func(cls, item_list, split_func):
+        """
+        Split item list by splitter function and returns a SplitData object.
+        """
+        train_files, val_files = split_by_func(item_list.data, split_func)
+        train_list, val_list = map(item_list.new, (train_files, val_files))
+        return cls(train_list, val_list)
+
+    def to_dls(
+        self, batch_size: int = 32, **kwargs
+    ) -> tuple[DataLoader, DataLoader]:
+        """
+        Returns a tuple of training and validation DataLoaders object using
+        train and valid datasets.
+        """
+        return get_dls(self.train, self.valid, batch_size, **kwargs)
+
+    def __repr__(self):
+        return (
+            f"{self.__class__.__name__}\n---------\nTrain - {self.train}\n\n"
+            f"Valid - {self.valid}\n"
+        )
