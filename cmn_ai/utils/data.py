@@ -12,6 +12,7 @@ from datasets.dataset_dict import DatasetDict
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset, default_collate
 
+from .processors import Processor
 from .utils import listify, setify
 
 
@@ -407,4 +408,70 @@ class SplitData:
         return (
             f"{self.__class__.__name__}\n---------\nTrain - {self.train}\n\n"
             f"Valid - {self.valid}\n"
+        )
+
+
+class LabeledData:
+    def __init__(
+        self,
+        x: ItemList,
+        y: ItemList,
+        proc_x: Processor | Iterable[Processor] | None = None,
+        proc_y: Processor | Iterable[Processor] | None = None,
+    ):
+        """
+        Create a labeled data and expose both x & y as item lists after passing
+        them through all processors.
+
+        Parameters
+        ----------
+        x : ItemList
+            Input items to the model.
+        y : ItemList
+            Label items.
+        proc_x : Processor | Iterable[Processor] | None, default=None
+            Input items processor(s).
+        proc_y : Processor | Iterable[Processor] | None, default=None
+            Label items processor(s).
+        """
+        self.x = self.process(x, proc_x)
+        self.y = self.process(y, proc_y)
+        self.proc_x = proc_x
+        self.proc_y = proc_y
+
+    def process(self, item_list, proc):
+        return item_list.new(compose(item_list.data, proc))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}\nx: {self.x}\ny: {self.y}\n"
+
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
+
+    def __len__(self):
+        return len(self.x)
+
+    def x_obj(self, idx):
+        return self.obj(self.x, idx, self.proc_x)
+
+    def y_obj(self, idx):
+        return self.obj(self.y, idx, self.proc_y)
+
+    def obj(self, items, idx, procs):
+        item = items[idx]
+        for proc in reversed(listify(procs)):
+            item = proc.deprocess(item)
+        return item
+
+    @staticmethod
+    def _label_by_func(ds, label_func, cls=ItemList):
+        return cls([label_func(o) for o in ds.data], path=ds.path)
+
+    @classmethod
+    def label_by_func(cls, item_list, label_func, proc_x=None, proc_y=None):
+        return cls(
+            item_list,
+            LabeledData._label_by_func(item_list, label_func),
+            proc_x=proc_x,
+            proc_y=proc_y,
         )
