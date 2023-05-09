@@ -1,6 +1,6 @@
 import mimetypes
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 import PIL
 
@@ -26,7 +26,8 @@ class ImageList(ItemList):
         Top-level Director(y|ies) under `path` to use to search for files.
     recurse : bool, default=True
         Whether to search subdirectories recursively.
-
+    tfms : Callable | None, default=None
+        Transformations to apply items before returning them.
     Returns
     -------
     list[str]
@@ -40,9 +41,12 @@ class ImageList(ItemList):
         extensions: Iterable[str] | str = IMAGE_EXTENSIONS,
         include: Iterable[str] | None = None,
         recurse: bool = True,
+        tfms: Callable | None = None,
         **kwargs
     ):
-        return cls(get_files(path, extensions, include, recurse), **kwargs)
+        return cls(
+            get_files(path, extensions, include, recurse), path, tfms, **kwargs
+        )
 
     def get(self, item):
         """Open an image using PIL."""
