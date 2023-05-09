@@ -281,6 +281,6 @@ class ItemList(ListContainer):
 
     def __getitem__(self, idx):
         items = super().__getitem__(idx)
-        if isinstance(idx, list):
+        if isinstance(items, UserList):
             return [self._get(item) for item in items]
         return self._get(items)
