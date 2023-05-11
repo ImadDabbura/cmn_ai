@@ -85,3 +85,38 @@ class ParamScheduler(Callback):
     def before_batch(self):
         if self.training:
             self._update_value(self.pct_train)
+
+
+class Scheduler(Callback):
+    """Base scheduler to change hyperparameters using `scheduler."""
+
+    def __init__(self, scheduler):
+        self.scheduler = scheduler
+
+    def before_fit(self):
+        self.scheduler_object = self.scheduler(self.opt)
+
+    def step(self):
+        self.scheduler_object.step()
+
+
+class BatchScheduler(Scheduler):
+    """Change hyperparameters after every batch using `scheduler`."""
+
+    def __init__(self, scheduler):
+        super().__init__(scheduler)
+
+    def after_batch(self):
+        if self.training:
+            self.step()
+
+
+class EpochScheduler(Scheduler):
+    """Change hyperparameters after every epoch using `scheduler`."""
+
+    def __init__(self, scheduler):
+        super().__init__(scheduler)
+
+    def after_epoch(self):
+        if self.training:
+            self.step()
