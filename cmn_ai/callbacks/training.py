@@ -7,6 +7,7 @@ from typing import Iterable
 import matplotlib.pyplot as plt
 import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
+from torch.optim.lr_scheduler import ExponentialLR
 
 from ..plot import get_grid
 from ..utils.data import default_device, to_cpu, to_device
@@ -268,7 +269,7 @@ class ParamScheduler(Callback):
 
 
 # TODO: Change loss to smooth_loss
-class LRFinder(ParamScheduler):
+class LRFinder(Callback):
     """
     Try different learning rates using exponential schedule to help pick
     the best learning rate following [Cyclical Learning Rates for Training
@@ -285,21 +286,25 @@ class LRFinder(ParamScheduler):
         Number of iterations to run the training.
     stop_div : bool, default
         Whether to stop training if loss diverges (loss > 4 * best_loss).
+    max_mult : int, default=4
+        Divergence threshold. If loss >= max_mult * minimum loss, stop
+        training.
     """
 
     def __init__(
         self,
-        start_lr: float = 1e-7,
-        end_lr: float = 10.0,
+        gamma: int = 1.3,
         num_iter: int = 100,
         stop_div: bool = True,
+        max_mult: int = 4,
     ):
-        super().__init__("lr", exp_sched(start_lr, end_lr))
+        self.gamma = gamma
         self.num_iter = num_iter
         self.stop_div = stop_div
+        self.max_mult = max_mult
 
     def before_fit(self):
-        super().before_fit()
+        self.scheduler = ExponentialLR(self.opt, self.gamma)
         path = self.path / self.model_dir
         path.mkdir(parents=True, exist_ok=True)
         self.tmp_d = tempfile.TemporaryDirectory(dir=path)
@@ -307,16 +312,14 @@ class LRFinder(ParamScheduler):
         self.save_model(path / self.tmp_p / "_tmp.pth", with_opt=True)
         self.best_loss = float("inf")
 
-    def before_batch(self):
-        self._update_value(self.n_iters / self.num_iter)
-
     def after_batch(self):
         if self.loss < self.best_loss:
             self.best_loss = self.loss
-        if self.loss > 4 * self.best_loss and self.stop_div:
+        if self.loss > self.max_mult * self.best_loss and self.stop_div:
             raise CancelFitException()
         if self.n_iters >= self.num_iter:
             raise CancelFitException()
+        self.scheduler.step()
 
     def before_validate(self):
         raise CancelValidException()
