@@ -201,9 +201,10 @@ class Learner:
     def lr_find(
         self,
         start_lr: float = 1e-7,
-        end_lr: float = 10.0,
+        gamma: float = 1.3,
         num_iter: int = 100,
         stop_div: bool = True,
+        max_mult: int = 4,
     ):
         """
         Try different learning rates using exponential schedule to help pick
@@ -215,20 +216,23 @@ class Learner:
         ----------
         start_lr : float, default=1e-7
             Start learning rate.
-        end_lr : float, default=10.0
-            Last learning rate in the schedule.
+        gamma : float, default=1.3
+            Multiplicative factor of learning rate decay.
         num_iter : int, default=100
             Number of iterations to run the training.
         stop_div : bool, default
             Whether to stop training if the loss diverges.
+        max_mult : int, default=4
+            Divergence threshold. If loss >= max_mult * minimum loss, stop
+            training.
         """
         n_epochs = num_iter // len(self.dls.train) + 1
-        callbacks = [LRFinder(start_lr, end_lr, num_iter, stop_div)]
+        callbacks = [LRFinder(gamma, num_iter, stop_div, max_mult)]
         if not self.callbacks or "Recorder" not in [
             cb.__class__.__name__ for cb in self.callbacks
         ]:
             callbacks.append(Recorder("lr"))
-        self.fit(n_epochs, valid=False, callbacks=callbacks)
+        self.fit(n_epochs, valid=False, callbacks=callbacks, lr=start_lr)
         self.recorder.plot()
 
     def save_model(
