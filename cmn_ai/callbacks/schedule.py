@@ -4,6 +4,7 @@ from functools import partial, wraps
 import torch
 
 from ..utils.utils import listify
+from .core import Callback
 
 
 def annealer(func):
@@ -64,3 +65,23 @@ def combine_scheds(pcts, scheds):
         return scheds[idx](actual_pos)
 
     return _inner
+
+
+class ParamScheduler(Callback):
+    _order = 60
+
+    def __init__(self, pname, sched_funcs):
+        self.pname = pname
+        self.sched_funcs = sched_funcs
+
+    def before_fit(self):
+        if not isinstance(self.sched_funcs, (list, tuple)):
+            self.sched_funcs = [self.sched_funcs] * len(self.opt.param_groups)
+
+    def _update_value(self, pos):
+        for pg, sched_func in zip(self.opt.param_groups, self.sched_funcs):
+            pg[self.pname] = sched_func(pos)
+
+    def before_batch(self):
+        if self.training:
+            self._update_value(self.pct_train)
