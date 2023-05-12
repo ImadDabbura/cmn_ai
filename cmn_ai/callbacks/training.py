@@ -373,3 +373,40 @@ class SingleBatchCB(Callback):
 
     def after_batch(self):
         raise CancelFitException()
+
+
+class MetricsCallback(Callback):
+    def __init__(self, *metrics, **named_metrics):
+        self.metrics = named_metrics
+        for metric in metrics:
+            self.metrics[type(metric).__name__] = metric
+
+    def before_fit(self):
+        names = (
+            ["epoch"]
+            + [f"train_{name}" for name in self.metrics]
+            + [f"valid_{name}" for name in self.metrics]
+            + ["time"]
+        )
+        self.logger(names)
+
+    def before_epoch(self):
+        [metric.reset() for metric in self.metrics.values()]
+        self.stats = [str(self.epoch + 1)]
+        self.start_time = time.time()
+
+    def after_train(self):
+        for metric in self.metrics.values():
+            self.stats.append(f"{metric.compute():.3f}")
+
+    def after_validate(self):
+        for metric in self.metrics.values():
+            self.stats.append(f"{metric.compute():.3f}")
+
+    def after_epoch(self):
+        self.stats.append(format_time(time.time() - self.start_time))
+        self.logger(self.stats)
+
+    def after_batch(self):
+        for metric in self.metrics.values():
+            metric.update(to_cpu(self.preds), to_cpu(*self.yb))

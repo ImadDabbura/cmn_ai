@@ -1,6 +1,6 @@
 from typing import Iterable, Sequence
 
-from .utils.utils import uniqueify
+from .utils import uniqueify
 
 
 class Processor:
