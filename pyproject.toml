@@ -18,6 +18,7 @@ torchvision = "^0.15.1"
 fastprogress = "^1.0.3"
 fastcore = "^1.5.29"
 scipy = "^1.10.1"
+torchinfo = "^1.7.2"
 
 
 [tool.poetry.group.dev.dependencies]

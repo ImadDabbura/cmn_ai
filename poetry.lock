@@ -1988,6 +1988,18 @@ typing-extensions = "*"
 opt-einsum = ["opt-einsum (>=3.3)"]
 
 [[package]]
+name = "torchinfo"
+version = "1.7.2"
+description = "Model summary in PyTorch, based off of the original torchsummary."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "torchinfo-1.7.2-py3-none-any.whl", hash = "sha256:3966557b1ab91e61dfeaa0a6c32a8f70e56819bf186da6ed347d28e14e405469"},
+    {file = "torchinfo-1.7.2.tar.gz", hash = "sha256:6cc1c7dedbfac387efbb5b87f85eb55fcd7f3054f445c79a281c5c3d7acd02cd"},
+]
+
+[[package]]
 name = "torchvision"
 version = "0.15.1"
 description = "image and video datasets and models for torch deep learning"
@@ -2172,4 +2184,4 @@ test = ["pytest (>=6.0.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "d29f91355cdf162f18b5ad44554f788e686103dd8dcd0d5d448615c186b7d749"
+content-hash = "fa65691a7a552034d3a9b466194f4c0964b64b45d0f3ec4ae92d2937f6769157"
