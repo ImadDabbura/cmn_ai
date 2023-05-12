@@ -9,6 +9,7 @@ import torch.nn.functional as F
 import torch.optim as opt
 from torch import tensor
 from torch.utils.data import DataLoader
+from torchinfo import summary
 
 from .callbacks.core import (
     Callback,
@@ -323,3 +324,19 @@ class Learner:
     def callback(self, event_nm):
         for cb in sorted(self.callbacks, key=lambda x: x.order):
             cb(event_nm)
+
+    def summary(self, verbose: int = 2, **kwargs):
+        """Use `torchinfo` package to print out the model summary."""
+        return summary(
+            self.model,
+            input_data=next(iter(self.dls.train))[0],
+            col_names=[
+                "input_size",
+                "output_size",
+                "num_params",
+                "mult_adds",
+                "params_percent",
+            ],
+            verbose=verbose,
+            **kwargs,
+        )
