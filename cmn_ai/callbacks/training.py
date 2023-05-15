@@ -5,8 +5,8 @@ from functools import partial
 from pathlib import Path
 from typing import Iterable
 
+import fastcore.all as fc
 import matplotlib.pyplot as plt
-import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
 from torch.optim.lr_scheduler import ExponentialLR
 from torcheval.metrics import Mean
@@ -59,12 +59,26 @@ class TrainEvalCallback(Callback):
 
 
 class ProgressCallback(Callback):
-    """Add progress bar as logger for tracking metrics."""
+    """
+    Track progress of training using progress bar as well as to plot losses
+    (train and valid), which allows us to have live feedback of the model's
+    performance while it is still training.
+
+    Parameters
+    ----------
+    plot : bool, default=True
+        Whether to plot train/valid losses during training.
+    """
 
     _order = -20
 
+    def __init__(self, plot: bool = True) -> None:
+        self.plot = plot
+        self.train_losses = []
+        self.valid_losses = []
+
     def before_fit(self):
-        self.mbar = master_bar(range(self.n_epochs))
+        self.learner.epochs = self.mbar = master_bar(range(self.n_epochs))
         self.mbar.on_iter_begin()
         # Overwrite default learner logger
         self.learner.logger = partial(self.mbar.write, table=True)
@@ -74,6 +88,45 @@ class ProgressCallback(Callback):
 
     def after_batch(self):
         self.pb.update(self.iter)
+        self.pb.comment = f"{self.loss:.3f}"
+        if self.plot and hasattr(self.learner, "metrics") and self.training:
+            self.train_losses.append(self.loss.item())
+            if self.valid_losses:
+                self.mbar.update_graph(
+                    [
+                        [fc.L.range(self.train_losses), self.train_losses],
+                        [
+                            fc.L.range(self.epoch).map(
+                                lambda x: (x + 1) * len(self.dls.train)
+                            ),
+                            self.valid_losses,
+                        ],
+                    ]
+                )
+            else:
+                self.mbar.update_graph(
+                    [
+                        [fc.L.range(self.train_losses), self.train_losses],
+                    ]
+                )
+
+    def after_epoch(self):
+        if not self.training:
+            if self.plot and hasattr(self.learner, "metrics"):
+                self.valid_losses.append(
+                    self.learner.metrics.all_metrics["loss"].compute().item()
+                )
+                self.mbar.update_graph(
+                    [
+                        [fc.L.range(self.train_losses), self.train_losses],
+                        [
+                            fc.L.range(self.epoch + 1).map(
+                                lambda x: (x + 1) * len(self.dls.train)
+                            ),
+                            self.valid_losses,
+                        ],
+                    ]
+                )
 
     def before_train(self):
         self.set_pb()
@@ -82,7 +135,7 @@ class ProgressCallback(Callback):
         self.set_pb()
 
     def set_pb(self):
-        self.pb = progress_bar(self.dl, parent=self.mbar)
+        self.pb = progress_bar(self.dl, leave=False, parent=self.mbar)
         self.mbar.update(self.epoch)
 
 
