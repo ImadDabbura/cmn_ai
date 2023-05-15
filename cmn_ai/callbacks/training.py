@@ -1,5 +1,6 @@
 import tempfile
 import time
+from copy import copy
 from functools import partial
 from pathlib import Path
 from typing import Iterable
@@ -8,6 +9,7 @@ import matplotlib.pyplot as plt
 import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
 from torch.optim.lr_scheduler import ExponentialLR
+from torcheval.metrics import Mean
 
 from ..plot import get_grid
 from ..utils.data import default_device, to_cpu, to_device
@@ -380,33 +382,47 @@ class MetricsCallback(Callback):
         self.metrics = named_metrics
         for metric in metrics:
             self.metrics[type(metric).__name__] = metric
+        self.all_metrics = {"loss": Mean()}
+        self.all_metrics.update(copy(self.metrics))
+
+    def _compute(self):
+        for metric in self.all_metrics.values():
+            self.stats.append(f"{metric.compute():.3f}")
+        self.stats.append("train" if self.training else "eval")
+        self.stats.append(format_time(time.time() - self.start_time))
+
+    def _reset(self):
+        [metric.reset() for metric in self.all_metrics.values()]
+        self.stats = [str(self.epoch + 1)]
+        self.start_time = time.time()
 
     def before_fit(self):
         names = (
             ["epoch"]
-            + [f"train_{name}" for name in self.metrics]
-            + [f"valid_{name}" for name in self.metrics]
+            + ["loss"]
+            + [name for name in self.metrics]
+            + ["train"]
             + ["time"]
         )
         self.logger(names)
 
-    def before_epoch(self):
-        [metric.reset() for metric in self.metrics.values()]
-        self.stats = [str(self.epoch + 1)]
-        self.start_time = time.time()
+    def before_train(self):
+        self._reset()
+
+    def before_validate(self):
+        self._reset()
 
     def after_train(self):
-        for metric in self.metrics.values():
-            self.stats.append(f"{metric.compute():.3f}")
+        self._compute()
+        self.logger(self.stats)
 
     def after_validate(self):
-        for metric in self.metrics.values():
-            self.stats.append(f"{metric.compute():.3f}")
-
-    def after_epoch(self):
-        self.stats.append(format_time(time.time() - self.start_time))
+        self._compute()
         self.logger(self.stats)
 
     def after_batch(self):
         for metric in self.metrics.values():
             metric.update(to_cpu(self.preds), to_cpu(*self.yb))
+        self.all_metrics["loss"].update(
+            to_cpu(self.learner.loss), weight=len(self.learner.xb[0])
+        )
