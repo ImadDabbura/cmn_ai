@@ -250,26 +250,6 @@ class ModelResetter(Callback):
         self.model.reset()
 
 
-class ParamScheduler(Callback):
-    _order = 60
-
-    def __init__(self, pname, sched_funcs):
-        self.pname = pname
-        self.sched_funcs = sched_funcs
-
-    def before_fit(self):
-        if not isinstance(self.sched_funcs, (list, tuple)):
-            self.sched_funcs = [self.sched_funcs] * len(self.opt.param_groups)
-
-    def _update_value(self, pos):
-        for pg, sched_func in zip(self.opt.param_groups, self.sched_funcs):
-            pg[self.pname] = sched_func(pos)
-
-    def before_batch(self):
-        if self.training:
-            self._update_value(self.pct_train)
-
-
 # TODO: Change loss to smooth_loss
 class LRFinder(Callback):
     """
