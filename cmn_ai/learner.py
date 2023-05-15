@@ -92,13 +92,11 @@ class Learner:
         self.logger = print
         self.callbacks = fc.L()
         if default_callbacks:
-            self.add_callbacks(
-                [
-                    TrainEvalCallback(),
-                    ProgressCallback(),
-                    Recorder("lr"),
-                ]
-            )
+            callbacks += [
+                TrainEvalCallback(),
+                ProgressCallback(),
+                Recorder("lr"),
+            ]
         self.add_callbacks(callbacks)
 
     def _with_events(self, func, event_nm, exc):
@@ -188,7 +186,7 @@ class Learner:
         """
         self.run_train = train
         self.run_valid = valid
-        self.add_callbacks(callbacks)
+        callbacks = self.add_callbacks(callbacks)
         self.n_epochs = n_epochs
         if lr is None:
             lr = self.lr
@@ -228,11 +226,10 @@ class Learner:
             training.
         """
         n_epochs = num_iter // len(self.dls.train) + 1
-        callbacks = [LRFinder(gamma, num_iter, stop_div, max_mult)]
-        if not self.callbacks or "Recorder" not in [
-            cb.__class__.__name__ for cb in self.callbacks
-        ]:
-            callbacks.append(Recorder("lr"))
+        callbacks = [
+            LRFinder(gamma, num_iter, stop_div, max_mult),
+            Recorder("lr"),
+        ]
         self.fit(n_epochs, valid=False, callbacks=callbacks, lr=start_lr)
         self.recorder.plot()
 
@@ -311,10 +308,14 @@ class Learner:
         self.model.training = v
 
     def add_callbacks(self, cbs):
+        added_callbacks = []
         for cb in listify(cbs):
-            cb.set_learner(self)
-            setattr(self, cb.name, cb)
-            self.callbacks.append(cb)
+            if not hasattr(self, cb.name):
+                cb.set_learner(self)
+                setattr(self, cb.name, cb)
+                self.callbacks.append(cb)
+                added_callbacks.append(cb)
+        return added_callbacks
 
     def remove_callbacks(self, cbs):
         for cb in listify(cbs):
