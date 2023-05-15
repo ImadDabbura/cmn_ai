@@ -358,6 +358,14 @@ class SingleBatchCB(Callback):
 
 
 class MetricsCallback(Callback):
+    """
+    Compute/update given metrics and log it using `learner` defined logger
+    after every `train`/`validate` epoch. Metrics have to implement `reset`
+    and `compute` methods. Highly recommended to use metrics from
+    `torcheval` package or inherit from its Metrics baseclass for custom
+    metrics.
+    """
+
     def __init__(self, *metrics, **named_metrics):
         self.metrics = named_metrics
         for metric in metrics:
