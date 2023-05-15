@@ -115,9 +115,9 @@ class Learner:
         self.opt.step()
 
     def _one_batch(self):
-        self.preds = self.model(*self.batch[: self.n_inp])
+        self.preds = self.model(*self.xb)
         self.callback("after_predict")
-        self.loss = self.loss_func(self.preds, *self.batch[self.n_inp :])
+        self.loss = self.loss_func(self.preds, *self.yb)
         self.callback("after_loss")
         if self.training:
             self._with_events(
@@ -129,7 +129,8 @@ class Learner:
     def _all_batches(self):
         self.iters = len(self.dl)
         for self.iter, self.batch in enumerate(self.dl):
-            self.xb, self.yb = self.batch
+            self.xb = self.batch[: self.n_inp]
+            self.yb = self.batch[self.n_inp :]
             self._with_events(self._one_batch, "batch", CancelBatchException)
 
     def _one_epoch_train(self):
