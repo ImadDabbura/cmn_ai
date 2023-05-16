@@ -1,0 +1,74 @@
+site_name: cmn_ai
+nav:
+    - Home: index.md
+    - Tabular:
+      - EDA: tabular/eda.md
+    - Vision:
+      - Data: vision/data.md
+    - Text:
+      - Data: text/data.md
+    - Learner: learner.md
+    - Callbacks:
+      - Core: callbacks/core.md
+      - Hooks: callbacks/hooks.md
+      - Training: callbacks/training.md
+      - Schedule: callbacks/schedule.md
+    - Utils:
+      - Data: utils/data.md
+      - Processors: utils/processors.md
+      - Utilities: utils/utils.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      # enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
+            docstring_style: numpy
+            docstring_section_style: table
+
+theme:
+#   # Using FastAPI config
+  name: material
+  palette:
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: teal
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to light mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: teal
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to dark mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github-alt
+  language: en
+repo_name: ImadDabbura/cmn_ai
+repo_url: https://github.com/ImadDabbura/cmn_ai
+edit_uri: ''
+extra:
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/ImadDabbura/cmn_ai
+  - icon: fontawesome/brands/twitter
+    link: https://twitter.com/ImadPhd
+  - icon: fontawesome/brands/linkedin
+    link: https://www.linkedin.com/in/imaddabbura/
+  - icon: fontawesome/brands/medium
+    link: https://medium.com/@ImadPhd
+  - icon: fontawesome/solid/globe
+    link: https://imaddabbura.github.io/
+watch:
+  - .
