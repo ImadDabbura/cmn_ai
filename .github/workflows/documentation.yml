@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.10"
           cache: "poetry"
-      - name: Install self
-        run: poetry install
-      - name: Execute tests
+      - name: Install docs dependencies
+        run: poetry install --only docs
+      - name: Deploy documentation
         run: mkdocs gh-deploy --force
