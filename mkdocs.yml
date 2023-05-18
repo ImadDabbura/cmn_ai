@@ -3,14 +3,16 @@ nav:
     - Home: index.md
     - Tabular:
       - EDA: tabular/eda.md
+      - Preprocessing: tabular/preprocessing.md
     - Vision:
       - Data: vision/data.md
     - Text:
       - Data: text/data.md
     - Learner: learner.md
+    - Plot: plot.md
     - Callbacks:
       - Core: callbacks/core.md
-      - Hooks: callbacks/hooks.md
+      - Hooks: callbacks/hook.md
       - Training: callbacks/training.md
       - Schedule: callbacks/schedule.md
     - Utils:
