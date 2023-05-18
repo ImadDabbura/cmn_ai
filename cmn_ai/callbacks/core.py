@@ -1,4 +1,9 @@
+"""
+The main module that has the definition of the `Callback` base class as
+well as all the Exceptions that a callback may raise.
+"""
 import re
+from typing import Any
 
 
 class CancelFitException(Exception):
@@ -32,16 +37,31 @@ class CancelBackwardException(Exception):
 class Callback:
     """Base class for all callbacks."""
 
-    order = 0
+    order: int = 0
 
-    def set_learner(self, learner):
+    def set_learner(self, learner) -> None:
+        """
+        Set the learner as an attribute so that callbacks can access learner's
+        attributes without the need to pass `learner` for every single method
+        in every callback.
+
+        Parameters
+        ----------
+        learner : Learner
+            Learner that the callback will be called when some events happens.
+        """
         self.learner = learner
 
-    def __getattr__(self, k):
+    def __getattr__(self, k) -> Any:
+        """
+        This would allow us to use `self.obj` instead of `self.learner.obj`
+        when we know `obj` is in learner because it will only be called when
+        `getattribute` returns `AttributeError`.
+        """
         return getattr(self.learner, k)
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
         Returns the name of the callback after removing the word `callback`
         and then convert it to snake (split words by underscores).
@@ -49,13 +69,13 @@ class Callback:
         name = re.sub(r"Callback$", "", self.__class__.__name__)
         return Callback.camel2snake(name or "callback")
 
-    def __call__(self, event_nm):
+    def __call__(self, event_nm: str) -> Any | None:
         method = getattr(self, event_nm, None)
         if method is not None:
             method()
 
     @staticmethod
-    def camel2snake(name):
+    def camel2snake(name: str) -> str:
         """
         Convert name of callback by inserting underscores between small and capital
         letters. For example, `TestCallback` becomes `test_callback`.

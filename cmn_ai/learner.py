@@ -1,3 +1,45 @@
+"""
+`Learner` is a basic class that provides useful functionalities:
+
+1. Tweaking/customization of the training loop using a system of callbacks through Exceptions
+2. Loading/saving model
+3. Fit the model
+4. Get model summary
+5. Learning rate finder
+
+The training loop consists of a minimal set of instructions; looping through the data we:
+
+- compute the output of the model from the input
+- calculate a loss between this output and the desired target
+- compute the gradients of this loss with respect to all the model parameters
+- update the parameters accordingly
+- zero all the gradients
+
+Any tweak of this training loop is defined in a [Callback][cmn_ai.callbacks.core.Callback].
+A callback can implement actions on the following events:
+
+- `before_fit`: called before doing anything, ideal for initial setup
+- `before_epoch`: called at the beginning of each epoch, useful for any behavior you need to reset at each epoch
+- `before_train`: called at the beginning of the training part of an epoch
+- `before_batch`: called at the beginning of each batch, just after drawing said batch. It can be used to do any setup necessary for the batch (like hyper-parameter scheduling) or to change the input/target before it goes in the model (change of the input with techniques like mixup for instance)
+- `after_pred`: called after computing the output of the model on the batch. It can be used to change that output before it's fed to the loss
+- `after_loss`: called after the loss has been computed, but before the backward pass. It can be used to add any penalty to the loss (AR or TAR in RNN training for instance)
+- `after_backward`: called after the backward pass, but before the update of the parameters. It can be used to do any change to the gradients before said update (gradient clipping for instance)
+- `after_step`: called after the step and before the gradients are zeroed
+- `after_cancel_batch`: reached immediately after a `CancelBatchException` before proceeding to `after_batch`
+- `after_batch`: called at the end of a batch, for any clean-up before the next one
+- `after_cancel_train`: reached immediately after a `CancelTrainException` before proceeding to `after_train`
+- `after_train`: called at the end of the training phase of an epoch
+- `before_validate`: called at the beginning of the validation phase of an epoch, useful for any setup needed specifically for validation
+- `after_cancel_validate`: reached immediately after a `CancelValidateException` before proceeding to `after_validate`
+- `after_validate`: called at the end of the validation part of an epoch
+- `after_cancel_epoch`: reached immediately after a `CancelEpochException` before proceeding to `after_epoch`
+- `after_epoch`: called at the end of an epoch, for any clean-up before the next one
+- `after_cancel_fit`: reached immediately after a `CancelFitException` before proceeding to `after_fit`
+- `after_fit`: called at the end of training, for final clean-up
+"""
+from __future__ import annotations
+
 import pickle
 from collections.abc import Callable, Iterable
 from pathlib import Path
@@ -30,8 +72,21 @@ from .callbacks.training import (
 from .utils.utils import listify
 
 
-def params_getter(model):
-    return model.params_getter()
+def params_getter(model: nn.Module) -> Iterable[nn.Parameter]:
+    """
+    Get all parameters of `model` recursively.
+
+    Parameters
+    ----------
+    model : nn.Module
+        Model.
+
+    Yields
+    -------
+    Parameter
+        Module parameter.
+    """
+    return model.parameters()
 
 
 class Learner:
@@ -63,6 +118,14 @@ class Learner:
     default_callbacks : bool, default=True
         Whether to add `TrainEvalCallback`, `ProgressCallback`, and `Recorder`
         to the list of callbacks.
+
+    Attributes
+    ----------
+    logger : Any
+        Logger to log metrics. Default is `print` but is typically modified by
+        callbacks such as `ProgressCallback`.
+    callbacks: list[Callback]
+        List of all the used callbacks by `learner.`
     """
 
     def __init__(
@@ -78,7 +141,7 @@ class Learner:
         model_dir: str = "models",
         callbacks: Iterable[Callback] | None = None,
         default_callbacks: bool = True,
-    ):
+    ) -> None:
         self.model = model
         self.dls = dls
         self.n_inp = n_inp
@@ -165,7 +228,7 @@ class Learner:
         callbacks: Iterable | None = None,
         lr: float | None = None,
         reset_opt: bool = False,
-    ):
+    ) -> None:
         """
         Fit the model for `n_epochs`.
 
@@ -241,7 +304,7 @@ class Learner:
         with_epoch: bool = False,
         with_loss: bool = False,
         pickle_protocol: int = pickle.HIGHEST_PROTOCOL,
-    ):
+    ) -> None:
         """
         Save the model and optionally the optimizer, epoch, and the loss.
         Useful for checkpointing.
@@ -276,7 +339,7 @@ class Learner:
         with_opt: bool = False,
         with_epoch: bool = False,
         with_loss: bool = False,
-    ):
+    ) -> None:
         """
         Load the model and optionally the optimizer, epoch, and the loss.
 
@@ -301,11 +364,11 @@ class Learner:
             self.loss = checkpoint["loss"]
 
     @property
-    def training(self):
+    def training(self) -> bool:
         return self.model.training
 
     @training.setter
-    def training(self, v):
+    def training(self, v) -> None:
         self.model.training = v
 
     def add_callbacks(self, cbs):

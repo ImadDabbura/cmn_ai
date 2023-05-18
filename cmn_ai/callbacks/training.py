@@ -1,3 +1,24 @@
+"""
+Almost all training's related callbacks that will tweak/customize the
+training/validation loop is in this module.
+
+Raises
+------
+CancelFitException
+    Stop training and move to after_fit.
+CancelEpochException
+    Stop current epoch and move to after_epoch.
+CancelTrainException
+    Stop training current epoch and move to after_train.
+CancelValidException
+    Stop validation phase and move after_validate.
+CancelBatchException
+    Stop current batch and move to after_batch.
+CancelStepException
+    Skip stepping the optimizer.
+CancelBackwardException
+    Skip the backward pass and move to after_backward.
+"""
 import tempfile
 import time
 from copy import copy
@@ -7,6 +28,7 @@ from typing import Iterable
 
 import fastcore.all as fc
 import matplotlib.pyplot as plt
+import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
 from torch.optim.lr_scheduler import ExponentialLR
 from torcheval.metrics import Mean
@@ -19,15 +41,15 @@ from .schedule import exp_sched
 
 
 class DeviceCallback(Callback):
-    """Move batch and model to device."""
+    """Move batch and model to `device`."""
 
-    def __init__(self, device=default_device):
+    def __init__(self, device: torch.device = default_device) -> None:
         self.device = device
 
-    def before_fit(self):
+    def before_fit(self) -> None:
         self.model.to(self.device)
 
-    def before_batch(self):
+    def before_batch(self) -> None:
         self.learner.batch = to_device(self.batch, self.device)
 
 
@@ -39,21 +61,21 @@ class TrainEvalCallback(Callback):
 
     order = -10
 
-    def before_fit(self):
+    def before_fit(self) -> None:
         self.learner.n_iters = 0
         self.learner.pct_train = 0
 
-    def after_batch(self):
+    def after_batch(self) -> None:
         if self.training:
             self.learner.n_iters += 1
             self.learner.pct_train += 1 / (self.iters * self.n_epochs)
 
-    def before_train(self):
+    def before_train(self) -> None:
         self.model.train()
         self.learner.training = True
         self.learner.pct_train = self.epoch / self.n_epochs
 
-    def before_validate(self):
+    def before_validate(self) -> None:
         self.model.eval()
         self.learner.training = False
 
@@ -70,20 +92,20 @@ class ProgressCallback(Callback):
         Whether to plot train/valid losses during training.
     """
 
-    _order = -20
+    order = -20
 
     def __init__(self, plot: bool = True) -> None:
         self.plot = plot
         self.train_losses = []
         self.valid_losses = []
 
-    def before_fit(self):
+    def before_fit(self) -> None:
         self.learner.epochs = self.mbar = master_bar(range(self.n_epochs))
         self.mbar.on_iter_begin()
         # Overwrite default learner logger
         self.learner.logger = partial(self.mbar.write, table=True)
 
-    def after_fit(self):
+    def after_fit(self) -> None:
         self.mbar.on_iter_end()
 
     def after_batch(self):
@@ -110,7 +132,7 @@ class ProgressCallback(Callback):
                     ]
                 )
 
-    def after_epoch(self):
+    def after_epoch(self) -> None:
         if not self.training:
             if self.plot and hasattr(self.learner, "metrics"):
                 self.valid_losses.append(
@@ -128,13 +150,13 @@ class ProgressCallback(Callback):
                     ]
                 )
 
-    def before_train(self):
+    def before_train(self) -> None:
         self.set_pb()
 
-    def before_validate(self):
+    def before_validate(self) -> None:
         self.set_pb()
 
-    def set_pb(self):
+    def set_pb(self) -> None:
         self.pb = progress_bar(self.dl, leave=False, parent=self.mbar)
         self.mbar.update(self.epoch)
 
@@ -145,19 +167,19 @@ class Recorder(Callback):
     plot them later.
     """
 
-    _order = 50
+    order = 50
 
-    def __init__(self, *params):
+    def __init__(self, *params: tuple[str]) -> None:
         self.params = listify(params)
 
-    def before_fit(self):
+    def before_fit(self) -> None:
         self.params_records = {
             params: [[] for _ in self.opt.param_groups]
             for params in self.params
         }
         self.losses = []
 
-    def after_batch(self):
+    def after_batch(self) -> None:
         if self.training:
             for param, param_records in self.params_records.items():
                 for pg, param_record in zip(
@@ -172,7 +194,7 @@ class Recorder(Callback):
         pgid: int = -1,
         skip_last: int = 0,
         figsize: tuple = (8, 6),
-    ):
+    ) -> None:
         """
         Plot all `params` values across all iterations of training.
         """
@@ -185,14 +207,14 @@ class Recorder(Callback):
             ax.plot(self.params_records[param][pgid], label=param)
             ax.legend()
 
-    def plot_loss(self, skip_last: int = 0):
+    def plot_loss(self, skip_last: int = 0) -> None:
         """
         Plot losses, optionally skip last `skip_last` losses.
         """
         n = len(self.losses) - skip_last
         plt.plot(self.losses[:n])
 
-    def plot(self, pgid: int = -1, skip_last: int = 0):
+    def plot(self, pgid: int = -1, skip_last: int = 0) -> None:
         """
         Plot loss vs lr (log-scale) across all iterations of training.
         """
@@ -211,13 +233,13 @@ class ModelResetter(Callback):
     `reset` method that knows which parameters to reset and how.
     """
 
-    def before_train(self):
+    def before_train(self) -> None:
         self.model.reset()
 
-    def before_validate(self):
+    def before_validate(self) -> None:
         self.model.reset()
 
-    def after_fit(self):
+    def after_fit(self) -> None:
         self.model.reset()
 
 
@@ -250,13 +272,13 @@ class LRFinder(Callback):
         num_iter: int = 100,
         stop_div: bool = True,
         max_mult: int = 4,
-    ):
+    ) -> None:
         self.gamma = gamma
         self.num_iter = num_iter
         self.stop_div = stop_div
         self.max_mult = max_mult
 
-    def before_fit(self):
+    def before_fit(self) -> None:
         self.scheduler = ExponentialLR(self.opt, self.gamma)
         path = self.path / self.model_dir
         path.mkdir(parents=True, exist_ok=True)
@@ -265,7 +287,7 @@ class LRFinder(Callback):
         self.save_model(path / self.tmp_p / "_tmp.pth", with_opt=True)
         self.best_loss = float("inf")
 
-    def after_batch(self):
+    def after_batch(self) -> None:
         if self.loss < self.best_loss:
             self.best_loss = self.loss
         if self.loss > self.max_mult * self.best_loss and self.stop_div:
@@ -274,10 +296,10 @@ class LRFinder(Callback):
             raise CancelFitException()
         self.scheduler.step()
 
-    def before_validate(self):
+    def before_validate(self) -> None:
         raise CancelValidException()
 
-    def after_fit(self):
+    def after_fit(self) -> None:
         self.opt.zero_grad()
         tmp_f = self.path / self.model_dir / self.tmp_p / "_tmp.pth"
         if tmp_f.exists():
@@ -300,16 +322,16 @@ class BatchTransform(Callback):
         Whether to apply the transformation during validation.
     """
 
-    _order = 2
+    order = 2
 
     def __init__(
         self, tfm: Callback, on_train: bool = True, on_valid: bool = True
-    ):
+    ) -> None:
         self.tfm = tfm
         self.on_train = on_train
         self.on_valid = on_valid
 
-    def before_batch(self):
+    def before_batch(self) -> None:
         if (self.on_train and self.training) or (
             self.on_valid and not self.training
         ):
@@ -322,9 +344,9 @@ class SingleBatchCB(Callback):
     Useful for debugging or want to check few parameters after 1 batch.
     """
 
-    _order = 1
+    order = 1
 
-    def after_batch(self):
+    def after_batch(self) -> None:
         raise CancelFitException()
 
 
@@ -337,7 +359,7 @@ class MetricsCallback(Callback):
     metrics.
     """
 
-    def __init__(self, *metrics, **named_metrics):
+    def __init__(self, *metrics, **named_metrics) -> None:
         self.metrics = named_metrics
         for metric in metrics:
             self.metrics[type(metric).__name__] = metric
@@ -355,7 +377,7 @@ class MetricsCallback(Callback):
         self.stats = [str(self.epoch + 1)]
         self.start_time = time.time()
 
-    def before_fit(self):
+    def before_fit(self) -> str:
         names = (
             ["epoch"]
             + ["loss"]
@@ -365,21 +387,21 @@ class MetricsCallback(Callback):
         )
         self.logger(names)
 
-    def before_train(self):
+    def before_train(self) -> None:
         self._reset()
 
-    def before_validate(self):
+    def before_validate(self) -> None:
         self._reset()
 
-    def after_train(self):
+    def after_train(self) -> str:
         self._compute()
         self.logger(self.stats)
 
-    def after_validate(self):
+    def after_validate(self) -> str:
         self._compute()
         self.logger(self.stats)
 
-    def after_batch(self):
+    def after_batch(self) -> None:
         for metric in self.metrics.values():
             metric.update(to_cpu(self.preds), to_cpu(*self.yb))
         self.all_metrics["loss"].update(

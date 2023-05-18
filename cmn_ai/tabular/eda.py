@@ -1,3 +1,9 @@
+"""
+Exploratory Data Analysis (EDA) is the first thing that needs to be done
+before start working on model development. This module contains common
+utilities for EDA on tabular data. Most of these functions are around plotting,
+data quality, and computing stats on the data.
+"""
 from __future__ import annotations
 
 from typing import Any

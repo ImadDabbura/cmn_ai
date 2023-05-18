@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Callable, Iterable
 
@@ -35,8 +37,8 @@ class TextList(ItemList):
         include: Iterable[str] | None = None,
         recurse: bool = True,
         tfms: Callable | None = None,
-        **kwargs
-    ):
+        **kwargs,
+    ) -> TextList:
         """
         Build an text list from list of files in the `path` end with
         extensions, optionally recursively.

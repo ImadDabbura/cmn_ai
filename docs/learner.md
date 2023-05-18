@@ -1,1 +1,1 @@
-::: cmn_ai.learner.Learner
+::: cmn_ai.learner

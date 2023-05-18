@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import mimetypes
 from pathlib import Path
 from typing import Callable, Iterable
@@ -42,12 +44,12 @@ class ImageList(ItemList):
         include: Iterable[str] | None = None,
         recurse: bool = True,
         tfms: Callable | None = None,
-        **kwargs
-    ):
+        **kwargs,
+    ) -> ImageList:
         return cls(
             get_files(path, extensions, include, recurse), path, tfms, **kwargs
         )
 
-    def get(self, item):
+    def get(self, item) -> PIL.Image:
         """Open an image using PIL."""
         return PIL.Image.open(item)

@@ -1,3 +1,11 @@
+"""
+This modules includes most of the utilities related to working data in general,
+and with `pytorch` related data in specific. It includes functions from
+composing transforms and getting train/valid `DataLoader`s to splitting and
+labeling `Dataset`s.
+"""
+from __future__ import annotations
+
 import os
 from collections import UserList
 from collections.abc import Iterable, Sequence
@@ -125,7 +133,9 @@ class DataLoaders:
         self.train, self.valid = dls[:2]
 
     @classmethod
-    def from_dd(cls, dd: DatasetDict, batch_size: int, **kwargs):
+    def from_dd(
+        cls, dd: DatasetDict, batch_size: int, **kwargs
+    ) -> DataLoaders:
         """
         Create train/valid data loaders from HF Dataset dictionary.
 
@@ -151,7 +161,9 @@ class DataLoaders:
         )
 
 
-def compose(x: Any, funcs: Callable, *args, order: str = "_order", **kwargs):
+def compose(
+    x: Any, funcs: Callable, *args, order: str = "order", **kwargs
+) -> Any:
     """
     Applies transformations in `funcs` to the input `x` in  `order` order.
     """
@@ -228,10 +240,10 @@ class ListContainer(UserList):
         Items to create list from.
     """
 
-    def __init__(self, items):
+    def __init__(self, items) -> None:
         self.data = listify(items)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         res = (
             f"{self.__class__.__name__}: ({len(self.data):,} items)\n"
             f"{self.data[:10]}"
@@ -260,15 +272,15 @@ class ItemList(ListContainer):
         items: Sequence,
         path: str | Path = ".",
         tfms: Callable | None = None,
-    ):
+    ) -> None:
         super().__init__(items)
         self.path = Path(path)
         self.tfms = tfms
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return super().__repr__() + f"\nPath: {self.path.resolve()}"
 
-    def new(self, items, cls=None):
+    def new(self, items, cls=None) -> ItemList:
         if cls is None:
             cls = self.__class__
         return cls(items, self.path, self.tfms)
@@ -374,7 +386,7 @@ class SplitData:
         Validation items.
     """
 
-    def __init__(self, train: ItemList, valid: ItemList):
+    def __init__(self, train: ItemList, valid: ItemList) -> None:
         self.train = train
         self.valid = valid
 
@@ -387,7 +399,7 @@ class SplitData:
         self.__dict__.update(data)
 
     @classmethod
-    def split_by_func(cls, item_list, split_func):
+    def split_by_func(cls, item_list, split_func) -> SplitData:
         """
         Split item list by splitter function and returns a SplitData object.
         """
@@ -404,7 +416,7 @@ class SplitData:
         """
         return get_dls(self.train, self.valid, batch_size, **kwargs)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}\n---------\nTrain - {self.train}\n\n"
             f"Valid - {self.valid}\n"
@@ -418,7 +430,7 @@ class LabeledData:
         y: ItemList,
         proc_x: Processor | Iterable[Processor] | None = None,
         proc_y: Processor | Iterable[Processor] | None = None,
-    ):
+    ) -> None:
         """
         Create a labeled data and expose both x & y as item lists after passing
         them through all processors.
@@ -468,7 +480,9 @@ class LabeledData:
         return cls([label_func(o) for o in ds.data], path=ds.path)
 
     @classmethod
-    def label_by_func(cls, item_list, label_func, proc_x=None, proc_y=None):
+    def label_by_func(
+        cls, item_list, label_func, proc_x=None, proc_y=None
+    ) -> LabeledData:
         return cls(
             item_list,
             LabeledData._label_by_func(item_list, label_func),
@@ -477,7 +491,7 @@ class LabeledData:
         )
 
 
-def parent_labeler(f_name: str | Path):
+def parent_labeler(f_name: str | Path) -> str:
     """
     Label a file based on its parent directory.
 
@@ -489,7 +503,9 @@ def parent_labeler(f_name: str | Path):
     return Path(f_name).parent.name
 
 
-def label_by_func(splitted_data, label_func, proc_x=None, proc_y=None):
+def label_by_func(
+    splitted_data, label_func, proc_x=None, proc_y=None
+) -> SplitData:
     """Label splitted data using `label_func`."""
     train = LabeledData.label_by_func(
         splitted_data.train, label_func, proc_x=proc_x, proc_y=proc_y

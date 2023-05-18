@@ -1,3 +1,9 @@
+"""
+This module provides different plotting utilities that are commonly used in ML
+context such as plotting a grid of images or show a single image.
+"""
+from __future__ import annotations
+
 import math
 from itertools import zip_longest
 
@@ -160,7 +166,7 @@ def show_images(
     ncols: int | None = None,
     titles: list | None = None,
     **kwargs,
-):
+) -> None:
     """
     Show all images as subplots with `nrows` x `ncols` using `titles`.
 

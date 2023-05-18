@@ -1,10 +1,25 @@
+"""
+Hooks are very useful to inspect what is happening during the forward and
+backward passes such as computing stats of the activations and gradients.
+
+The module contains the following classes:
+
+- `Hook`: Registers forward or backward hook for a single module
+- `Hooks`: Registers forward or backward hook for multiple modules
+- `HooksCallback`: Use callbacks to register and manage hooks
+- `ActivationStats`: Computes means/stds for either activation or gradients
+    and plot the computed stats.
+"""
+from __future__ import annotations
+
 from functools import partial
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Iterator
 
 import fastcore.all as fc
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
+from matplotlib.image import AxesImage
 from torch import Tensor
 
 from ..plot import get_grid, show_image
@@ -31,7 +46,7 @@ class Hook:
         func: Callable,
         is_forward: bool = True,
         **kwargs,
-    ):
+    ) -> None:
         self.is_forward = is_forward
         if self.is_forward:
             self.hook = module.register_forward_hook(
@@ -42,16 +57,16 @@ class Hook:
                 partial(func, self, **kwargs)
             )
 
-    def __enter__(self):
+    def __enter__(self) -> Hook:
         return self
 
-    def __exit__(self):
+    def __exit__(self) -> None:
         self.remove()
 
-    def remove(self):
+    def remove(self) -> None:
         self.hook.remove()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.remove()
 
 
@@ -77,31 +92,31 @@ class Hooks:
         func: Callable,
         is_forward: bool = True,
         **kwargs,
-    ):
+    ) -> None:
         self.hooks = [
             Hook(module, func, is_forward, **kwargs) for module in modules
         ]
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx) -> Hook:
         return self.hooks[idx]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.hooks)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         return iter(self.hooks)
 
-    def __enter__(self, *args):
+    def __enter__(self, *args) -> Hooks:
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, *args) -> None:
         self.remove()
 
-    def remove(self):
+    def remove(self) -> None:
         for hook in self.hooks:
             hook.remove()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.remove()
 
 
@@ -192,14 +207,14 @@ class HooksCallback(Callback):
         on_valid: bool = False,
         modules: nn.Module | Iterable[nn.Module] | None = None,
         is_forward: bool = True,
-    ):
+    ) -> None:
         self.hookfunc = hookfunc
         self.on_train = on_train
         self.on_valid = on_valid
         self.modules = modules
         self.is_forward = is_forward
 
-    def before_fit(self):
+    def before_fit(self) -> None:
         if self.modules is None:
             self.modules = self.model.modules()
         self.hooks = Hooks(self.modules, self._hookfunc, self.is_forward)
@@ -210,13 +225,13 @@ class HooksCallback(Callback):
         ):
             self.hookfunc(*args, **kwargs)
 
-    def after_fit(self):
+    def after_fit(self) -> None:
         self.hooks.remove()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         return iter(self.hooks)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.hooks)
 
 
@@ -243,7 +258,7 @@ class ActivationStats(HooksCallback):
         is_forward: bool = True,
         bins: int = 40,
         bins_range: list | tuple = (0, 10),
-    ):
+    ) -> None:
         self.bins_range = bins_range
         super().__init__(
             partial(compute_stats, bins=bins, bins_range=bins_range),
@@ -251,18 +266,18 @@ class ActivationStats(HooksCallback):
             modules=modules,
         )
 
-    def plot_hist(self, figsize=(11, 5)):
+    def plot_hist(self, figsize=(11, 5)) -> None:
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flat, self):
             show_image(get_hist(h), ax, origin="lower")
 
-    def dead_chart(self, figsize=(11, 5)):
+    def dead_chart(self, figsize=(11, 5)) -> None:
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flatten(), self):
             ax.plot(get_min(h, self.bins_range))
             ax.set_ylim(0, 1)
 
-    def plot_stats(self, figsize=(10, 4)):
+    def plot_stats(self, figsize=(10, 4)) -> None:
         _, axes = plt.subplots(1, 2, figsize=figsize)
         for h in self:
             axes[0].plot(h.stats[0])

@@ -1,3 +1,8 @@
+"""
+Most datasets need to be preprocessed/transformed before they can be passed to
+the model. This module includes common transformers that are compatible with
+[`sklearn`](www.scikit-learn.org) `Pipeline` or `ColumnTransformer`.
+"""
 from __future__ import annotations
 
 from itertools import product
@@ -13,10 +18,10 @@ class DateTransformer(TransformerMixin, BaseEstimator):
     """
     Transform date features by deriving useful date/time attributes:
 
-        - date attributes: Year, Month, Week, Day, Dayofweek, Dayofyear,
-        Is_month_end, Is_month_start, Is_quarter_end, Is_quarter_start,
-        Is_year_end, Is_year_start.
-        - time attributes: Hour, Minute, Second.
+    - date attributes: `Year, Month, Week, Day, Dayofweek, Dayofyear,
+    Is_month_end, Is_month_start, Is_quarter_end, Is_quarter_start,
+    Is_year_end, Is_year_start`.
+    - time attributes: `Hour, Minute, Second`.
 
     Parameters
     ----------
@@ -34,7 +39,7 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         date_feats: Iterable[str] | None = None,
         time: bool = False,
         drop: bool = True,
-    ):
+    ) -> None:
         """Initialize self."""
         self.date_feats = date_feats
         self.time = time
