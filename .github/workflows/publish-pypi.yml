@@ -1,0 +1,38 @@
+name: "Publish cmn_ai to PyPi"
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+          cache: "poetry"
+      - name: Build package
+        run: poetry build
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./dist
+
+  pypi-publish:
+    needs: ["build"]
+    environment: "publish"
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Dowloand artifacts from build
+        uses: actions/download-artifact@v3
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages_dir: artifact/
