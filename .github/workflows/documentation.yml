@@ -1,4 +1,4 @@
-name: "Common AI documentation workflow"
+name: Documentation builder
 on:
   push:
     branches:

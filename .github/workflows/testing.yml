@@ -1,4 +1,4 @@
-name: "Common AI test workflow"
+name: Testing
 on:
   push:
     branches:
