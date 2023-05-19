@@ -59,3 +59,32 @@ def reduce_loss(
         if reduction == "sum"
         else loss
     )
+
+
+class LabelSmoothingCrossEntropy(nn.Module):
+    """
+    Label smoothing is designed to make the model a little bit less certain of
+    it's decision by changing a little bit its target: instead of wanting to
+    predict 1 for the correct class and 0 for all the others, we ask it to
+    predict 1-eps for the correct class and eps for all the others, with eps a
+    (small) positive number.
+
+    Parameters
+    ----------
+    eps : float, default=0.1
+        Weight for the interpolation formula.
+    reduction : str, default=mean
+        Reduction applied to the loss tensor.
+    """
+
+    def __init__(self, eps: float = 0.1, reduction: str = "mean") -> None:
+        super().__init__()
+        self.eps = eps
+        self.reduction = reduction
+
+    def forward(self, output, target):
+        c = output.size()[-1]
+        log_preds = F.log_softmax(output, dim=-1)
+        loss = reduce_loss(-log_preds.sum(dim=-1), self.reduction)
+        nll = F.nll_loss(log_preds, target, reduction=self.reduction)
+        return self.eps * (loss / c) + (1 - self.eps) * nll
