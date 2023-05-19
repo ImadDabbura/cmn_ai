@@ -462,3 +462,57 @@ def reduce_loss(
         if reduction == "sum"
         else loss
     )
+
+
+class Mixup(Callback):
+    order = 90
+
+    def __init__(self, alpha: float = 0.4) -> None:
+        """
+        Train the model with a mix of samples from each batch in the training
+        data. Instead of feeding the model with raw data, we use linear
+        combination of the input using `alpha` from beta distribution. This
+        means that the labels would also be the linear combination of the
+        labels and not the original labels. The implementation is largely
+        based on this [paper](https://arxiv.org/abs/1710.09412)
+
+        Parameters
+        ----------
+        alpha : float, optional
+            _description_, by default 0.4
+        """
+        self.distrib = torch.distributions.beta.Beta(
+            torch.tensor([alpha]), torch.tensor([alpha])
+        )
+
+    def before_fit(self) -> None:
+        self.learner.loss_func, self.old_loss_func = (
+            self.loss_func,
+            self.learner.loss_func,
+        )
+
+    def after_fit(self) -> None:
+        self.learner.loss_func = self.old_loss_func
+
+    def before_batch(self) -> None:
+        λ = self.distrib.sample((len(self.learner.xb),)).to(
+            self.learner.xb[0].device
+        )
+        λ = torch.stack([λ, 1 - λ], dim=1)
+        self.λ = λ.max(1)[0].view(-1, 1, 1, 1)
+        shuffle = torch.randperm(len(self.xb[0]))
+        self.learner.xb = [
+            x * self.λ + x[shuffle] * (1 - self.λ) for x in self.xb
+        ]
+        self.yb1 = [y[shuffle] for y in self.yb]
+
+    def loss_func(self, pred, yb) -> torch.Tensor:
+        if not self.training:
+            return self.old_loss_func(pred, yb)
+        with NoneReduce(self.old_loss_func) as loss_func:
+            loss1 = loss_func(pred, yb)
+            loss2 = loss_func(pred, *self.yb1)
+        loss = loss1 * self.λ + loss2 * (1 - self.λ)
+        return reduce_loss(
+            loss, getattr(self.old_loss_func, "reduction", "mean")
+        )
