@@ -420,7 +420,7 @@ class Mixup(Callback):
         combination of the input using `alpha` from beta distribution. This
         means that the labels would also be the linear combination of the
         labels and not the original labels. The implementation is largely
-        based on this [paper](https://arxiv.org/abs/1710.09412)
+        based on this [paper](https://arxiv.org/abs/1710.09412).
 
         Parameters
         ----------
