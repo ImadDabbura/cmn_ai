@@ -424,8 +424,8 @@ class Mixup(Callback):
 
         Parameters
         ----------
-        alpha : float, optional
-            _description_, by default 0.4
+        alpha : float, default=0.4
+            Concetration for Beta distribution.
         """
         self.distrib = torch.distributions.beta.Beta(
             torch.tensor([alpha]), torch.tensor([alpha])
@@ -462,3 +462,4 @@ class Mixup(Callback):
         return reduce_loss(
             loss, getattr(self.old_loss_func, "reduction", "mean")
         )
+
