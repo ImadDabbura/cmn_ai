@@ -11,6 +11,42 @@ It is worth noting that the majority of the DL code such as [`Learner`](cmn_ai/l
 
 Given the nature of the progress in ML/AI, I will always keep adding more functionalities as time passes.
 
+## Installation
+
+The easiest way to install `cmn_ai` is by using `pip`:
+
+```sh
+pip install cmn-ai
+```
+
+## Documentation
+
+The official documentation is hosted on https://imaddabbura.github.io/cmn_ai/.
+
+## Development setup
+
+The fastest way to setup the development environment is to use `poetry`. You can install `poetry` using `pip` (or `conda`).
+
+```sh
+pip install poetry
+```
+
+Then install `cmn_ai` from source as follows:
+
+```sh
+git clone https://github.com/ImadDabbura/cmn_ai
+cd cmn_ai
+poetry install
+```
+
+## Tests
+
+To run tests, run the following command:
+
+```sh
+poetry run pytest
+```
+
 ## Contributing
 
 `cmn_ai` is not open now for contribution because there are some infrastructure work I need to finish to make it ready for more contributors.

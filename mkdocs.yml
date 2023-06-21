@@ -24,7 +24,6 @@ nav:
 plugins:
   - search
   - mkdocstrings:
-      # enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
       default_handler: python
       handlers:
         python:
@@ -34,7 +33,6 @@ plugins:
             docstring_section_style: table
 
 theme:
-#   # Using FastAPI config
   name: material
   palette:
   - media: '(prefers-color-scheme: light)'
