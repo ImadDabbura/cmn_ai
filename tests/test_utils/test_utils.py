@@ -40,3 +40,17 @@ def test_uniqueify():
     assert uniqueify((1, 1)) == [1]
     assert uniqueify([1, -1, 3], True) == [-1, 1, 3]
     assert uniqueify((1.0, 2.0, -100), True)
+
+
+class TestSetSeeds:
+    def test_numpy_equal(self):
+        pass
+
+    def test_numpy_not_equal(self):
+        pass
+
+    def test_pytorch_equal(self):
+        pass
+
+    def test_pytorch_not_equal(self):
+        pass
