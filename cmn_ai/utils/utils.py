@@ -23,7 +23,7 @@ def listify(obj: Any) -> list:
 
     Returns
     -------
-    out : list
+    list
         Returns list of the provided `obj`.
     """
     if obj is None:
@@ -48,7 +48,7 @@ def tuplify(obj: Any) -> tuple:
 
     Returns
     -------
-    out : tuple
+    tuple
         Returns tuple of the provided `obj`.
     """
     if isinstance(obj, tuple):
@@ -67,7 +67,7 @@ def setify(obj: any) -> set:
 
     Returns
     -------
-    out : set
+    set
         Returns set of the provided `obj`.
     """
     if isinstance(obj, set):
@@ -77,19 +77,19 @@ def setify(obj: any) -> set:
 
 def uniqueify(x: Iterable, sort: bool = False) -> list:
     """
-    Returns a list unique elements in any iterable, optionally sorted.
+    Returns a list of unique elements in any iterable, optionally sorted.
 
     Parameters
     ----------
     x : Iterable
-        iterable to get unique elements from.
+        Iterable to get unique elements from.
     sort : bool, default=False
-        whether to sort the unique elements in the list.
+        Whether to sort the unique elements in the list.
 
     Returns
     -------
-    output : list
-        List containing the unique elements.
+    list
+        List containing the unique elements, optionally sorted.
     """
     output = listify(setify(x))
     if sort:
@@ -99,8 +99,8 @@ def uniqueify(x: Iterable, sort: bool = False) -> list:
 
 def set_seed(seed: int = 42, deterministic: bool = False) -> None:
     """
-    Set seeds for generating random numbers for pytorch, numpy, and random
-    packages.
+    Set seeds for generating random numbers for pytorch, numpy, and
+    random packages.
 
     Parameters
     ----------
@@ -117,9 +117,9 @@ def set_seed(seed: int = 42, deterministic: bool = False) -> None:
 
 def clean_ipython_history():
     """
-    Clean IPython history. This is very useful when we have output cells with
-    large tensors.
-    Credit: code in this function mainly copied from IPython source/
+    Clean IPython history. This is very useful when we have output
+    cells with large tensors.
+    Credit: code in this function mainly copied from IPython source.
     """
     if "get_ipython" not in globals():
         return
@@ -138,10 +138,11 @@ def clean_ipython_history():
 
 def clean_traceback():
     """
-    Clean memory used by traceback objects. It comes in handy when traceback
-    has big tensors attached to a traceback while the operation raised
-    `Exception`. This will lead to the tensor keeps occupying GPU memory and
-    get `OOM` error even if we try to clean up the GPU memory.
+    Clean memory used by traceback objects. It comes in handy when
+    traceback has big tensors attached to a traceback while the
+    operation raised `Exception`. This will lead to the tensor keeps
+    occupying GPU memory and get `OOM` error even if we try to clean up
+    the GPU memory.
     """
     if hasattr(sys, "last_traceback"):
         traceback.clear_frames(sys.last_traceback)
@@ -154,8 +155,8 @@ def clean_traceback():
 
 def clean_memory():
     """
-    Clean memory occupied by traceback objects, IPython history, and empty GPU
-    cache.
+    Clean memory occupied by traceback objects, IPython history, and
+    empty GPU cache.
     """
     clean_traceback()
     clean_ipython_history()
@@ -177,7 +178,6 @@ def set_printoptions(
         Number of characters per line before inserting line breaks.
     sci_mode : bool, default=False
         Whether to enable scientific notation.
-
     """
     torch.set_printoptions(
         precision=precision, linewidth=linewidth, sci_mode=sci_mode
