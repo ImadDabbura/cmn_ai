@@ -1,8 +1,8 @@
 """
-This modules includes most of the utilities related to working data in general,
-and with `pytorch` related data in specific. It includes functions from
-composing transforms and getting train/valid `DataLoader`s to splitting and
-labeling `Dataset`s.
+This module includes most of the utilities related to working with data
+in general, and with `pytorch`'s related data in specific. It includes
+functions from composing transforms and getting train/valid
+`DataLoader`s to splitting and labeling `Dataset`s.
 """
 from __future__ import annotations
 
@@ -21,15 +21,18 @@ from torch import Tensor
 from torch.utils.data import DataLoader, Dataset, default_collate
 
 from .processors import Processor
-from .utils import listify, setify
+from .utils import listify
+
+default_device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def get_dls(
     train_ds: Dataset, valid_ds: Dataset, batch_size: int, **kwargs
 ) -> tuple[DataLoader]:
     """
-    Returns two dataloaders: 1 for training and 1 for 1 for validation. The
-    validation dataloader has twice the batch size and doesn't shuffle data.
+    Returns two dataloaders: 1 for training and 1 for validation. The
+    validation dataloader has twice the batch size and doesn't shuffle
+    data.
     """
     return (
         DataLoader(train_ds, batch_size=batch_size, shuffle=True, **kwargs),
@@ -37,9 +40,6 @@ def get_dls(
             valid_ds, batch_size=batch_size * 2, shuffle=False, **kwargs
         ),
     )
-
-
-default_device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def to_device(
@@ -53,8 +53,8 @@ def to_device(
     Parameters
     ----------
     x : Tensor | Iterable[Tensor] | Mapping[str, Tensor]
-        Tensor or collection of tensors to move to devive.
-    device : str, default='cuda` if available else 'cpu'
+        Tensor or collection of tensors to move to device.
+    device : str, default='cuda:0` if available else 'cpu'
         Device to copy the tensor to.
 
     Returns
@@ -71,8 +71,8 @@ def to_device(
 
 def to_cpu(x: Tensor | Iterable[Tensor] | Mapping[str, Tensor]):
     """
-    Copy tensor(s) to CPU. If a tensor is already on the CPU, returns the
-    tensor itself; otherwise, returns a copy of the tensor.
+    Copy tensor(s) to CPU. If a tensor is already on the CPU, returns
+    the tensor itself; otherwise, returns a copy of the tensor.
     """
     if isinstance(x, Mapping):
         return {k: to_cpu(v) for k, v in x.items()}
@@ -86,8 +86,8 @@ def to_cpu(x: Tensor | Iterable[Tensor] | Mapping[str, Tensor]):
 
 def collate_dict(ds: DatasetDict) -> Callable:
     """
-    Collate inputs from HF Dataset dictionary and returns list of inputs after
-    applying pytorch's default collate function.
+    Collate inputs from HF Dataset dictionary and returns list of
+    inputs after applying pytorch's default collate function.
 
     Parameters
     ----------
@@ -96,12 +96,16 @@ def collate_dict(ds: DatasetDict) -> Callable:
 
     Returns
     -------
-    function : tuple
+    Callable
         Wrapper function that returns tuple of collated inputs.
     """
     get = itemgetter(*ds.features)
 
     def _f(batch):
+        # default_collate(batch) -> dictionary where values are stacked
+        # tensors
+        # get() would return the tuple of stacked tensors instead of
+        # dictionary
         return get(default_collate(batch))
 
     return _f
@@ -118,7 +122,7 @@ def collate_device(device: torch.device) -> Callable:
 
     Returns
     -------
-    function : callable
+    Callable
         Wrapper function that returns tuple of collated inputs.
     """
 
@@ -129,7 +133,15 @@ def collate_device(device: torch.device) -> Callable:
 
 
 class DataLoaders:
-    def __init__(self, *dls):
+    """Create train/valid DataLoaders."""
+
+    def __init__(self, *dls) -> None:
+        """
+        Parameters
+        ----------
+        dls
+            list of DataLoaders.
+        """
         self.train, self.valid = dls[:2]
 
     @classmethod
@@ -148,11 +160,16 @@ class DataLoaders:
 
         Returns
         -------
-        DataLoaders
+        tuple[DataLoader]
             Train/valid data loaders.
         """
         return cls(
             *get_dls(
+                # TODO: dd may have other than train and valid datasets
+                # and may also have only one train dataset
+                # Either enforce at least two splits to be provided OR
+                # restrict to the first two as train and valid OR make
+                # the class/function more flexible
                 *dd.values(),
                 batch_size=batch_size,
                 collate_fn=collate_dict(dd["train"]),
@@ -165,9 +182,9 @@ def compose(
     x: Any, funcs: Callable, *args, order: str = "order", **kwargs
 ) -> Any:
     """
-    Applies transformations in `funcs` to the input `x` in  `order` order.
+    Applies transformations in `funcs` to the input `x` in  `order`.
     """
-    for func in sorted(listify(funcs), key=lambda x: getattr(x, order, 0)):
+    for func in sorted(listify(funcs), key=lambda o: getattr(o, order, 0)):
         x = func(x, *args, **kwargs)
     return x
 
@@ -211,8 +228,7 @@ def get_files(
         List of filenames that ends with `extensions` under `path`.
     """
     path = Path(path)
-    extensions = setify(extensions)
-    extensions = {e.lower() for e in extensions}
+    extensions = {e.lower() for e in listify(extensions)}
     if recurse:
         res = []
         for i, (p, d, fs) in enumerate(os.walk(path)):
@@ -230,24 +246,23 @@ def get_files(
 class ListContainer(UserList):
     """
     Extend builtin list by changing the creation of the list from the given
-    items and and changing repr to return first 10 items along with total
-    number items and the class name. This will be the base class where other
+    items and changing repr to return first 10 items along with total number of
+    items and the class name. This will be the base class where other
     containers will inherit from.
-
-    Parameters
-    ----------
-    items : Any
-        Items to create list from.
     """
 
     def __init__(self, items) -> None:
+        """
+        Parameters
+        ----------
+        items : Any
+            Items to create list from.
+        """
         self.data = listify(items)
 
     def __repr__(self) -> str:
-        res = (
-            f"{self.__class__.__name__}: ({len(self.data):,} items)\n"
-            f"{self.data[:10]}"
-        )
+        cls_nm = self.__class__.__name__
+        res = f"{cls_nm}: ({len(self.data) :,} items)\n{self.data[:10]}"  # noqa: E231
         if len(self) > 10:
             res = res[:-1] + ", ...]"
         return res
@@ -255,16 +270,7 @@ class ListContainer(UserList):
 
 class ItemList(ListContainer):
     """
-    Base class for all type of datasets such as image, text, etc.
-
-    Parameters
-    ----------
-    items : Sequence
-        Items to create list.
-    path : str | Path, default="."
-        Path of the items that were used to create the list.
-    tfms : Callable | None, default=None
-        Transformations to apply items before returning them.
+    Base class for all types of datasets such as image, text, etc.
     """
 
     def __init__(
@@ -272,21 +278,51 @@ class ItemList(ListContainer):
         items: Sequence,
         path: str | Path = ".",
         tfms: Callable | None = None,
+        **kwargs,
     ) -> None:
+        """
+        Parameters
+        ----------
+        items : Sequence
+            Items to create list.
+        path : str | Path, default="."
+            Path of the items that were used to create the list.
+        tfms : Callable | None, default=None
+            Transformations to apply on items before returning them.
+        """
         super().__init__(items)
         self.path = Path(path)
         self.tfms = tfms
+        self.__dict__.update(kwargs)
 
     def __repr__(self) -> str:
         return super().__repr__() + f"\nPath: {self.path.resolve()}"
 
-    def new(self, items, cls=None) -> ItemList:
+    def new(self, items: Sequence, cls: ItemList | None = None) -> ItemList:
+        """
+        Create a new instance of the `ItemList` with `items`.
+
+        Parameters
+        ----------
+        items : Sequence
+            The items to create the list from.
+        cls : ItemList | None, default=None
+            The class to instantiate. If None, the same class will be used.
+
+        Returns
+        -------
+        ItemList
+            The new instance of the `ItemList`.
+        """
         if cls is None:
             cls = self.__class__
         return cls(items, self.path, self.tfms)
 
     def get(self, item):
-        """Every class that inherits from ItemList has to override this method."""
+        """
+        Every class that inherits from `ItemList` has to override this
+        method.
+        """
         return item
 
     def _get(self, item):
@@ -302,20 +338,21 @@ class ItemList(ListContainer):
 
 def random_splitter(f_name: str, p_valid: float = 0.2) -> bool:
     """
-    Randomly split items with `p_valid` probability to be in the validation set.
+    Randomly split items with `p_valid` probability to be in the
+    validation set.
 
     Parameters
     ----------
     f_name : str
-        Item's filename. Not used here, but left for API consistency with
-        other splitters.
+        Item's filename. Not used here, but left for API consistency
+        with other splitters.
     p_valid : float, optional
         Probability of the item to be in the validation set.
 
     Returns
     -------
     bool
-        Whether the item is in training or validation directories.
+        True if the item is in validation else False (training).
     """
     return np.random.random() < p_valid
 
@@ -325,8 +362,8 @@ def grandparent_splitter(
 ) -> bool | None:
     """
     Split items based on whether they fall under validation or training
-    directories. This assumes that the directory structure is train/label/items
-    or valid/label/items.
+    directories. This assumes that the directory structure is
+    train/label/items or valid/label/items.
 
     Parameters
     ----------
@@ -340,7 +377,7 @@ def grandparent_splitter(
     Returns
     -------
     bool | None
-        Whether the item is in training or validation directories.
+        True if the item is in validation else False (training).
         If neither, returns None.
     """
     gp = Path(f_name).parent.parent.name
@@ -377,33 +414,42 @@ def split_by_func(items: Iterable, func: Callable) -> tuple[list, list]:
 class SplitData:
     """
     Split Item list into train and validation data lists.
-
-    Parameters
-    ----------
-    train : ItemList
-        Training items.
-    valid : ItemList
-        Validation items.
     """
 
     def __init__(self, train: ItemList, valid: ItemList) -> None:
+        """
+        Parameters
+        ----------
+        train : ItemList
+            Training items.
+        valid : ItemList
+            Validation items.
+        """
         self.train = train
         self.valid = valid
 
     def __getattr__(self, k):
         return getattr(self.train, k)
 
-    # This is needed if we want to pickle SplitData objects and be able to load
-    # it back without recursion errors
+    # This is needed if we want to pickle SplitData objects and be able
+    # to load it back without recursion errors
     def __setstate__(self, data):
         self.__dict__.update(data)
 
     @classmethod
-    def split_by_func(cls, item_list, split_func) -> SplitData:
+    def split_by_func(
+        cls, item_list: ItemList, split_func: Callable
+    ) -> SplitData:
         """
-        Split item list by splitter function and returns a SplitData object.
+        Split item list by splitter function and returns a SplitData
+        object.
         """
+        # We need to use `data` attribute to get the item list so when
+        # we index into it we get the element itself, not the
+        # transformed element.
         train_files, val_files = split_by_func(item_list.data, split_func)
+        # Because files would be of type list, change type to its
+        # original type with the original path/transforms
         train_list, val_list = map(item_list.new, (train_files, val_files))
         return cls(train_list, val_list)
 
@@ -411,7 +457,7 @@ class SplitData:
         self, batch_size: int = 32, **kwargs
     ) -> tuple[DataLoader, DataLoader]:
         """
-        Returns a tuple of training and validation DataLoaders object using
+        Returns a tuple of training and validation DataLoaders using
         train and valid datasets.
         """
         return get_dls(self.train, self.valid, batch_size, **kwargs)
@@ -424,6 +470,11 @@ class SplitData:
 
 
 class LabeledData:
+    """
+    Create a labeled data and expose both x & y as item lists after
+    passing them through all processors.
+    """
+
     def __init__(
         self,
         x: ItemList,
@@ -432,9 +483,6 @@ class LabeledData:
         proc_y: Processor | Iterable[Processor] | None = None,
     ) -> None:
         """
-        Create a labeled data and expose both x & y as item lists after passing
-        them through all processors.
-
         Parameters
         ----------
         x : ItemList
@@ -452,6 +500,21 @@ class LabeledData:
         self.proc_y = proc_y
 
     def process(self, item_list, proc):
+        """
+        Applies processors to an ItemList.
+
+        Parameters
+        ----------
+        item_list : ItemList
+            The ItemList to process.
+        proc : Processor | Iterable[Processor]
+            The processor or list of processors to apply.
+
+        Returns
+        -------
+        ItemList
+            The processed ItemList.
+        """
         return item_list.new(compose(item_list.data, proc))
 
     def __repr__(self):
@@ -464,12 +527,42 @@ class LabeledData:
         return len(self.x)
 
     def x_obj(self, idx):
-        return self.obj(self.x, idx, self.proc_x)
+        """
+        Returns the input object at index idx after applying all
+        processors in proc_x.
 
-    def y_obj(self, idx):
-        return self.obj(self.y, idx, self.proc_y)
+        Parameters
+        ----------
+        idx : int
+            Index of the input object to retrieve.
 
-    def obj(self, items, idx, procs):
+        Returns
+        -------
+        Any
+            The input object at index idx after applying all processors
+            in proc_x.
+        """
+        return self._obj(self.x, idx, self.proc_x)
+
+    def y_obj(self, idx: int) -> Any:
+        """
+        Returns the label object at index idx after applying all
+        processors in proc_y.
+
+        Parameters
+        ----------
+        idx : int
+            Index of the label object to retrieve.
+
+        Returns
+        -------
+        Any
+            The label object at index idx after applying all processors
+            in proc_y.
+        """
+        return self._obj(self.y, idx, self.proc_y)
+
+    def _obj(self, items, idx, procs):
         item = items[idx]
         for proc in reversed(listify(procs)):
             item = proc.deprocess(item)
@@ -481,8 +574,31 @@ class LabeledData:
 
     @classmethod
     def label_by_func(
-        cls, item_list, label_func, proc_x=None, proc_y=None
+        cls,
+        item_list: ItemList,
+        label_func: Callable,
+        proc_x: Callable | None = None,
+        proc_y: Callable | None = None,
     ) -> LabeledData:
+        """
+        Label an ItemList using a labeling function.
+
+        Parameters
+        ----------
+        item_list : ItemList
+            The ItemList to be labeled.
+        label_func : Callable
+            The function to be used for labeling.
+        proc_x : Callable | None, default=None
+            The processor to be applied to the input data.
+        proc_y : Callable | None, default=None
+            The processor to be applied to the label data.
+
+        Returns
+        -------
+        LabeledData
+            The labeled ItemList.
+        """
         return cls(
             item_list,
             LabeledData._label_by_func(item_list, label_func),
@@ -499,14 +615,40 @@ def parent_labeler(f_name: str | Path) -> str:
     ----------
     f_name : str | Path
         Filename to get the parent directory.
+
+    Returns
+    -------
+    str
+        Name of the parent directory.
     """
     return Path(f_name).parent.name
 
 
 def label_by_func(
-    splitted_data, label_func, proc_x=None, proc_y=None
+    splitted_data: SplitData,
+    label_func: Callable,
+    proc_x: Callable | None = None,
+    proc_y: Callable | None = None,
 ) -> SplitData:
-    """Label splitted data using `label_func`."""
+    """
+    Label splitted data using `label_func`.
+
+    Parameters
+    ----------
+    splitted_data : SplitData
+        The splitted data to be labeled.
+    label_func : Callable
+        The function to be used for labeling.
+    proc_x : Callable | None, default=None
+        The processor to be applied to the input data.
+    proc_y : Callable | None, default=None
+        The processor to be applied to the label data.
+
+    Returns
+    -------
+    SplitData
+        The labeled splitted data.
+    """
     train = LabeledData.label_by_func(
         splitted_data.train, label_func, proc_x=proc_x, proc_y=proc_y
     )
