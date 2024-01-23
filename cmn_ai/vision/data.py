@@ -16,24 +16,7 @@ IMAGE_EXTENSIONS = [
 class ImageList(ItemList):
     """
     Build an image list from list of files in the `path` end with
-    extensions, optionally recursively.
-
-    Parameters
-    ----------
-    path : str | Path
-        Path for the root directory to search for files.
-    extensions : str | Iterable[str] | None, default=IMAGE_EXTENSIONS
-        Suffixes of filenames to look for.
-    include : Iterable[str] | None, default=None
-        Top-level Director(y|ies) under `path` to use to search for files.
-    recurse : bool, default=True
-        Whether to search subdirectories recursively.
-    tfms : Callable | None, default=None
-        Transformations to apply items before returning them.
-    Returns
-    -------
-    list[str]
-        List of filenames that ends with `extensions` under `path`.
+    `extensions`, optionally recursively.
     """
 
     @classmethod
@@ -44,11 +27,23 @@ class ImageList(ItemList):
         include: Iterable[str] | None = None,
         recurse: bool = True,
         tfms: Callable | None = None,
-        **kwargs,
     ) -> ImageList:
-        return cls(
-            get_files(path, extensions, include, recurse), path, tfms, **kwargs
-        )
+        """
+        Parameters
+        ----------
+        path : str | Path
+            Path for the root directory to search for files.
+        extensions : str | Iterable[str] | None, default=IMAGE_EXTENSIONS
+            Suffixes of filenames to look for.
+        include : Iterable[str] | None, default=None
+            Top-level Director(y|ies) under `path` to use to search for
+            files.
+        recurse : bool, default=True
+            Whether to search subdirectories recursively.
+        tfms : Callable | None, default=None
+            Transformations to apply items before returning them.
+        """
+        return cls(get_files(path, extensions, include, recurse), path, tfms)
 
     def get(self, item) -> PIL.Image:
         """Open an image using PIL."""
