@@ -22,16 +22,6 @@ class DateTransformer(TransformerMixin, BaseEstimator):
     Is_month_end, Is_month_start, Is_quarter_end, Is_quarter_start,
     Is_year_end, Is_year_start`.
     - time attributes: `Hour, Minute, Second`.
-
-    Parameters
-    ----------
-    date_feats : Iterable, default=None
-        Date features to transform. If None, all features with `datetime64`
-        data type will be used.
-    time : bool, default=False
-        Whether to add time-related derived features such as Hour/Minute/...
-    drop : bool, default=True
-        Whether to drop date features used.
     """
 
     def __init__(
@@ -40,7 +30,17 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         time: bool = False,
         drop: bool = True,
     ) -> None:
-        """Initialize self."""
+        """
+        Parameters
+        ----------
+        date_feats : Iterable, default=None
+            Date features to transform. If None, all features with `datetime64`
+            data type will be used.
+        time : bool, default=False
+            Whether to add time-related derived features such as Hour/Minute/...
+        drop : bool, default=True
+            Whether to drop date features used.
+        """
         self.date_feats = date_feats
         self.time = time
         self.drop = drop
