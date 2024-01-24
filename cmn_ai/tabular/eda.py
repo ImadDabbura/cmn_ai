@@ -135,7 +135,7 @@ def plot_corr_matrix(
     df: pd.DataFrame, method: str = "pearson", figsize: tuple = (12, 6)
 ) -> None:
     """
-    Plot correlation matrix using `method`.
+    Plot `method` correlation matrix heatmap.
 
     Parameters
     ----------
@@ -150,7 +150,6 @@ def plot_corr_matrix(
     mask = np.zeros_like(corr_matrix)
     mask[np.triu_indices_from(mask, k=1)] = True
 
-    # Plot the heat map
     sns.set(font_scale=1.2)
     plt.style.use("seaborn-v0_8-white")
     plt.figure(figsize=figsize)
