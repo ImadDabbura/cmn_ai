@@ -158,6 +158,7 @@ def plot_corr_matrix(
         corr_matrix,
         mask=mask,
         annot=True,
+        fmt=".1f",
         cmap=cmap,
         center=0,
         square=True,
