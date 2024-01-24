@@ -44,7 +44,6 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         self.date_feats = date_feats
         self.time = time
         self.drop = drop
-        self.dates_min = {}
         self.attrs = [
             "Year",
             "Month",
