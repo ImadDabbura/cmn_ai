@@ -43,7 +43,7 @@ def na_percentages(
         pd.DataFrame(res)
         .reset_index()
         .rename(columns={"index": "feature", 0: "na_percentages"})
-        .style.hide_index()
+        .style.hide(axis="index")
         .background_gradient(cmap=sns.light_palette("red", as_cmap=True))
         .format({"na_percentages": "{:.3%}"})
     )
