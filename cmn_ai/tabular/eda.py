@@ -104,7 +104,7 @@ def plot_pca_var_explained(
     Parameters
     ----------
     pca_transformer : PCA
-        PCA transformer.
+        Fitted PCA transformer.
     figsize : tuple, default=(12, 6)
         Figure size.
     """
