@@ -28,6 +28,7 @@ from typing import Callable, Iterable
 
 import fastcore.all as fc
 import matplotlib.pyplot as plt
+import seaborn as sns
 import torch
 from fastprogress.fastprogress import format_time, master_bar, progress_bar
 from torch.optim.lr_scheduler import ExponentialLR
@@ -206,6 +207,7 @@ class Recorder(Callback):
         ) in zip(axes.flatten(), params):
             ax.plot(self.params_records[param][pgid], label=param)
             ax.legend()
+        plt.xlabel("Iteration")
 
     def plot_loss(self, skip_last: int = 0) -> None:
         """
@@ -213,6 +215,8 @@ class Recorder(Callback):
         """
         n = len(self.losses) - skip_last
         plt.plot(self.losses[:n])
+        plt.xlabel("Iteration")
+        plt.ylabel("Loss")
 
     def plot(self, pgid: int = -1, skip_last: int = 0) -> None:
         """
@@ -224,6 +228,8 @@ class Recorder(Callback):
             self.params_records["lr"][pgid][:n],
             self.losses[:n],
         )
+        plt.xlabel("Learning rate")
+        plt.ylabel("Loss")
 
 
 class ModelResetter(Callback):
