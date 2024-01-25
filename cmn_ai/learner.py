@@ -299,7 +299,7 @@ class Learner:
 
     def save_model(
         self,
-        path: str | Path,
+        path: str | Path | None = None,
         with_opt: bool = False,
         with_epoch: bool = False,
         with_loss: bool = False,
@@ -311,8 +311,9 @@ class Learner:
 
         Parameters
         ----------
-        path : str | Path
-            File path to save the model.
+        path : str | Path | None, default=None
+            File path to save the model. If None, use
+            `learner.model_dir_path`/model.
         with_opt : bool, default=False
             Whether to save the optimizer state.
         with_epoch : bool, default=False
@@ -322,6 +323,8 @@ class Learner:
         pickle_protocol : int, default=pickle.HIGHEST_PROTOCOL
             Protocol used by pickler when saving the checkpoint.
         """
+        if path is None:
+            path = self.model_dir_path / "model"
         checkpoint = {
             "model_state_dict": self.model.state_dict(),
         }
@@ -335,7 +338,7 @@ class Learner:
 
     def load_model(
         self,
-        path: str | Path,
+        path: str | Path | None = None,
         with_opt: bool = False,
         with_epoch: bool = False,
         with_loss: bool = False,
@@ -345,8 +348,8 @@ class Learner:
 
         Parameters
         ----------
-        path : str | Path
-            Model's file path.
+        path : str | Path | None, default=None
+            Model's file path. If None, use `learner.model_dir_path`/model.
         with_opt : bool, default=False
             Whether to load the optimizer state.
         with_epoch : bool, default=False
@@ -354,6 +357,8 @@ class Learner:
         with_loss : bool, default=False
             Whether to load the current loss.
         """
+        if path is None:
+            path = self.model_dir_path / "model"
         checkpoint = torch.load(path)
         self.model.load_state_dict(checkpoint["model_state_dict"])
         if with_opt:
