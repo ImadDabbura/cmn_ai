@@ -255,7 +255,7 @@ class Learner:
         if lr is None:
             lr = self.lr
         if reset_opt or not self.opt:
-            self.opt = self.opt_func(self.model.parameters(), lr)
+            self.opt = self.opt_func(self.splitter(self.model), lr)
         try:
             self._with_events(self._fit, "fit", CancelFitException)
         finally:
