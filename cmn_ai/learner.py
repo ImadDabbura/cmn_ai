@@ -155,7 +155,7 @@ class Learner:
         self.logger = print
         self.callbacks = fc.L()
         if default_callbacks:
-            callbacks += [
+            callbacks = listify(callbacks) + [
                 TrainEvalCallback(),
                 ProgressCallback(),
                 Recorder("lr"),
