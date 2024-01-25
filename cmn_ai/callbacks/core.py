@@ -7,15 +7,15 @@ from typing import Any
 
 
 class CancelFitException(Exception):
-    """Stop training and move to after_fit."""
+    """Stop training and move to `after_fit`."""
 
 
 class CancelEpochException(Exception):
-    """Stop current epoch and move to after_epoch."""
+    """Stop current epoch and move to `after_epoch`."""
 
 
 class CancelTrainException(Exception):
-    """Stop training current epoch and move to after_train."""
+    """Stop training current epoch and move to `after_train`."""
 
 
 class CancelValidateException(Exception):
@@ -23,15 +23,15 @@ class CancelValidateException(Exception):
 
 
 class CancelBatchException(Exception):
-    """Stop current batch and move to after_batch."""
+    """Stop current batch and move to `after_batch`."""
 
 
 class CancelStepException(Exception):
-    """Skip stepping the optimizer."""
+    """Skip stepping the optimizer and move to `after_step`."""
 
 
 class CancelBackwardException(Exception):
-    """Skip the backward pass and move to after_backward."""
+    """Skip the backward pass and move to `after_backward`."""
 
 
 class Callback:
@@ -41,30 +41,32 @@ class Callback:
 
     def set_learner(self, learner) -> None:
         """
-        Set the learner as an attribute so that callbacks can access learner's
-        attributes without the need to pass `learner` for every single method
-        in every callback.
+        Set the learner as an attribute so that callbacks can access
+        learner's attributes without the need to pass `learner` for
+        every single method in every callback.
 
         Parameters
         ----------
         learner : Learner
-            Learner that the callback will be called when some events happens.
+            Learner that the callback will be called when some events
+            happens.
         """
         self.learner = learner
 
     def __getattr__(self, k) -> Any:
         """
-        This would allow us to use `self.obj` instead of `self.learner.obj`
-        when we know `obj` is in learner because it will only be called when
-        `getattribute` returns `AttributeError`.
+        This would allow us to use `self.obj` instead of
+        `self.learner.obj` when we know `obj` is in learner because it
+        will only be called when `getattribute` returns `AttributeError`.
         """
         return getattr(self.learner, k)
 
     @property
     def name(self) -> str:
         """
-        Returns the name of the callback after removing the word `callback`
-        and then convert it to snake (split words by underscores).
+        Returns the name of the callback after removing the word
+        `callback` and then convert it to snake (split words by
+        underscores).
         """
         name = re.sub(r"Callback$", "", self.__class__.__name__)
         return Callback.camel2snake(name or "callback")
@@ -77,8 +79,9 @@ class Callback:
     @staticmethod
     def camel2snake(name: str) -> str:
         """
-        Convert name of callback by inserting underscores between small and capital
-        letters. For example, `TestCallback` becomes `test_callback`.
+        Convert name of callback by inserting underscores between small
+        and capital letters. For example, `TestCallback` becomes
+        `test_callback`.
         """
         pattern1 = re.compile("(.)([A-Z][a-z]+)")
         pattern2 = re.compile("([a-z0-9])([A-Z])")
