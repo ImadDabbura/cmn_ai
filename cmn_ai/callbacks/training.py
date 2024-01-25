@@ -289,11 +289,12 @@ class LRFinder(Callback):
 
     def before_fit(self) -> None:
         self.scheduler = ExponentialLR(self.opt, self.gamma)
-        path = self.path / self.model_dir
-        path.mkdir(parents=True, exist_ok=True)
-        self.tmp_d = tempfile.TemporaryDirectory(dir=path)
+        self.model_dir_path.mkdir(parents=True, exist_ok=True)
+        self.tmp_d = tempfile.TemporaryDirectory(dir=self.model_dir_path)
         self.tmp_p = Path(self.tmp_d.name).stem
-        self.save_model(path / self.tmp_p / "_tmp.pth", with_opt=True)
+        self.save_model(
+            self.model_dir_path / self.tmp_p / "_tmp.pth", with_opt=True
+        )
         self.best_loss = float("inf")
 
     def after_batch(self) -> None:
