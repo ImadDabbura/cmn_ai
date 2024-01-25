@@ -339,7 +339,7 @@ class BatchTransform(Callback):
             self.learner.batch = self.tfm(self.batch)
 
 
-class SingleBatchCB(Callback):
+class SingleBatchCallback(Callback):
     """
     Run 1 training/validation batch and stop by raising `CancelFitException`.
     Useful for debugging or want to check few parameters after 1 batch.
