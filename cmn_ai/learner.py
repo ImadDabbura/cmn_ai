@@ -151,7 +151,7 @@ class Learner:
         self.lr = lr
         self.splitter = splitter
         self.path = Path(path)
-        self.model_dir = Path(model_dir)
+        self.model_dir_path = self.path / Path(model_dir)
         self.logger = print
         self.callbacks = fc.L()
         if default_callbacks:
