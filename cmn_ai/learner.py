@@ -1,42 +1,75 @@
 """
 `Learner` is a basic class that provides useful functionalities:
 
-1. Tweaking/customization of the training loop using a system of callbacks through Exceptions
-2. Loading/saving model
-3. Fit the model
-4. Get model summary
-5. Learning rate finder
+- Tweaking/customization of the training loop using a system of
+callbacks through Exceptions
+- Loading/saving model
+- Fit the model
+- Get model summary
+- Learning rate finder
 
-The training loop consists of a minimal set of instructions; looping through the data we:
+The training loop consists of a minimal set of instructions; looping
+through the data we:
 
-- compute the output of the model from the input
-- calculate a loss between this output and the desired target
-- compute the gradients of this loss with respect to all the model parameters
-- update the parameters accordingly
-- zero all the gradients
+- Compute the output of the model from the input
+- Calculate a loss between this output and the desired target
+- Compute the gradients of this loss with respect to model parameters
+- Update the parameters accordingly
+- Zero all the gradients
 
-Any tweak of this training loop is defined in a [Callback][cmn_ai.callbacks.core.Callback].
-A callback can implement actions on the following events:
+Any tweak of this training loop is defined in a [Callback]
+[cmn_ai.callbacks.core.Callback]. A callback can implement actions on
+the following events:
 
 - `before_fit`: called before doing anything, ideal for initial setup
-- `before_epoch`: called at the beginning of each epoch, useful for any behavior you need to reset at each epoch
-- `before_train`: called at the beginning of the training part of an epoch
-- `before_batch`: called at the beginning of each batch, just after drawing said batch. It can be used to do any setup necessary for the batch (like hyper-parameter scheduling) or to change the input/target before it goes in the model (change of the input with techniques like mixup for instance)
-- `after_pred`: called after computing the output of the model on the batch. It can be used to change that output before it's fed to the loss
-- `after_loss`: called after the loss has been computed, but before the backward pass. It can be used to add any penalty to the loss (AR or TAR in RNN training for instance)
-- `after_backward`: called after the backward pass, but before the update of the parameters. It can be used to do any change to the gradients before said update (gradient clipping for instance)
-- `after_step`: called after the step and before the gradients are zeroed
-- `after_cancel_batch`: reached immediately after a `CancelBatchException` before proceeding to `after_batch`
-- `after_batch`: called at the end of a batch, for any clean-up before the next one
-- `after_cancel_train`: reached immediately after a `CancelTrainException` before proceeding to `after_train`
+- `before_epoch`: called at the beginning of each epoch, useful for any
+behavior you need to reset at each epoch
+- `before_train`: called at the beginning of the training part of an
+epoch
+- `before_batch`: called at the beginning of each batch, just after
+drawing said batch. It can be used to do any setup necessary for the
+batch (like hyper-parameter scheduling) or to change the input/target
+before it goes in the model (change of the input with techniques like
+mixup for instance)
+- `after_pred`: called after computing the output of the model on the
+batch. It can be used to change that output before it's fed to the loss
+function
+- `after_loss`: called after the loss has been computed, but before the
+backward pass. It can be used to add any penalty to the loss (AR or TAR
+in RNN training for instance)
+- `after_cancel_backward`: reached immediately after
+  [CancelBackwardException][cmn_ai.callbacks.core.CancelBackwardException]
+- `after_backward`: called after the backward pass, but before updating
+the parameters. It can be used to do any change to the
+gradients before any updates (gradient clipping for instance)
+- `after_cancel_step`: reached immediately after
+  [CancelStepException][cmn_ai.callbacks.core.CancelStepException]
+- `after_step`: called after the step and before gradients are zeroed
+- `after_cancel_batch`: reached immediately after
+  [CancelBatchException][cmn_ai.callbacks.core.CancelBatchException]
+before proceeding to `after_batch`
+- `after_batch`: called at the end of a batch, for any clean-up before
+the next one
+- `after_cancel_train`: reached immediately after
+  [CancelTrainException][cmn_ai.callbacks.core.CancelTrainException]
+before proceeding to `after_train`
 - `after_train`: called at the end of the training phase of an epoch
-- `before_validate`: called at the beginning of the validation phase of an epoch, useful for any setup needed specifically for validation
-- `after_cancel_validate`: reached immediately after a `CancelValidateException` before proceeding to `after_validate`
-- `after_validate`: called at the end of the validation part of an epoch
-- `after_cancel_epoch`: reached immediately after a `CancelEpochException` before proceeding to `after_epoch`
-- `after_epoch`: called at the end of an epoch, for any clean-up before the next one
-- `after_cancel_fit`: reached immediately after a `CancelFitException` before proceeding to `after_fit`
-- `after_fit`: called at the end of training, for final clean-up
+- `before_validate`: called at the beginning of the validation phase of
+an epoch, useful for any setup needed specifically for validation
+- `after_cancel_validate`: reached immediately after
+[CancelValidateException][cmn_ai.callbacks.core.CancelValidateException]
+before proceeding to `after_validate`
+- `after_validate`: called at the end of the validation phase of an
+epoch
+- `after_cancel_epoch`: reached immediately after
+  [CancelEpochException][cmn_ai.callbacks.core.CancelEpochException]
+before proceeding to `after_epoch`
+- `after_epoch`: called at the end of an epoch, for any clean-up before
+the next one
+- `after_cancel_fit`: reached immediately after
+  [CancelFitException][cmn_ai.callbacks.core.CancelFitException]
+before proceeding to `after_fit`
+- `after_fit`: called at the end of training, for any final clean-up
 """
 from __future__ import annotations
 
@@ -69,6 +102,7 @@ from .callbacks.training import (
     Recorder,
     TrainEvalCallback,
 )
+from .utils.data import DataLoaders
 from .utils.utils import listify
 
 
@@ -96,34 +130,31 @@ class Learner:
     customizable and extensible. You just need to provide a list of
     callbacks and callback functions.
 
-    Parameters
-    ----------
-    model : nn.Module
-        pytorch's model.
-    dls : Iterable of Dataloaders.
-        train and valid data loaders.
-    n_inp : int, default=1
-        Number of inputs to the model.
-    loss_func : Callable, default=`MSE`
-        Loss function.
-    opt_func : Optimizer, default=`SGD`
-        Optimizer function/class.
-    lr : float, default=`1e-2`
-        Learning rate.
-    splitter : Callable, default=`params_getter`
-        Function to split model's parameters into groups, default all
-        parameters belong to 1 group.
-    callbacks : Iterable, default=None
-        Iterable of callbacks of type `Callback`.
-    default_callbacks : bool, default=True
-        Whether to add `TrainEvalCallback`, `ProgressCallback`, and `Recorder`
-        to the list of callbacks.
-
     Attributes
     ----------
+    model : nn.Module
+        Pytorch's model.
+    dls : DataLoaders
+        Train and valid data loaders.
+    n_inp : int
+        Number of inputs to the model.
+    loss_func : Callable[[tensor, tensor], tensor]
+        Loss function.
+    opt_func : opt.Optimizer
+        Optimizer function/class.
+    lr : float
+        Learning rate.
+    splitter : Callable[[nn.Module], Iterable[nn.Parameter]]
+        Function to split model's parameters into groups.
+    path : Path
+        Path to save all artifacts.
+    model_dir_path : Path
+        Model directory path.
+    callbacks : Iterable[Callable] | None, default=None
+        Iterable of callbacks of type `Callback`.
     logger : Any
-        Logger to log metrics. Default is `print` but is typically modified by
-        callbacks such as `ProgressCallback`.
+        Logger to log metrics. Default is `print` but is typically
+        modified by callbacks such as `ProgressCallback`.
     callbacks: list[Callback]
         List of all the used callbacks by `learner.`
     """
@@ -131,17 +162,49 @@ class Learner:
     def __init__(
         self,
         model: nn.Module,
-        dls: Iterable[DataLoader],
+        dls: DataLoaders,
         n_inp: int = 1,
         loss_func: Callable[[tensor, tensor], tensor] = F.mse_loss,
         opt_func: opt.Optimizer = opt.SGD,
         lr: float = 1e-2,
-        splitter: Callable = params_getter,
-        path: str = ".",
+        splitter: Callable[
+            [nn.Module], Iterable[nn.Parameter]
+        ] = params_getter,
+        path: str | Path = ".",
         model_dir: str = "models",
         callbacks: Iterable[Callback] | None = None,
         default_callbacks: bool = True,
     ) -> None:
+        """
+        Parameters
+        ----------
+        model : nn.Module
+            Pytorch's model.
+        dls : DataLoaders
+            Train and valid data loaders.
+        n_inp : int, default=1
+            Number of inputs to the model.
+        loss_func : Callable[[tensor, tensor], tensor],\
+                default=F.mse_loss
+            Loss function.
+        opt_func : opt.Optimizer, default=opt.SGD
+            Optimizer function/class.
+        lr : float, default=`1e-2`
+            Learning rate.
+        splitter : Callable[[nn.Module], Iterable[nn.Parameter]],\
+                default=`params_getter`
+            Function to split model's parameters into groups, default
+            all parameters belong to 1 group.
+        path : str, default="."
+            Path to save all artifacts.
+        model_dir : str, default="models"
+            Model directory name relative to `path`.
+        callbacks : Iterable[Callable] | None, default=None
+            Iterable of callbacks of type `Callback`.
+        default_callbacks : bool, default=True
+            Whether to add `TrainEvalCallback`, `ProgressCallback`, and
+            `Recorder` to the list of callbacks.
+        """
         self.model = model
         self.dls = dls
         self.n_inp = n_inp
@@ -240,11 +303,12 @@ class Learner:
             Whether to run training passes.
         run_valid : bool, default=True
             Whether to run validation passes.
-        callbacks : Iterable | None, default=None
-            Callbacks to add the existing callbacks. The added callbacks will
-            be removed when before `fit` returns.
+        callbacks : Iterable[Callback] | None, default=None
+            Callbacks to add to the existing callbacks. The added
+            callbacks will be removed  before `fit` returns.
         lr : float | None, default=None
-            Learning rate. If None, use `lr` passed when created `Learner`.
+            Learning rate. If None, `lr` passed to `Learner` will be
+            used.
         reset_opt : bool, default=False
             Whether to reset the optimizer.
         """
