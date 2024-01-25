@@ -173,6 +173,7 @@ class Recorder(Callback):
 
     def __init__(self, *params: tuple[str]) -> None:
         self.params = listify(params)
+        sns.set()
 
     def before_fit(self) -> None:
         self.params_records = {
