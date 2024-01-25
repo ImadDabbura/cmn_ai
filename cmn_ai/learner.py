@@ -223,9 +223,9 @@ class Learner:
     def fit(
         self,
         n_epochs: int = 1,
-        train: bool = True,
-        valid: bool = True,
-        callbacks: Iterable | None = None,
+        run_train: bool = True,
+        run_valid: bool = True,
+        callbacks: Iterable[Callback] | None = None,
         lr: float | None = None,
         reset_opt: bool = False,
     ) -> None:
@@ -236,9 +236,9 @@ class Learner:
         ----------
         n_epochs : int, default=1
             Number epochs to train the model.
-        train : bool, default=True
+        run_train : bool, default=True
             Whether to run training passes.
-        valid : bool, default=True
+        run_valid : bool, default=True
             Whether to run validation passes.
         callbacks : Iterable | None, default=None
             Callbacks to add the existing callbacks. The added callbacks will
@@ -248,8 +248,8 @@ class Learner:
         reset_opt : bool, default=False
             Whether to reset the optimizer.
         """
-        self.run_train = train
-        self.run_valid = valid
+        self.run_train = run_train
+        self.run_valid = run_valid
         callbacks = self.add_callbacks(callbacks)
         self.n_epochs = n_epochs
         if lr is None:
