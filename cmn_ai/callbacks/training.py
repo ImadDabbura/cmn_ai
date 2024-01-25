@@ -57,8 +57,8 @@ class DeviceCallback(Callback):
 
 class TrainEvalCallback(Callback):
     """
-    Tracks the number of iterations and epoch done and set training and eval
-    modes.
+    Tracks the number of iterations, percentage of training, and set
+    training and eval modes.
     """
 
     order = -10
@@ -82,21 +82,23 @@ class TrainEvalCallback(Callback):
         self.learner.training = False
 
 
+# FIXME: Looki like validate loss curve is not showing on the graph
 class ProgressCallback(Callback):
     """
-    Track progress of training using progress bar as well as to plot losses
-    (train and valid), which allows us to have live feedback of the model's
-    performance while it is still training.
-
-    Parameters
-    ----------
-    plot : bool, default=True
-        Whether to plot train/valid losses during training.
+    Track progress of training using progress bar as well as to plot
+    losses (train and valid), which allows us to have live feedback of
+    the model's performance while it is still training.
     """
 
     order = -20
 
     def __init__(self, plot: bool = True) -> None:
+        """
+        Parameters
+        ----------
+        plot : bool, default=True
+            Whether to plot train/valid losses during training.
+        """
         self.plot = plot
         self.train_losses = []
         self.valid_losses = []
@@ -165,8 +167,8 @@ class ProgressCallback(Callback):
 
 class Recorder(Callback):
     """
-    Keep track of losses and learning rates as training progress so we can
-    plot them later.
+    Keep track of losses and `params` of the optimizer such as
+    learning rates as training progress so we can plot them later.
     """
 
     order = 50
@@ -235,9 +237,10 @@ class Recorder(Callback):
 
 class ModelResetter(Callback):
     """
-    Reset model's parameters. This is very useful in the context of NLP since
-    we always reset hidden state. The assumption here is that `model` has a
-    `reset` method that knows which parameters to reset and how.
+    Reset model's parameters. This is very useful in the context of NLP
+    since we always reset hidden state. The assumption here is that
+    `model` has a `reset` method that knows which parameters to reset
+    and how.
     """
 
     def before_train(self) -> None:
@@ -255,22 +258,8 @@ class LRFinder(Callback):
     """
     Try different learning rates using exponential schedule to help pick
     the best learning rate following [Cyclical Learning Rates for Training
-    Neural Networks](https://arxiv.org/pdf/1506.01186.pdf). When done, plot
-    learning rate vs loss.
-
-    Parameters
-    ----------
-    start_lr : float, default=1e-7
-        Start learning rate.
-    end_lr : float, default=10.0
-        Last learning rate in the schedule.
-    num_iter : int, default=100
-        Number of iterations to run the training.
-    stop_div : bool, default
-        Whether to stop training if loss diverges (loss > 4 * best_loss).
-    max_mult : int, default=4
-        Divergence threshold. If loss >= max_mult * minimum loss, stop
-        training.
+    Neural Networks](https://arxiv.org/pdf/1506.01186.pdf). When done,
+    plot learning rate vs loss.
     """
 
     def __init__(
@@ -280,6 +269,19 @@ class LRFinder(Callback):
         stop_div: bool = True,
         max_mult: int = 4,
     ) -> None:
+        """
+        Parameters
+        ----------
+        end_lr : float, default=10.0
+            Last learning rate in the schedule.
+        num_iter : int, default=100
+            Number of iterations to run the training.
+        stop_div : bool, default
+            Whether to stop training if loss diverges (loss > 4 * best_loss).
+        max_mult : int, default=4
+            Divergence threshold. If loss >= max_mult * minimum loss, stop
+            training.
+        """
         self.gamma = gamma
         self.num_iter = num_iter
         self.stop_div = stop_div
@@ -308,25 +310,19 @@ class LRFinder(Callback):
 
     def after_fit(self) -> None:
         self.opt.zero_grad()
-        tmp_f = self.path / self.model_dir / self.tmp_p / "_tmp.pth"
+        tmp_f = self.model_dir_path / self.tmp_p / "_tmp.pth"
         if tmp_f.exists():
             self.load_model(tmp_f, with_opt=True)
             self.tmp_d.cleanup()
 
 
+# TODO: Is it for X or potentially for everythin in the batch?
+#       If for X only, we need to change docstring and before_batch
 class BatchTransform(Callback):
     """
     Transform X as a batch using `tfm` callable before every batch.
     Apply transformation `tfm` on the batch as a whole.
 
-    Parameters
-    ----------
-    tfm : Callback
-        Transformation to apply on the batch.
-    on_train : bool, default=True
-        Whether to apply the transformation during training.
-    on_valid : bool, default=True
-        Whether to apply the transformation during validation.
     """
 
     order = 2
@@ -334,6 +330,16 @@ class BatchTransform(Callback):
     def __init__(
         self, tfm: Callback, on_train: bool = True, on_valid: bool = True
     ) -> None:
+        """
+        Parameters
+        ----------
+        tfm : Callback
+            Transformation to apply on the batch.
+        on_train : bool, default=True
+            Whether to apply the transformation during training.
+        on_valid : bool, default=True
+            Whether to apply the transformation during validation.
+        """
         self.tfm = tfm
         self.on_train = on_train
         self.on_valid = on_valid
@@ -347,8 +353,9 @@ class BatchTransform(Callback):
 
 class SingleBatchCallback(Callback):
     """
-    Run 1 training/validation batch and stop by raising `CancelFitException`.
-    Useful for debugging or want to check few parameters after 1 batch.
+    Run 1 training/validation batch and stop by raising
+    `CancelFitException`. Useful for debugging or want to check few
+    parameters after 1 batch.
     """
 
     order = 1
@@ -417,21 +424,23 @@ class MetricsCallback(Callback):
 
 
 class Mixup(Callback):
+    """
+    Train the model with a mix of samples from each batch in the training
+    data. Instead of feeding the model with raw data, we use linear
+    combination of the input using `alpha` from beta distribution. This
+    means that the labels would also be the linear combination of the
+    labels and not the original labels. The implementation is largely
+    based on this [paper](https://arxiv.org/abs/1710.09412).
+    """
+
     order = 90
 
     def __init__(self, alpha: float = 0.4) -> None:
         """
-        Train the model with a mix of samples from each batch in the training
-        data. Instead of feeding the model with raw data, we use linear
-        combination of the input using `alpha` from beta distribution. This
-        means that the labels would also be the linear combination of the
-        labels and not the original labels. The implementation is largely
-        based on this [paper](https://arxiv.org/abs/1710.09412).
-
         Parameters
         ----------
         alpha : float, default=0.4
-            Concetration for Beta distribution.
+            Concentration for Beta distribution.
         """
         self.distrib = torch.distributions.beta.Beta(
             torch.tensor([alpha]), torch.tensor([alpha])
