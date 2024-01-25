@@ -61,7 +61,7 @@ from .callbacks.core import (
     CancelFitException,
     CancelStepException,
     CancelTrainException,
-    CancelValidException,
+    CancelValidateException,
 )
 from .callbacks.training import (
     LRFinder,
@@ -206,7 +206,7 @@ class Learner:
         self.dl = self.dls.valid
         with torch.no_grad():
             self._with_events(
-                self._all_batches, "validate", CancelValidException
+                self._all_batches, "validate", CancelValidateException
             )
 
     def _one_epoch(self):

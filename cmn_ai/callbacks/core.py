@@ -18,8 +18,8 @@ class CancelTrainException(Exception):
     """Stop training current epoch and move to after_train."""
 
 
-class CancelValidException(Exception):
-    """Stop validation phase and move after_validate."""
+class CancelValidateException(Exception):
+    """Stop validation phase and move to `after_validate`."""
 
 
 class CancelBatchException(Exception):

@@ -37,7 +37,7 @@ from ..losses import NoneReduce, reduce_loss
 from ..plot import get_grid
 from ..utils.data import default_device, to_cpu, to_device
 from ..utils.utils import listify
-from .core import Callback, CancelFitException, CancelValidException
+from .core import Callback, CancelFitException, CancelValidateException
 from .schedule import exp_sched
 
 
@@ -111,7 +111,7 @@ class ProgressCallback(Callback):
 
     def after_batch(self):
         self.pb.update(self.iter)
-        self.pb.comment = f"{self.loss:.3f}"
+        self.pb.comment = f"{self.loss:.3f}"  # noqa: E231
         if self.plot and hasattr(self.learner, "metrics") and self.training:
             self.train_losses.append(self.loss.item())
             if self.valid_losses:
@@ -298,7 +298,7 @@ class LRFinder(Callback):
         self.scheduler.step()
 
     def before_validate(self) -> None:
-        raise CancelValidException()
+        raise CancelValidateException()
 
     def after_fit(self) -> None:
         self.opt.zero_grad()
@@ -369,7 +369,7 @@ class MetricsCallback(Callback):
 
     def _compute(self):
         for metric in self.all_metrics.values():
-            self.stats.append(f"{metric.compute():.3f}")
+            self.stats.append(f"{metric.compute():.3f}")  # noqa: E231
         self.stats.append("train" if self.training else "eval")
         self.stats.append(format_time(time.time() - self.start_time))
 
@@ -462,4 +462,3 @@ class Mixup(Callback):
         return reduce_loss(
             loss, getattr(self.old_loss_func, "reduction", "mean")
         )
-
