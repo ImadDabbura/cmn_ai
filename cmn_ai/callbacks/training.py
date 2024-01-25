@@ -193,7 +193,6 @@ class Recorder(Callback):
         self,
         params: str | Iterable[str] = "lr",
         pgid: int = -1,
-        skip_last: int = 0,
         figsize: tuple = (8, 6),
     ) -> None:
         """
