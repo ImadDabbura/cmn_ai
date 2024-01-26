@@ -1,6 +1,10 @@
 """
 This module provides commonly used schedulers with hyperparameters such
 as learning rate.
+
+>It is very important to remember to apply hyperparameters update such
+as learning rate update after optimizer's update. This means that it
+should be either in `before_batch` OR `after_batch` in our framework.
 """
 import math
 from functools import partial, wraps
