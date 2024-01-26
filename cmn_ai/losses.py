@@ -7,11 +7,13 @@ import torch.nn.functional as F
 
 
 class NoneReduce:
+    """
+    Force non-reduction on the loss tensor so it can used later in
+    methods such as `Mixup` or `LabelSmoothing`.
+    """
+
     def __init__(self, loss_func: Callable):
         """
-        Force non-reduction on the loss tensor so it can used later in methods
-        such as `Mixup` or `LabelSmoothing`.
-
         Parameters
         ----------
         loss_func : Callable
@@ -37,8 +39,8 @@ def reduce_loss(
     loss: torch.Tensor, reduction: str | None = None
 ) -> torch.Tensor:
     """
-    Reduce the `loss` tensor using `reduction` method. If `reduction` is None,
-    returns the passed loss tensor.
+    Reduce the `loss` tensor using `reduction` method. If `reduction` is
+    None, returns the passed loss tensor.
 
     Parameters
     ----------
@@ -63,21 +65,22 @@ def reduce_loss(
 
 class LabelSmoothingCrossEntropy(nn.Module):
     """
-    Label smoothing is designed to make the model a little bit less certain of
-    it's decision by changing a little bit its target: instead of wanting to
-    predict 1 for the correct class and 0 for all the others, we ask it to
-    predict 1-eps for the correct class and eps for all the others, with eps a
-    (small) positive number.
-
-    Parameters
-    ----------
-    eps : float, default=0.1
-        Weight for the interpolation formula.
-    reduction : str, default=mean
-        Reduction applied to the loss tensor.
+    Label smoothing is designed to make the model a little bit less
+    certain of it's decision by changing a little bit its target:
+    instead of wanting to predict 1 for the correct class and 0 for all
+    the others, we ask it to predict `1 - ε` for the correct class and
+    `ε` for all the others, with `ε` a (small) positive number.
     """
 
     def __init__(self, eps: float = 0.1, reduction: str = "mean") -> None:
+        """
+        Parameters
+        ----------
+        eps : float, default=0.1
+            Weight for the interpolation formula.
+        reduction : str, default=mean
+            Reduction applied to the loss tensor.
+        """
         super().__init__()
         self.eps = eps
         self.reduction = reduction
