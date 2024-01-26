@@ -32,6 +32,11 @@ plugins:
             docstring_style: numpy
             docstring_section_style: table
 
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
 theme:
   name: material
   palette:

@@ -5,6 +5,17 @@ as learning rate.
 >It is very important to remember to apply hyperparameters update such
 as learning rate update after optimizer's update. This means that it
 should be either in `before_batch` OR `after_batch` in our framework.
+
+We have two choices to schedule hyperparameters:
+
+- Use any subclass of `Scheduler` such as
+[BatchScheduler][cmn_ai.callbacks.schedule.BatchScheduler] and pass any
+scheduler from pytorch's
+[schedulers](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate)
+- Use [ParamScheduler][cmn_ai.callbacks.schedule.ParamScheduler] and
+pass it any callable that takes the position and returns the
+hyperparameter value such as [exp_sched][cmn_ai.callbacks.schedule.exp_sched]
+
 """
 import math
 from functools import partial, wraps
@@ -59,7 +70,7 @@ def cos_1cycle_anneal(start, high, end):
 
 def combine_scheds(pcts, scheds):
     """
-    Combine muliple schedulers, each run for a given percentage of the
+    Combine multiple schedulers, each run for a given percentage of the
     training process.
     """
     assert len(pcts) == len(scheds), "Each scheduler should have its `pct`."
@@ -114,7 +125,18 @@ class ParamScheduler(Callback):
 
 
 class Scheduler(Callback):
-    """Base scheduler to change hyperparameters using `scheduler."""
+    """
+    Base scheduler to change hyperparameters using `scheduler`.
+    !!! note
+        Pytorch's schedulers take optimizer as the first argument.
+        Therefore, it is important to pass the scheduler that has all
+        its arguments already passed except the optimizer.
+        This will be done in `Scheduler`'s `before_fit` method.
+        For example:
+        ```python
+        Scheduler(partial(torch.opt.lr_schedule.OneCycleLR, max_lr=1e-2, total_steps=1000))
+        ```
+    """
 
     def __init__(self, scheduler) -> None:
         self.scheduler = scheduler
