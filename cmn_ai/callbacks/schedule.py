@@ -1,6 +1,6 @@
 """
-This module provides commonly used schedulers with hyperparameters such as
-learning rate.
+This module provides commonly used schedulers with hyperparameters such
+as learning rate.
 """
 import math
 from functools import partial, wraps
@@ -55,8 +55,8 @@ def cos_1cycle_anneal(start, high, end):
 
 def combine_scheds(pcts, scheds):
     """
-    Combine muliple schedulers, each run for a given percentage of the training
-    process.
+    Combine muliple schedulers, each run for a given percentage of the
+    training process.
     """
     assert len(pcts) == len(scheds), "Each scheduler should have its `pct`."
     assert sum(pcts) == 1.0, "Sum of the `pcts` should be equal to 1."
@@ -73,9 +73,26 @@ def combine_scheds(pcts, scheds):
 
 
 class ParamScheduler(Callback):
+    """
+    This class is used to schedule the values of hyperparameters during
+    the training process.
+    """
+
     order: int = 60
 
-    def __init__(self, pname, sched_funcs) -> None:
+    def __init__(
+        self, pname: str, sched_funcs: list[Callable] | tuple[Callable]
+    ) -> None:
+        """
+        Parameters
+        ----------
+        pname : str
+            The name of the hyperparameter to be scheduled.
+        sched_funcs : list[Callabel] | tuple[Callable]
+            A list or tuple of schedulers for each parameter group. Each
+            scheduler should accept a single argument (position) and
+            return a value for the hyperparameter.
+        """
         self.pname = pname
         self.sched_funcs = sched_funcs
 
