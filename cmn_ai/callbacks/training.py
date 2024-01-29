@@ -39,7 +39,6 @@ from ..plot import get_grid
 from ..utils.data import default_device, to_cpu, to_device
 from ..utils.utils import listify
 from .core import Callback, CancelFitException, CancelValidateException
-from .schedule import exp_sched
 
 
 class DeviceCallback(Callback):
@@ -82,7 +81,6 @@ class TrainEvalCallback(Callback):
         self.learner.training = False
 
 
-# FIXME: Looki like validate loss curve is not showing on the graph
 class ProgressCallback(Callback):
     """
     Track progress of training using progress bar as well as to plot
@@ -317,7 +315,7 @@ class LRFinder(Callback):
             self.tmp_d.cleanup()
 
 
-# TODO: Is it for X or potentially for everythin in the batch?
+# TODO: Is it for X or potentially for everything in the batch?
 #       If for X only, we need to change docstring and before_batch
 class BatchTransform(Callback):
     """
@@ -457,9 +455,23 @@ class Mixup(Callback):
         self.learner.loss_func = self.old_loss_func
 
     def before_batch(self) -> None:
-        λ = self.distrib.sample((len(self.learner.xb),)).to(
-            self.learner.xb[0].device
-        )
+        """
+        Steps taken before passing inputs to the model:
+
+        - Draw from a beta distribution a sample of size of `batch_size`.
+          Each image would have its own `λ`.
+        - To avoid having two images combined together with the same `λ`,
+          we take the max of `λ` and `1 - λ` so even if they were combined
+          together they would lead to a different image.
+        - Shuffle the batch before computing the linear combination.
+        - Change the batch input to be the linear combination of both the
+          original image and the shuffled images.
+
+        The loss would be the linear combination of the loss of the
+        original images with the original target and the shuffled image
+        with the shuffled target weighted by `λ`.
+        """
+        λ = self.distrib.sample((len(self.xb),)).to(self.xb[0].device)
         λ = torch.stack([λ, 1 - λ], dim=1)
         self.λ = λ.max(1)[0].view(-1, 1, 1, 1)
         shuffle = torch.randperm(len(self.xb[0]))
