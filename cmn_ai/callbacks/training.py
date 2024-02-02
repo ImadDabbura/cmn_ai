@@ -315,8 +315,6 @@ class LRFinder(Callback):
             self.tmp_d.cleanup()
 
 
-# TODO: Is it for X or potentially for everything in the batch?
-#       If for X only, we need to change docstring and before_batch
 class BatchTransform(Callback):
     """
     Transform X as a batch using `tfm` callable before every batch.
@@ -324,7 +322,8 @@ class BatchTransform(Callback):
 
     """
 
-    order = 2
+    # So transforms run on the device
+    order = DeviceCallback.order + 1
 
     def __init__(
         self, tfm: Callback, on_train: bool = True, on_valid: bool = True
