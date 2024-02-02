@@ -98,10 +98,10 @@ class ProgressCallback(Callback):
             Whether to plot train/valid losses during training.
         """
         self.plot = plot
-        self.train_losses = []
-        self.valid_losses = []
 
     def before_fit(self) -> None:
+        self.train_losses = []
+        self.valid_losses = []
         self.learner.epochs = self.mbar = master_bar(range(self.n_epochs))
         self.mbar.on_iter_begin()
         # Overwrite default learner logger
