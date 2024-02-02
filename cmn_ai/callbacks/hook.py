@@ -216,7 +216,7 @@ class HooksCallback(Callback):
 
     def before_fit(self) -> None:
         if self.modules is None:
-            self.modules = self.model.modules()
+            self.modules = self.model.children()
         self.hooks = Hooks(self.modules, self._hookfunc, self.is_forward)
 
     def _hookfunc(self, *args, **kwargs):
