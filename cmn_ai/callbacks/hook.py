@@ -260,11 +260,10 @@ class ActivationStats(HooksCallback):
         bins_range : Iterable, default=(0, 10)
             Lower/Upper end of the histogram's bins range.
         """
-        self.bins_range = bins_range
         super().__init__(
             partial(compute_stats, bins=bins, bins_range=bins_range),
-            is_forward=is_forward,
             modules=modules,
+            is_forward=is_forward,
         )
 
     def plot_hist(self, figsize=(11, 5)) -> None:
@@ -295,7 +294,7 @@ class ActivationStats(HooksCallback):
         """
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flatten(), self):
-            ax.plot(get_min(h, self.bins_range))
+            ax.plot(get_min(h, bins_range))
             ax.set_ylim(0, 1)
 
     def plot_stats(self, figsize=(10, 4)) -> None:
