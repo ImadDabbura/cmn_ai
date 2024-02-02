@@ -1,14 +1,15 @@
 """
-Hooks are very useful to inspect what is happening during the forward and
-backward passes such as computing stats of the activations and gradients.
+Hooks are very useful to inspect what is happening during the forward
+and backward passes such as computing stats of the activations and
+gradients.
 
 The module contains the following classes:
 
 - `Hook`: Registers forward or backward hook for a single module
 - `Hooks`: Registers forward or backward hook for multiple modules
 - `HooksCallback`: Use callbacks to register and manage hooks
-- `ActivationStats`: Computes means/stds for either activation or gradients
-    and plot the computed stats.
+- `ActivationStats`: Computes means/stds for either activation or
+    gradients and plot the computed stats.
 """
 from __future__ import annotations
 
@@ -29,15 +30,6 @@ from .core import Callback
 class Hook:
     """
     Register either a forward or a backward hook on the module.
-
-    Parameters
-    ----------
-    module : nn.Module
-        The module to register the hook on.
-    func : Callable
-        The hook to be registered.
-    is_forward : bool, default=True
-        Whether to register `func` as a forward or backward hook.
     """
 
     def __init__(
@@ -47,6 +39,16 @@ class Hook:
         is_forward: bool = True,
         **kwargs,
     ) -> None:
+        """
+        Parameters
+        ----------
+        module : nn.Module
+            The module to register the hook on.
+        func : Callable
+            The hook to be registered.
+        is_forward : bool, default=True
+            Whether to register `func` as a forward or backward hook.
+        """
         self.is_forward = is_forward
         if self.is_forward:
             self.hook = module.register_forward_hook(
@@ -71,19 +73,8 @@ class Hook:
 
 
 class Hooks:
-    """"""
-
     """
     Register hooks on all modules.
-
-    Parameters
-    ----------
-    modules : nn.Module or Iterable[nn.Module]
-        The module to register the hook on.
-    func : Callable
-        The hook to be registered.
-    is_forward : bool, default=True
-        Whether to register `func` as a forward or backward hook.
     """
 
     def __init__(
@@ -93,6 +84,16 @@ class Hooks:
         is_forward: bool = True,
         **kwargs,
     ) -> None:
+        """
+        Parameters
+        ----------
+        modules : nn.Module or Iterable[nn.Module]
+            The module to register the hook on.
+        func : Callable
+            The hook to be registered.
+        is_forward : bool, default=True
+            Whether to register `func` as a forward or backward hook.
+        """
         self.hooks = [
             Hook(module, func, is_forward, **kwargs) for module in modules
         ]
@@ -184,20 +185,7 @@ def get_min(hook: Hook, bins_range: list | tuple) -> Tensor:
 
 class HooksCallback(Callback):
     """
-    Base call to run hooks on modules as a callback.
-
-    Parameters
-    ----------
-    hookfunc : Callable
-        The hook to be registered.
-    on_train : bool, default=True
-        Whether to run the hook on modules during training.
-    on_valid : bool, default=False
-        Whether to run the hook on modules during validation.
-    modules : nn.Module | Iterable[nn.Module] | None, default=None
-        Modules to register the hook on. Default to all modules.
-    is_forward : bool, default=True
-        Whether to register `func` as a forward or backward hook.
+    Base class to run hooks on modules as a callback.
     """
 
     def __init__(
@@ -208,6 +196,20 @@ class HooksCallback(Callback):
         modules: nn.Module | Iterable[nn.Module] | None = None,
         is_forward: bool = True,
     ) -> None:
+        """
+        Parameters
+        ----------
+        hookfunc : Callable
+            The hook to be registered.
+        on_train : bool, default=True
+            Whether to run the hook on modules during training.
+        on_valid : bool, default=False
+            Whether to run the hook on modules during validation.
+        modules : nn.Module | Iterable[nn.Module] | None, default=None
+            Modules to register the hook on. Default to all modules.
+        is_forward : bool, default=True
+            Whether to register `func` as a forward or backward hook.
+        """
         self.hookfunc = hookfunc
         self.on_train = on_train
         self.on_valid = on_valid
@@ -239,17 +241,6 @@ class ActivationStats(HooksCallback):
     """
     Plot the means, std, histogram, and dead activations of all modules'
     activations if `is_forward` else gradients.
-
-    Parameters
-    ----------
-    modules : nn.Module | Iterable[nn.Module] | None, default=None
-        Modules to register the hook on. Default to all modules.
-    is_forward : bool, default=True
-        Whether to register `func` as a forward or backward hook.
-    bins : int, default=40
-        Number of histogram bins.
-    bins_range : Iterable, default=(0, 10)
-        lower/upper end of the histogram's bins range.
     """
 
     def __init__(
@@ -259,6 +250,18 @@ class ActivationStats(HooksCallback):
         bins: int = 40,
         bins_range: list | tuple = (0, 10),
     ) -> None:
+        """
+        Parameters
+        ----------
+        modules : nn.Module | Iterable[nn.Module] | None, default=None
+            Modules to register the hook on. Default to all modules.
+        is_forward : bool, default=True
+            Whether to register `func` as a forward or backward hook.
+        bins : int, default=40
+            Number of histogram bins.
+        bins_range : Iterable, default=(0, 10)
+            Lower/Upper end of the histogram's bins range.
+        """
         self.bins_range = bins_range
         super().__init__(
             partial(compute_stats, bins=bins, bins_range=bins_range),
@@ -267,17 +270,46 @@ class ActivationStats(HooksCallback):
         )
 
     def plot_hist(self, figsize=(11, 5)) -> None:
+        """
+        Plot histogram of activations/gradients as a heatmap.
+
+        Parameters
+        ----------
+        figsize : tuple, de
+            Width, height of the heatmap figure.
+        """
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flat, self):
-            show_image(get_hist(h), ax, origin="lower")
+            show_image(get_hist(h), ax, origin="lower", cmap="viridis")
 
-    def dead_chart(self, figsize=(11, 5)) -> None:
+    def dead_chart(self, bins_range, figsize=(11, 5)) -> None:
+        """
+        Plot a line chart of the "dead" activations percentage from all
+        activations.
+
+        Parameters
+        ----------
+        bins_range : list | tuple
+            Bins range around zero. Bins that are considered dead
+            activations/gradients.
+        figsize : tuple, default=(11, 5)
+            Width, height of the figure.
+        """
         _, axes = get_grid(len(self), figsize=figsize)
         for ax, h in zip(axes.flatten(), self):
             ax.plot(get_min(h, self.bins_range))
             ax.set_ylim(0, 1)
 
     def plot_stats(self, figsize=(10, 4)) -> None:
+        """
+        Plot means of standard deviation of activations/gradients for
+        each layer that has a registered hook.
+
+        Parameters
+        ----------
+        figsize : tuple, default=(10, 4)
+            Width, height of the figure.
+        """
         _, axes = plt.subplots(1, 2, figsize=figsize)
         for h in self:
             axes[0].plot(h.stats[0])
