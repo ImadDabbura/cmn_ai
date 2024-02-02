@@ -16,11 +16,9 @@ from __future__ import annotations
 from functools import partial
 from typing import Callable, Iterable, Iterator
 
-import fastcore.all as fc
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
-from matplotlib.image import AxesImage
 from torch import Tensor
 
 from ..plot import get_grid, show_image
@@ -320,4 +318,4 @@ class ActivationStats(HooksCallback):
         axes[1].set_title(
             f"Stdevs of {'activations' if self.is_forward else 'gradients'}"
         )
-        plt.legend(fc.L.range(self))
+        plt.legend(range(len(self)))
