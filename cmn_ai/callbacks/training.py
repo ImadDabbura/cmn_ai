@@ -52,6 +52,8 @@ class DeviceCallback(Callback):
 
     def before_batch(self) -> None:
         self.learner.batch = to_device(self.batch, self.device)
+        self.learner.xb = self.batch[: self.n_inp]
+        self.learner.yb = self.batch[self.n_inp :]
 
 
 class TrainEvalCallback(Callback):
@@ -319,7 +321,6 @@ class BatchTransform(Callback):
     """
     Transform X as a batch using `tfm` callable before every batch.
     Apply transformation `tfm` on the batch as a whole.
-
     """
 
     # So transforms run on the device
@@ -347,6 +348,8 @@ class BatchTransform(Callback):
             self.on_valid and not self.training
         ):
             self.learner.batch = self.tfm(self.batch)
+            self.learner.xb = self.batch[: self.n_inp]
+            self.learner.yb = self.batch[self.n_inp :]
 
 
 class SingleBatchCallback(Callback):
