@@ -474,3 +474,33 @@ class Learner:
             verbose=verbose,
             **kwargs,
         )
+
+    def show_batch(
+        self,
+        sample_sz: int = 1,
+        callbacks: Iterable[Callable] | None = None,
+        **kwargs,
+    ):
+        """
+        Show `sample_sz` batch of input. The input would be what the
+        model would see when making predictions. Therefore, all
+        transformations and other augmentation will be applied to the
+        input.
+
+
+        Parameters
+        ----------
+        sample_sz : int, default=1
+            Number of input samples to show.
+        callbacks : Iterable[Callback] | None, default=None
+            Callbacks to add to the existing callbacks. The added
+            callbacks will be removed  before `show_batch` returns.
+
+        Raises
+        ------
+        NotImplementedError
+            Different types of `Learner`'s must implement their own
+            version depending on the type of input data. For example,
+            `VisionLearner`'s would show images.
+        """
+        raise NotImplementedError()
