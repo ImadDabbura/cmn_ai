@@ -8,6 +8,7 @@ nav:
       - Preprocessing: tabular/preprocessing.md
     - Vision:
       - Data: vision/data.md
+      - Core: vision/core.md
     - Text:
       - Data: text/data.md
     - Callbacks:
