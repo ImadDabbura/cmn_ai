@@ -151,9 +151,6 @@ class Scheduler(Callback):
 class BatchScheduler(Scheduler):
     """Change hyperparameters after every batch using `scheduler`."""
 
-    def __init__(self, scheduler) -> None:
-        super().__init__(scheduler)
-
     def after_batch(self) -> None:
         if self.training:
             self.step()
