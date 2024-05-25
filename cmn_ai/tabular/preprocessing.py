@@ -3,6 +3,7 @@ Most datasets need to be preprocessed/transformed before they can be passed to
 the model. This module includes common transformers that are compatible with
 [`sklearn`](www.scikit-learn.org) `Pipeline` or `ColumnTransformer`.
 """
+
 from __future__ import annotations
 
 from itertools import product

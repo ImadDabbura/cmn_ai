@@ -57,9 +57,7 @@ def reduce_loss(
     return (
         loss.mean()
         if reduction == "mean"
-        else loss.sum()
-        if reduction == "sum"
-        else loss
+        else loss.sum() if reduction == "sum" else loss
     )
 
 

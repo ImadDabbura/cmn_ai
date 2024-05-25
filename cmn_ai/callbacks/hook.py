@@ -11,6 +11,7 @@ The module contains the following classes:
 - `ActivationStats`: Computes means/stds for either activation or
     gradients and plot the computed stats.
 """
+
 from __future__ import annotations
 
 from functools import partial

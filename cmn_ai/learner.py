@@ -71,6 +71,7 @@ the next one
 before proceeding to `after_fit`
 - `after_fit`: called at the end of training, for any final clean-up
 """
+
 from __future__ import annotations
 
 import pickle

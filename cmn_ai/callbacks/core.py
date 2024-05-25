@@ -2,6 +2,7 @@
 The main module that has the definition of the `Callback` base class as
 well as all the Exceptions that a callback may raise.
 """
+
 import re
 from typing import Any
 

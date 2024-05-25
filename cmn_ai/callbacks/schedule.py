@@ -17,6 +17,7 @@ pass it any callable that takes the position and returns the
 hyperparameter value such as [exp_sched][cmn_ai.callbacks.schedule.exp_sched]
 
 """
+
 import math
 from functools import partial, wraps
 from typing import Callable
