@@ -224,16 +224,16 @@ class Learner:
                 ProgressCallback(),
                 Recorder("lr"),
             ]
-        self.add_callbacks(callbacks)
+        self._add_callbacks(callbacks)
 
     def _with_events(self, func, event_nm, exc):
         try:
-            self.callback(f"before_{event_nm}")
+            self._callback(f"before_{event_nm}")
             func()
         except exc:
-            self.callback(f"after_cancel_{event_nm}")
+            self._callback(f"after_cancel_{event_nm}")
         finally:
-            self.callback(f"after_{event_nm}")
+            self._callback(f"after_{event_nm}")
 
     def _backward(self):
         self.loss.backward()
@@ -243,9 +243,9 @@ class Learner:
 
     def _one_batch(self):
         self.preds = self.model(*self.xb)
-        self.callback("after_predict")
+        self._callback("after_predict")
         self.loss = self.loss_func(self.preds, *self.yb)
-        self.callback("after_loss")
+        self._callback("after_loss")
         if self.training:
             self._with_events(
                 self._backward, "backward", CancelBackwardException
@@ -315,7 +315,7 @@ class Learner:
         """
         self.run_train = run_train
         self.run_valid = run_valid
-        callbacks = self.add_callbacks(callbacks)
+        callbacks = self._add_callbacks(callbacks)
         self.n_epochs = n_epochs
         if lr is None:
             lr = self.lr
@@ -324,7 +324,7 @@ class Learner:
         try:
             self._with_events(self._fit, "fit", CancelFitException)
         finally:
-            self.remove_callbacks(callbacks)
+            self._remove_callbacks(callbacks)
 
     def lr_find(
         self,
@@ -441,7 +441,7 @@ class Learner:
     def training(self, v) -> None:
         self.model.training = v
 
-    def add_callbacks(self, cbs):
+    def _add_callbacks(self, cbs):
         added_callbacks = []
         for cb in listify(cbs):
             if not hasattr(self, cb.name):
@@ -451,12 +451,12 @@ class Learner:
                 added_callbacks.append(cb)
         return added_callbacks
 
-    def remove_callbacks(self, cbs):
+    def _remove_callbacks(self, cbs):
         for cb in listify(cbs):
             delattr(self, cb.name)
             self.callbacks.remove(cb)
 
-    def callback(self, event_nm):
+    def _callback(self, event_nm):
         for cb in sorted(self.callbacks, key=lambda x: x.order):
             cb(event_nm)
 
