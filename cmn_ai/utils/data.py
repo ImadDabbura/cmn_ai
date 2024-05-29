@@ -384,7 +384,7 @@ def grandparent_splitter(
     gp = Path(f_name).parent.parent.name
     if gp == valid_name:
         return True
-    elif gp == train_name:
+    if gp == train_name:
         return False
     return
 

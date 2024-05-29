@@ -29,11 +29,11 @@ def listify(obj: Any) -> list:
     """
     if obj is None:
         return []
-    elif isinstance(obj, list):
+    if isinstance(obj, list):
         return obj
-    elif isinstance(obj, str):
+    if isinstance(obj, str):
         return [obj]
-    elif isinstance(obj, Iterable):
+    if isinstance(obj, Iterable):
         return list(obj)
     return [obj]
 
