@@ -45,7 +45,13 @@ from .core import Callback, CancelFitException, CancelValidateException
 class DeviceCallback(Callback):
     """Move batch and model to `device`."""
 
-    def __init__(self, device: torch.device = default_device) -> None:
+    def __init__(self, device: str | torch.device = default_device) -> None:
+        """
+        Parameters
+        ----------
+        device : str | torch.device
+            Device to copy batch to.
+        """
         self.device = device
 
     def before_fit(self) -> None:

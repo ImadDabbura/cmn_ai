@@ -45,7 +45,7 @@ def get_dls(
 
 def to_device(
     x: Tensor | Iterable[Tensor] | Mapping[str, Tensor],
-    device: str = default_device,
+    device: str | torch.device = default_device,
 ):
     """
     Copy tensor(s) to device. If the tensor is already on the device,
@@ -55,7 +55,7 @@ def to_device(
     ----------
     x : Tensor | Iterable[Tensor] | Mapping[str, Tensor]
         Tensor or collection of tensors to move to device.
-    device : str, default='cuda:0` if available else 'cpu'
+    device : str | torch.device, default='cuda:0` if available else 'cpu'
         Device to copy the tensor to.
 
     Returns
@@ -112,13 +112,13 @@ def collate_dict(ds: DatasetDict) -> Callable:
     return _f
 
 
-def collate_device(device: torch.device) -> Callable:
+def collate_device(device: str | torch.device) -> Callable:
     """
     Collate inputs from batch and copy it to `device`.
 
     Parameters
     ----------
-    device : torch.device
+    device : str | torch.device
         Device to copy batch to.
 
     Returns
