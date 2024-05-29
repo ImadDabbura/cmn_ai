@@ -326,7 +326,7 @@ class LRFinder(Callback):
 
 class BatchTransform(Callback):
     """
-    Transform X as a batch using `tfm` callable before every batch.
+    Transform batch using `tfm` callable before every batch.
     Apply transformation `tfm` on the batch as a whole.
     """
 
@@ -357,6 +357,38 @@ class BatchTransform(Callback):
             self.learner.batch = self.tfm(self.batch)
             self.learner.xb = self.batch[: self.n_inp]
             self.learner.yb = self.batch[self.n_inp :]
+
+
+class BatchTransformX(Callback):
+    """
+    Transform X using `tfm` callable before every batch.
+    Apply transformation `tfm` on the batch as a whole.
+    """
+
+    order = DeviceCallback.order + 1
+
+    def __init__(
+        self, tfm: Callback, on_train: bool = True, on_valid: bool = True
+    ) -> None:
+        """
+        Parameters
+        ----------
+        tfm : Callback
+            Transformation to apply on the batch.
+        on_train : bool, default=True
+            Whether to apply the transformation during training.
+        on_valid : bool, default=True
+            Whether to apply the transformation during validation.
+        """
+        self.tfm = tfm
+        self.on_train = on_train
+        self.on_valid = on_valid
+
+    def before_batch(self) -> None:
+        if (self.on_train and self.training) or (
+            self.on_valid and not self.training
+        ):
+            self.learner.xb = self.tfm(self.xb)
 
 
 class SingleBatchCallback(Callback):
