@@ -78,7 +78,6 @@ import pickle
 from collections.abc import Callable, Iterable
 from pathlib import Path
 
-import fastcore.all as fc
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -217,7 +216,7 @@ class Learner:
         self.path = Path(path)
         self.model_dir_path = self.path / Path(model_dir)
         self.logger = print
-        self.callbacks = fc.L()
+        self.callbacks = []
         if default_callbacks:
             callbacks = listify(callbacks) + [
                 TrainEvalCallback(),
