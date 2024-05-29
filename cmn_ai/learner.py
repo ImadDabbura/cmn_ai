@@ -156,7 +156,9 @@ class Learner:
         Logger to log metrics. Default is `print` but is typically
         modified by callbacks such as `ProgressCallback`.
     callbacks: list[Callback]
-        List of all the used callbacks by `learner.`
+        List of all the used callbacks by `learner`. \
+        [`TrainEvalCallback`][cmn_ai.callbacks.training.TrainEvalCallback] is
+        added by `learner`, so no need to add it.
     """
 
     def __init__(
@@ -173,7 +175,6 @@ class Learner:
         path: str | Path = ".",
         model_dir: str = "models",
         callbacks: Iterable[Callback] | None = None,
-        default_callbacks: bool = True,
     ) -> None:
         """
         Parameters
@@ -201,9 +202,6 @@ class Learner:
             Model directory name relative to `path`.
         callbacks : Iterable[Callable] | None, default=None
             Iterable of callbacks of type `Callback`.
-        default_callbacks : bool, default=True
-            Whether to add `TrainEvalCallback`, `ProgressCallback`, and
-            `Recorder` to the list of callbacks.
         """
         self.model = model
         self.dls = dls
@@ -217,12 +215,9 @@ class Learner:
         self.model_dir_path = self.path / Path(model_dir)
         self.logger = print
         self.callbacks = []
-        if default_callbacks:
-            callbacks = listify(callbacks) + [
-                TrainEvalCallback(),
-                ProgressCallback(),
-                Recorder("lr"),
-            ]
+        callbacks = listify(callbacks) + [
+            TrainEvalCallback(),
+        ]
         self._add_callbacks(callbacks)
 
     def _with_events(self, func, event_nm, exc):
@@ -260,12 +255,10 @@ class Learner:
             self._with_events(self._one_batch, "batch", CancelBatchException)
 
     def _one_epoch_train(self):
-        self.model.train()
         self.dl = self.dls.train
         self._with_events(self._all_batches, "train", CancelTrainException)
 
     def _one_epoch_validate(self):
-        self.model.eval()
         self.dl = self.dls.valid
         with torch.no_grad():
             self._with_events(
