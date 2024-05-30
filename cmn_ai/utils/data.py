@@ -155,7 +155,8 @@ class DataLoaders:
         Parameters
         ----------
         dd : DatasetDict
-            HF Dataset dictionary.
+            HF Dataset dictionary. Must have at least two datasets: train and
+            valid/test datasets.
         batch_size : int
             batch size passed to DataLoader.
 
@@ -166,11 +167,6 @@ class DataLoaders:
         """
         return cls(
             *get_dls(
-                # TODO: dd may have other than train and valid datasets
-                # and may also have only one train dataset
-                # Either enforce at least two splits to be provided OR
-                # restrict to the first two as train and valid OR make
-                # the class/function more flexible
                 *dd.values(),
                 batch_size=batch_size,
                 collate_fn=collate_dict(dd["train"]),
