@@ -405,6 +405,19 @@ class SingleBatchCallback(Callback):
         raise CancelFitException()
 
 
+class SingleBatchForwardCallback(Callback):
+    """
+    Run 1 training/validation batch and stop after forward pass (after
+    computing loss) by raising `CancelFitException`. Useful for debugging
+    or want to check few parameters after 1 batch.
+    """
+
+    order = 1
+
+    def after_loss(self) -> None:
+        raise CancelFitException()
+
+
 class MetricsCallback(Callback):
     """
     Compute/update given metrics and log it using `learner` defined logger

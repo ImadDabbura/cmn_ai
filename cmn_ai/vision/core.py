@@ -1,6 +1,6 @@
 import fastcore.all as fc
 
-from ..callbacks.training import SingleBatchCallback
+from ..callbacks.training import SingleBatchForwardCallback
 from ..learner import Learner
 from ..plot import show_images
 from ..utils.utils import listify
@@ -24,5 +24,7 @@ class VisionLearner(Learner):
             Callbacks to add to the existing callbacks. The added
             callbacks will be removed  before `show_batch` returns.
         """
-        self.fit(1, callbacks=[SingleBatchCallback()] + listify(callbacks))
+        self.fit(
+            1, callbacks=[SingleBatchForwardCallback()] + listify(callbacks)
+        )
         show_images(self.xb[0][:sample_sz], **kwargs)
