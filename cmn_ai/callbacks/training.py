@@ -322,6 +322,7 @@ class LRFinder(Callback):
         if tmp_f.exists():
             self.load_model(tmp_f, with_opt=True)
             self.tmp_d.cleanup()
+        self.recorder.plot()
 
 
 class BatchTransform(Callback):

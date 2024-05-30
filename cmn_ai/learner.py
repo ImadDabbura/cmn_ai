@@ -352,7 +352,6 @@ class Learner:
             Recorder("lr"),
         ]
         self.fit(n_epochs, run_valid=False, callbacks=callbacks, lr=start_lr)
-        self.recorder.plot()
 
     def save_model(
         self,
