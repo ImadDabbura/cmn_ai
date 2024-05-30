@@ -23,6 +23,7 @@ import torch.nn as nn
 from torch import Tensor
 
 from ..plot import get_grid, show_image
+from ..utils.utils import listify
 from .core import Callback
 
 
@@ -78,7 +79,7 @@ class Hooks:
 
     def __init__(
         self,
-        modules: nn.Module | Iterable[nn.Module],
+        modules: Iterable[nn.Module],
         func: Callable,
         is_forward: bool = True,
         **kwargs,
@@ -86,7 +87,7 @@ class Hooks:
         """
         Parameters
         ----------
-        modules : nn.Module or Iterable[nn.Module]
+        modules : Iterable[nn.Module]
             The module to register the hook on.
         func : Callable
             The hook to be registered.
@@ -212,11 +213,11 @@ class HooksCallback(Callback):
         self.hookfunc = hookfunc
         self.on_train = on_train
         self.on_valid = on_valid
-        self.modules = modules
+        self.modules = listify(modules)
         self.is_forward = is_forward
 
     def before_fit(self) -> None:
-        if self.modules is None:
+        if not self.modules:
             self.modules = self.model.children()
         self.hooks = Hooks(self.modules, self._hookfunc, self.is_forward)
 
