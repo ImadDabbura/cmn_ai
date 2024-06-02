@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cmn-ai"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 authors = ["ImadDabbura <imad.dabbura@hotmail.com>"]
 readme = "README.md"
