@@ -19,7 +19,7 @@ jobs:
           cache: "poetry"
       - name: Build package
         run: poetry build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./dist
 
@@ -32,8 +32,8 @@ jobs:
       id-token: write
     steps:
       - name: Dowloand artifacts from build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages_dir: artifact/
+          packages-dir: artifact/
