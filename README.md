@@ -1,56 +1,82 @@
 # Welcome to `cmn_ai`
 
+[![Python Versions](https://img.shields.io/badge/python-_3.13-blue.svg)](https://www.python.org/downloads/)
+[![PyPI version](https://img.shields.io/pypi/v/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
+[![codecov](https://codecov.io/gh/imaddabbura/cmn_ai/branch/main/graph/badge.svg)](https://codecov.io/gh/imaddabbura/cmn_ai)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
-## Introduction
+---
 
-I am a big believer in **Boyd's Law**, which states that _speed of iteration beats quality of iteration_. Following this principle, I created `cmn_ai` to incorporate the most common tasks we encounter in ML/AI from data exploration to model development and training. Additionally, I baked into it some of the best practices I learned in my career so I don't have to repeat myself on every project I work on.
+# `cmn_ai`
 
-It is worth noting that the majority of the DL code such as [`Learner`](cmn_ai/learner.py) and callbacks assume that [`pytorch`](https://pytorch.org/) is used as the underlying DL library. Also, tabular data preprocessors/models are compatible with [`sklearn`](https://github.com/scikit-learn/scikit-learn) so they can be used easily with its `Pipeline` or `ColumnTransformer`.
+**A practical toolkit to accelerate your AI, Deep Learning, and Data Science workflows.**
 
-Given the nature of the progress in ML/AI, I will always keep adding more functionalities as time passes.
+`cmn_ai` is a Python library born from extensive, real-world experience in building and training machine learning models. It's designed to handle the most common and repetitive tasks in an ML/AI project, from data exploration to model deployment.
+
+This library is built on the principle of **Boyd's Law**: _speed of iteration beats quality of iteration_. By providing robust, reusable components, `cmn_ai` helps you move faster, experiment more, and deliver results sooner.
+
+## Key Features 🚀
+
+- **Accelerated Workflow**: Stop rewriting boilerplate code. `cmn_ai` provides ready-to-use modules for data preprocessing, model development, and training.
+- **Best Practices Baked-In**: Benefit from years of experience. The library incorporates proven software engineering and machine learning best practices so you can build high-quality models with confidence.
+- **PyTorch & Scikit-Learn Integration**: The deep learning modules, including the flexible `Learner` and callbacks, are built for **PyTorch**. The tabular data tools are fully compatible with **scikit-learn's** `Pipeline` and `ColumnTransformer`.
+- **Continuously Evolving**: The field of AI/ML moves fast, and so does `cmn_ai`. The library is actively maintained and updated with new functionalities.
+
+---
 
 ## Installation
 
-The easiest way to install `cmn_ai` is by using `pip`:
+The easiest way to get started is to install `cmn_ai` directly from PyPI:
 
 ```sh
 pip install cmn-ai
 ```
 
+---
+
 ## Documentation
 
-The official documentation is hosted on https://imaddabbura.github.io/cmn_ai/.
+For a deep dive into the library's components and for full API details, please visit the official documentation:
 
-## Development setup
+**[https://imaddabbura.github.io/cmn_ai/](https://imaddabbura.github.io/cmn_ai/)**
 
-The fastest way to setup the development environment is to use `poetry`. You can install `poetry` using `pip` (or `conda`).
+---
 
-```sh
-pip install poetry
-```
+## Development Setup
 
-Then install `cmn_ai` from source as follows:
+Interested in contributing or just want to explore the source code? The fastest way to set up a development environment is with **Poetry**.
 
-```sh
-git clone https://github.com/ImadDabbura/cmn_ai
-cd cmn_ai
-poetry install
-```
+1.  **Install Poetry:**
+    ```sh
+    pip install poetry
+    ```
+2.  **Clone the repository and install dependencies:**
+    ```sh
+    git clone https://github.com/ImadDabbura/cmn_ai
+    cd cmn_ai
+    poetry install
+    ```
 
-## Tests
+---
 
-To run tests, run the following command:
+## Running Tests
+
+To run the full test suite, use the following command:
 
 ```sh
 poetry run pytest
 ```
 
+---
+
 ## Contributing
 
-`cmn_ai` is not open now for contribution because there are some infrastructure work I need to finish to make it ready for more contributors.
+`cmn_ai` is not currently open for contributions, as there is some foundational infrastructure work that needs to be completed first. However, it will be open to the community in the future\! Please check back for updates on how to get involved.
+
+---
 
 ## License
 
-`cmn_ai` has Apache License, as found in the [LICENCE](LICENSE) file.
+`cmn_ai` is licensed under the Apache License, Version 2.0. You can find the full license text in the [LICENSE](LICENCE) file.
