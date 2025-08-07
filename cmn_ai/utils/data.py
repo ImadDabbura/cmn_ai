@@ -40,12 +40,31 @@ for common data processing tasks in machine learning workflows.
 
 Examples
 --------
->>> from cmn_ai.utils.data import get_dls, to_device
->>> train_ds = MyDataset(train_data)
->>> valid_ds = MyDataset(valid_data)
->>> train_dl, valid_dl = get_dls(train_ds, valid_ds, batch_size=32)
->>> batch = next(iter(train_dl))
->>> batch = to_device(batch, 'cuda')
+>>> from cmn_ai.utils.data import get_files, to_device, compose, SplitData, LabeledData
+>>> from cmn_ai.utils.data import ItemList, grandparent_splitter, parent_labeler
+>>> # File operations
+>>> files = get_files('./data', extensions=['.txt', '.csv'])
+>>> # Device operations
+>>> import torch
+>>> tensor = torch.randn(3, 3)
+>>> tensor_on_gpu = to_device(tensor, 'cuda')
+>>> # Function composition
+>>> def add_one(x): return x + 1
+>>> def multiply_two(x): return x * 2
+>>> result = compose(5, [add_one, multiply_two])  # Returns 12
+>>> # Data splitting
+>>> items = ItemList(['train/cat/1.jpg', 'valid/dog/2.jpg', 'train/cat/3.jpg'])
+>>> split_data = SplitData.split_by_func(items, grandparent_splitter)
+>>> print(f"Train: {len(split_data.train)}, Valid: {len(split_data.valid)}")
+>>> # Labeled data
+>>> x_items = ItemList(['image1.jpg', 'image2.jpg'])
+>>> y_items = ItemList(['cat', 'dog'])
+>>> labeled_data = LabeledData(x_items, y_items)
+>>> x, y = labeled_data[0]  # Returns ('image1.jpg', 'cat')
+>>> # Labeling with function
+>>> items = ItemList(['data/cat/1.jpg', 'data/dog/2.jpg'])
+>>> labeled = LabeledData.label_by_func(items, parent_labeler)
+>>> print(labeled.y[0], labeled.y[1])  # 'cat' 'dog'
 """
 
 from __future__ import annotations
