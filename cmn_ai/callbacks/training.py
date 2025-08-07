@@ -37,7 +37,7 @@ from torcheval.metrics import Mean
 
 from ..losses import NoneReduce, reduce_loss
 from ..plot import get_grid
-from ..utils.data import default_device, to_cpu, to_device
+from ..utils.data import DEFAULT_DEVICE, to_cpu, to_device
 from ..utils.utils import listify
 from .core import Callback, CancelFitException, CancelValidateException
 
@@ -45,7 +45,7 @@ from .core import Callback, CancelFitException, CancelValidateException
 class DeviceCallback(Callback):
     """Move batch and model to `device`."""
 
-    def __init__(self, device: str | torch.device = default_device) -> None:
+    def __init__(self, device: str | torch.device = DEFAULT_DEVICE) -> None:
         """
         Parameters
         ----------
