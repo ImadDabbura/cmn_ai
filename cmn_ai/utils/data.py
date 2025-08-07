@@ -40,17 +40,12 @@ for common data processing tasks in machine learning workflows.
 
 Examples
 --------
->>> from cmn_ai.utils.data import get_files, to_device, compose
->>> # File operations
->>> files = get_files('./data', extensions=['.txt', '.csv'])
->>> # Device operations
->>> import torch
->>> tensor = torch.randn(3, 3)
->>> tensor_on_gpu = to_device(tensor, 'cuda')
->>> # Function composition
->>> def add_one(x): return x + 1
->>> def multiply_two(x): return x * 2
->>> result = compose(5, [add_one, multiply_two])  # Returns 12
+>>> from cmn_ai.utils.data import get_dls, to_device
+>>> train_ds = MyDataset(train_data)
+>>> valid_ds = MyDataset(valid_data)
+>>> train_dl, valid_dl = get_dls(train_ds, valid_ds, batch_size=32)
+>>> batch = next(iter(train_dl))
+>>> batch = to_device(batch, 'cuda')
 """
 
 from __future__ import annotations
@@ -151,8 +146,10 @@ def to_device(
     if isinstance(x, torch.Tensor):
         return x.to(device)
     if isinstance(x, Mapping):
-        return {k: v.to(device) for k, v in x.items()}
-    return type(x)(to_device(o, device) for o in x)
+        return {k: to_device(v, device) for k, v in x.items()}
+    if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
+        return type(x)(to_device(o, device) for o in x)
+    return x
 
 
 def to_cpu(
@@ -394,7 +391,7 @@ def get_files(
     """
     Get filenames in path with specified extensions.
 
-    Get filenames in `path` that have extension in `extensions` starting
+    Get filenames in `path` that have extension `extensions` starting
     with `path` and optionally recurse to subdirectories.
 
     Parameters
