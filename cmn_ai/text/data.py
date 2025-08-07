@@ -78,6 +78,30 @@ class TextList(ItemList):
     >>> text_list = TextList.from_files('./data', tfms=preprocess)
     """
 
+    def __init__(
+        self,
+        items: Iterable,
+        path: str | Path = ".",
+        tfms: Callable | None = None,
+        encoding: str = "utf8",
+    ) -> None:
+        """
+        Initialize TextList with text files and configuration.
+
+        Parameters
+        ----------
+        items : Iterable
+            Items to create list from (typically file paths).
+        path : str or Path, default="."
+            Path of the items that were used to create the list.
+        tfms : callable, optional
+            Transformations to apply on text before returning them.
+        encoding : str, default="utf8"
+            Character encoding used to read text files.
+        """
+        super().__init__(items, path, tfms)
+        self.encoding = encoding
+
     @classmethod
     def from_files(
         cls,
@@ -134,9 +158,42 @@ class TextList(ItemList):
             encoding=encoding,
         )
 
-    def get(self, i):
-        """Returns text in the file as string if `i` is path to a file."""
-        if isinstance(i, Path):
-            with open(i, encoding=self.encoding) as f:
+    def get(self, item: Path | str) -> str:
+        """
+        Load and return text content from file path.
+
+        Reads a text file using the specified encoding and returns the
+        text content as a string. This method is called automatically
+        when accessing items from the TextList.
+
+        Parameters
+        ----------
+        item : Path or str
+            File path to the text file to load, or string content.
+
+        Returns
+        -------
+        str
+            Text content from the file.
+
+        Notes
+        -----
+        If the item is already a string, it is returned as-is. If it's
+        a file path, the file is read using the specified encoding.
+        If transformations are specified in the TextList, they will be
+        applied after loading.
+
+        Examples
+        --------
+        >>> text_list = TextList.from_files('./data')
+        >>> text = text_list.get(Path('./data/document.txt'))
+        >>> print(len(text))  # Number of characters
+        >>> # Direct string access
+        >>> text = text_list.get("Hello, world!")
+        >>> print(text)  # "Hello, world!"
+        """
+        path = Path(item)
+        if os.path.exists(path):
+            with open(item, encoding=self.encoding) as f:
                 return f.read()
-        return i
+        return item
