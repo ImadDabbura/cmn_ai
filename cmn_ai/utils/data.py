@@ -327,7 +327,7 @@ class DataLoaders:
             *get_dls(
                 *dd.values(),
                 batch_size=batch_size,
-                collate_fn=collate_dict(*dd["train"]),
+                collate_fn=collate_dict(*dd["train"].features),
                 **kwargs,
             )
         )
