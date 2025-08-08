@@ -198,7 +198,7 @@ class Recorder(Callback):
                     self.opt.param_groups, param_records
                 ):
                     param_record.append(pg[param])
-            self.losses.append(to_cpu(self.loss))
+            self.losses.append(to_cpu(self.loss.item()))
 
     def plot_params(
         self,
