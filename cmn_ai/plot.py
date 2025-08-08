@@ -2,6 +2,7 @@
 This module provides different plotting utilities that are commonly used in ML
 context such as plotting a grid of images or show a single image.
 """
+
 from __future__ import annotations
 
 import math
