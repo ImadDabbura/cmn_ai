@@ -415,7 +415,7 @@ class Learner:
         """
         if path is None:
             path = self.model_dir_path / "model"
-        checkpoint = torch.load(path)
+        checkpoint = torch.load(path, weights_only=False)
         self.model.load_state_dict(checkpoint["model_state_dict"])
         if with_opt:
             self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
