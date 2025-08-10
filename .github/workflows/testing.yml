@@ -26,5 +26,9 @@ jobs:
           cache: "poetry"
       - name: Install self
         run: poetry install
-      - name: Execute tests
-        run: poetry run pytest
+      - name: Run tests
+        run: poetry run pytest --cov --cov-branch --cov-report=xml
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
