@@ -1,23 +1,25 @@
 site_name: cmn_ai
 nav:
-    - Home: index.md
-    - Learner: learner.md
-    - Plotting: plot.md
-    - Tabular:
+  - Home: index.md
+  - Learner: learner.md
+  - Activations: activations.md
+  - Plotting: plot.md
+  - Tabular:
+      - Data: tabular/data.md
       - EDA: tabular/eda.md
       - Preprocessing: tabular/preprocessing.md
-    - Vision:
+  - Vision:
       - Data: vision/data.md
       - Core: vision/core.md
-    - Text:
+  - Text:
       - Data: text/data.md
-    - Callbacks:
+  - Callbacks:
       - Core: callbacks/core.md
       - Hooks: callbacks/hook.md
       - Training: callbacks/training.md
       - Schedule: callbacks/schedule.md
-    - Losses: losses.md
-    - Utils:
+  - Losses: losses.md
+  - Utils:
       - Data: utils/data.md
       - Processors: utils/processors.md
       - Utilities: utils/utils.md
@@ -31,51 +33,57 @@ plugins:
           options:
             show_source: false
             docstring_style: numpy
-            docstring_section_style: table
+            docstring_section_style: list
 
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: pymdownx.superfences.fence_code_format
 
 theme:
   name: material
   palette:
-  - media: '(prefers-color-scheme: light)'
-    scheme: default
-    primary: teal
-    accent: amber
-    toggle:
-      icon: material/lightbulb
-      name: Switch to light mode
-  - media: '(prefers-color-scheme: dark)'
-    scheme: slate
-    primary: teal
-    accent: amber
-    toggle:
-      icon: material/lightbulb-outline
-      name: Switch to dark mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
   features:
-  - search.suggest
-  - search.highlight
-  - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
   icon:
     repo: fontawesome/brands/github-alt
   language: en
 repo_name: ImadDabbura/cmn_ai
 repo_url: https://github.com/ImadDabbura/cmn_ai
-edit_uri: ''
+edit_uri: ""
 extra:
+  version:
+    provider: mike
   social:
-  - icon: fontawesome/brands/github-alt
-    link: https://github.com/ImadDabbura/cmn_ai
-  - icon: fontawesome/brands/twitter
-    link: https://twitter.com/ImadPhd
-  - icon: fontawesome/brands/linkedin
-    link: https://www.linkedin.com/in/imaddabbura/
-  - icon: fontawesome/brands/medium
-    link: https://medium.com/@ImadPhd
-  - icon: fontawesome/solid/globe
-    link: https://imaddabbura.github.io/
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/ImadDabbura/cmn_ai
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ImadPhd
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/imaddabbura/
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@ImadPhd
+    - icon: fontawesome/solid/globe
+      link: https://imaddabbura.github.io/
 watch:
   - .
