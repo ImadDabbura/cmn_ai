@@ -430,6 +430,7 @@ class HooksCallback(Callback):
         is_forward : bool, default=True
             Whether to register forward or backward hooks.
         """
+        super().__init__()
         self.hookfunc = hookfunc
         self.on_train = on_train
         self.on_valid = on_valid

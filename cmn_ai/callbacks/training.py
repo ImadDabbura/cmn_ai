@@ -264,6 +264,7 @@ class ProgressCallback(Callback):
         plot : bool, default=True
             Whether to plot train/valid losses during training.
         """
+        super().__init__()
         self.plot = plot
 
     def before_fit(self) -> None:
@@ -382,6 +383,7 @@ class Recorder(Callback):
         *params : tuple[str, ...]
             Parameter names to track (e.g., 'lr', 'momentum').
         """
+        super().__init__()
         self.params = listify(params)
         sns.set()
 
@@ -545,6 +547,7 @@ class LRFinder(Callback):
             Divergence threshold. If loss >= max_mult * minimum loss, stop
             training.
         """
+        super().__init__()
         self.gamma = gamma
         self.num_iter = num_iter
         self.stop_div = stop_div
@@ -631,6 +634,7 @@ class BatchTransform(Callback):
         on_valid : bool, default=True
             Whether to apply the transformation during validation.
         """
+        super().__init__()
         self.tfm = tfm
         self.on_train = on_train
         self.on_valid = on_valid
@@ -683,6 +687,7 @@ class BatchTransformX(Callback):
         on_valid : bool, default=True
             Whether to apply the transformation during validation.
         """
+        super().__init__()
         self.tfm = tfm
         self.on_train = on_train
         self.on_valid = on_valid
@@ -775,6 +780,7 @@ class MetricsCallback(Callback):
         **named_metrics : Any
             Named metrics to add.
         """
+        super().__init__()
         self.metrics = named_metrics
         for metric in metrics:
             self.metrics[type(metric).__name__] = metric
@@ -900,6 +906,8 @@ class Mixup(Callback):
         alpha : float, default=0.4
             Concentration parameter for Beta distribution.
         """
+        super().__init__()
+        self.alpha = alpha
         self.distrib = torch.distributions.beta.Beta(
             torch.tensor([alpha]), torch.tensor([alpha])
         )

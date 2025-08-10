@@ -336,6 +336,7 @@ class ParamScheduler(Callback):
             hyperparameter. If a single scheduler is provided, it will be applied
             to all parameter groups.
         """
+        super().__init__()
         self.pname = pname
         self.sched_funcs = sched_funcs
 
@@ -411,6 +412,7 @@ class Scheduler(Callback):
             The scheduler function to be used. Should accept an optimizer as
             its first argument and return a scheduler object.
         """
+        super().__init__()
         self.scheduler = scheduler
 
     def before_fit(self) -> None:

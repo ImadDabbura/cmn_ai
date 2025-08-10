@@ -172,6 +172,10 @@ class Callback:
 
     order: int = 0
 
+    def __init__(self):
+        """Initialize the callback."""
+        self.learner = None
+
     def set_learner(self, learner: Any) -> None:
         """
         Set the learner as an attribute so that callbacks can access
@@ -209,7 +213,18 @@ class Callback:
         AttributeError
             If the attribute is not found in the learner object.
         """
-        return getattr(self.learner, k)
+        try:
+            learner = getattr(self, "learner")
+        except AttributeError:
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute '{k}'"
+            )
+
+        if learner is None:
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute '{k}'"
+            )
+        return getattr(learner, k)
 
     @property
     def name(self) -> str:
