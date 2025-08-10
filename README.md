@@ -1,86 +1,277 @@
-# Welcome to `cmn_ai`
+# cmn_ai
+
+> A high-performance machine learning library for accelerating AI, Deep Learning, and Data Science workflows
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/ImadDabbura/cmn_ai/main/logo.png" width="300" height="200">
+  <img src="https://raw.githubusercontent.com/ImadDabbura/cmn_ai/main/logo.png" width="300" height="200" alt="cmn_ai logo">
 </p>
 
-[![Python Versions](https://img.shields.io/badge/python-_3.13-blue.svg)](https://www.python.org/downloads/)
+<div align="center">
+
+[![Python](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![PyPI version](https://img.shields.io/pypi/v/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
-[![codecov](https://codecov.io/gh/imaddabbura/cmn_ai/branch/main/graph/badge.svg)](https://codecov.io/gh/imaddabbura/cmn_ai)
+[![Downloads](https://img.shields.io/pypi/dm/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
+[![Coverage](https://codecov.io/gh/imaddabbura/cmn_ai/branch/main/graph/badge.svg)](https://codecov.io/gh/imaddabbura/cmn_ai)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
----
+[Installation](#installation) •
+[Quick Start](#quick-start) •
+[Documentation](https://imaddabbura.github.io/cmn_ai/) •
+[Examples](#examples) •
+[Contributing](#contributing)
 
-# `cmn_ai`
+</div>
 
-**A practical toolkit to accelerate your AI, Deep Learning, and Data Science workflows.**
+## Overview
 
-`cmn_ai` is a Python library born from extensive, real-world experience in building and training machine learning models. It's designed to handle the most common and repetitive tasks in an ML/AI project, from data exploration to model deployment.
+**cmn_ai** is a comprehensive Python machine learning library designed to accelerate AI, Deep Learning, and Data Science workflows. Built from extensive real-world experience, it provides robust, reusable components for PyTorch-based deep learning and scikit-learn compatible tabular data processing.
 
-This library is built on the principle of **Boyd's Law**: _speed of iteration beats quality of iteration_. By providing robust, reusable components, `cmn_ai` helps you move faster, experiment more, and deliver results sooner.
+The library follows **Boyd's Law** — _speed of iteration beats quality of iteration_ — enabling rapid experimentation and faster delivery of machine learning solutions.
 
-## Key Features 🚀
+## Key Features
 
-- **Accelerated Workflow**: Stop rewriting boilerplate code. `cmn_ai` provides ready-to-use modules for data preprocessing, model development, and training.
-- **Best Practices Baked-In**: Benefit from years of experience. The library incorporates proven software engineering and machine learning best practices so you can build high-quality models with confidence.
-- **PyTorch & Scikit-Learn Integration**: The deep learning modules, including the flexible `Learner` and callbacks, are built for **PyTorch**. The tabular data tools are fully compatible with **scikit-learn's** `Pipeline` and `ColumnTransformer`.
-- **Continuously Evolving**: The field of AI/ML moves fast, and so does `cmn_ai`. The library is actively maintained and updated with new functionalities.
+### 🚀 **Accelerated Development**
 
----
+- Pre-built modules eliminate boilerplate code
+- Flexible callback system for training customization
+- Seamless integration with existing workflows
+
+### 🎯 **Best Practices Built-In**
+
+- Years of ML engineering experience distilled into reusable components
+- Robust error handling and memory management
+- Consistent APIs across all modules
+
+### 🔧 **Framework Integration**
+
+- **Deep Learning**: Built on PyTorch with flexible `Learner` architecture
+- **Tabular ML**: Full scikit-learn `Pipeline` and `ColumnTransformer` compatibility
+- **Visualization**: Integrated plotting utilities for models and data
+
+### 📊 **Domain-Specific Tools**
+
+- **Vision**: Computer vision utilities with `VisionLearner` and batch visualization
+- **Text**: NLP preprocessing and dataset handling with `TextList`
+- **Tabular**: EDA tools and scikit-learn compatible transformers
 
 ## Installation
 
-The easiest way to get started is to install `cmn_ai` directly from PyPI:
+### From PyPI (Recommended)
 
-```sh
+```bash
 pip install cmn-ai
 ```
 
----
+### Development Installation
+
+```bash
+git clone https://github.com/ImadDabbura/cmn_ai.git
+cd cmn_ai
+pip install poetry
+poetry install
+```
+
+## Quick Start
+
+### Deep Learning with Learner
+
+```python
+from cmn_ai.learner import Learner
+from cmn_ai.callbacks import EarlyStoppingCallback
+
+# Create a learner with callbacks
+learner = Learner(model, dls, loss_func, opt_func)
+learner.add_callback(EarlyStoppingCallback(patience=5))
+
+# Train your model
+learner.fit(epochs=10, lr=1e-3)
+```
+
+### Vision Tasks
+
+```python
+from cmn_ai.vision import VisionLearner
+
+# Vision-specific learner with built-in utilities
+vision_learner = VisionLearner(model, dls, loss_func)
+vision_learner.show_batch()  # Visualize training data
+vision_learner.fit(epochs=20, lr=1e-4)
+```
+
+### Tabular Data Processing
+
+```python
+from cmn_ai.tabular import TabularProcessor
+from sklearn.pipeline import Pipeline
+
+# Scikit-learn compatible preprocessing
+processor = TabularProcessor()
+pipeline = Pipeline([("preprocess", processor), ("model", model)])
+pipeline.fit(X_train, y_train)
+```
+
+## Core Architecture
+
+### Learner System
+
+The `Learner` class provides a flexible foundation for training deep learning models with:
+
+- Exception-based callback system for fine-grained training control
+- Automatic mixed precision support
+- Built-in logging and metrics tracking
+- Memory optimization utilities
+
+### Callback Framework
+
+Fine-grained training control through exception-based callbacks:
+
+- `CancelBatchException`: Skip current batch
+- `CancelStepException`: Skip optimizer step
+- `CancelBackwardException`: Skip backward pass
+- `CancelEpochException`: Skip current epoch
+- `CancelFitException`: Stop training entirely
+
+### Modular Design
+
+```
+cmn_ai/
+├── learner.py          # Core Learner class
+├── callbacks/          # Training callbacks
+├── vision/            # Computer vision utilities
+├── text/              # NLP processing tools
+├── tabular/           # Traditional ML tools
+├── utils/             # Core utilities
+├── plot.py            # Visualization tools
+└── losses.py          # Custom loss functions
+```
+
+## Examples
+
+### Training Loop Customization
+
+```python
+from cmn_ai.callbacks import LRSchedulerCallback, MetricsCallback
+
+learner = Learner(model, dls, loss_func, opt_func)
+learner.add_callbacks(
+    [
+        LRSchedulerCallback(scheduler),
+        MetricsCallback(["accuracy", "f1_score"]),
+        EarlyStoppingCallback(patience=10),
+    ]
+)
+
+learner.fit(epochs=50, lr=1e-3)
+```
+
+### Custom Callback Creation
+
+```python
+from cmn_ai.callbacks import Callback
+
+
+class CustomCallback(Callback):
+    def after_batch(self):
+        if self.loss < self.threshold:
+            print(f"Threshold reached at batch {self.batch}")
+```
 
 ## Documentation
 
-For a deep dive into the library's components and for full API details, please visit the official documentation:
+**📖 [Full Documentation](https://imaddabbura.github.io/cmn_ai/)**
 
-**[https://imaddabbura.github.io/cmn_ai/](https://imaddabbura.github.io/cmn_ai/)**
+TODO:
 
----
+- [ ] [API Reference](https://imaddabbura.github.io/cmn_ai/api/)
+- [ ] [Tutorial Notebooks](https://imaddabbura.github.io/cmn_ai/tutorials/)
+- [ ] [Advanced Usage](https://imaddabbura.github.io/cmn_ai/advanced/)
 
-## Development Setup
+## Development
 
-Interested in contributing or just want to explore the source code? The fastest way to set up a development environment is with **Poetry**.
+### Setup Development Environment
 
-1.  **Install Poetry:**
-    ```sh
-    pip install poetry
-    ```
-2.  **Clone the repository and install dependencies:**
-    ```sh
-    git clone https://github.com/ImadDabbura/cmn_ai
-    cd cmn_ai
-    poetry install
-    ```
+```bash
+git clone https://github.com/ImadDabbura/cmn_ai.git
+cd cmn_ai
+poetry install
+```
 
----
+### Run Tests
 
-## Running Tests
-
-To run the full test suite, use the following command:
-
-```sh
+```bash
+# Full test suite
 poetry run pytest
+
+# With coverage
+poetry run pytest --cov=cmn_ai
+
+# Specific test file
+poetry run pytest tests/test_learner.py
+```
+
+### Code Quality
+
+```bash
+# Format code
+poetry run black .
+poetry run isort .
+
+# Run linting
+poetry run flake8
+
+# Run all pre-commit hooks
+pre-commit run --all-files
+```
+
+### Build Documentation
+
+```bash
+mkdocs serve    # Local development server
+mkdocs build    # Build documentation
+```
+
+## Requirements
+
+- **Python**: 3.13+
+- **Core Dependencies**: PyTorch, scikit-learn, NumPy, pandas
+- **Optional**: matplotlib, seaborn (for plotting)
+
+## Roadmap
+
+- [ ] Distributed training support
+- [ ] Additional vision architectures
+- [ ] Advanced NLP utilities
+- [ ] AutoML capabilities
+- [ ] Model deployment tools
+
+🙌 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+If you have suggestions for adding or removing projects, please fork the repo, make your changes, and create a pull request. You can also simply open an issue with the tag "enhancement".
+
+**Stay tuned for contribution guidelines!**
+
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).
+
+## Citation
+
+If you use cmn_ai in your research, please cite:
+
+```bibtex
+@software{cmn_ai,
+  title={cmn_ai: A Machine Learning Library for Accelerated AI Workflows},
+  author={Imad Dabbura},
+  url={https://github.com/ImadDabbura/cmn_ai},
+  year={2024}
+}
 ```
 
 ---
 
-## Contributing
-
-`cmn_ai` is not currently open for contributions, as there is some foundational infrastructure work that needs to be completed first. However, it will be open to the community in the future\! Please check back for updates on how to get involved.
-
----
-
-## License
-
-`cmn_ai` is licensed under the Apache License, Version 2.0. You can find the full license text in the [LICENSE](LICENCE) file.
+<div align="center">
+  <strong>Built with ❤️ for the ML community</strong>
+</div>
