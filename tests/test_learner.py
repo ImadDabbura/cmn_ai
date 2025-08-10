@@ -310,11 +310,16 @@ class TestLearnerModelSaving:
 
         # Save a model first
         learner.fit(n_epochs=1)
-        learner.save_model()
+
+        # Create the models directory and save with explicit path
+        (tmp_path / "models").mkdir(exist_ok=True)
+        model_path = tmp_path / "models" / "model"
+        learner.save_model(path=model_path)
 
         # Create new learner and load
         new_learner = Learner(SimpleModel(), learner.dls)
-        new_learner.load_model()
+        new_learner.path = tmp_path
+        new_learner.load_model(path=model_path)
 
         # Verify model state is loaded
         for p1, p2 in zip(
@@ -553,11 +558,18 @@ class TestLearnerIntegration:
         # Let's verify this is the expected behavior
         assert learner.training is False
 
-        # Save and load model
-        with patch("pathlib.Path.exists", return_value=True):
-            learner.save_model()
+        # Save and load model - use a temporary path to avoid directory issues
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            learner.path = temp_path
+            (temp_path / "models").mkdir(exist_ok=True)
+            model_path = temp_path / "models" / "model"
+            learner.save_model(path=model_path)
             new_learner = Learner(SimpleModel(), data_loaders)
-            new_learner.load_model()
+            new_learner.path = temp_path
+            new_learner.load_model(path=model_path)
 
     def test_learner_with_custom_loss_and_optimizer(
         self, simple_model, data_loaders
