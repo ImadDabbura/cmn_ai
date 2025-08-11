@@ -78,11 +78,11 @@ poetry install
 
 ```python
 from cmn_ai.learner import Learner
-from cmn_ai.callbacks import EarlyStoppingCallback
+from cmn_ai.callbacks.training import DeviceCallBack, Recorder
 
 # Create a learner with callbacks
-learner = Learner(model, dls, loss_func, opt_func)
-learner.add_callback(EarlyStoppingCallback(patience=5))
+learner = Learner(model, dls, loss_func, opt_func, callbacks=[Recorder("lr")])
+learner.add_callback(DeviceCallBack("cuda:0"))
 
 # Train your model
 learner.fit(epochs=10, lr=1e-3)
@@ -102,13 +102,16 @@ vision_learner.fit(epochs=20, lr=1e-4)
 ### Tabular Data Processing
 
 ```python
-from cmn_ai.tabular import TabularProcessor
+import pandas as pd
+from cmn_ai.tabular.preprocessing import DateTransformer
 from sklearn.pipeline import Pipeline
 
 # Scikit-learn compatible preprocessing
-processor = TabularProcessor()
-pipeline = Pipeline([("preprocess", processor), ("model", model)])
-pipeline.fit(X_train, y_train)
+x = pd.DataFrame(
+    pd.date_range(start=pd.to_datetime("1/1/2018"), end=pd.to_datetime("1/08/2018"))
+)
+tfm = DateTransformer(drop=False)
+tfm.fit_transform(X_train, y_train)
 ```
 
 ## Core Architecture
@@ -151,14 +154,19 @@ cmn_ai/
 ### Training Loop Customization
 
 ```python
-from cmn_ai.callbacks import LRSchedulerCallback, MetricsCallback
+from functools import partial
+from cmn_ai.callbacks.schedule import BatchScheduler
+from cmn_ai.callbacks.training import MetricsCallback, ProgressCallback
+from torcheval.metrics import MulticlassAccuracy
+import torch.optim as opt
 
+sched = partial(opt.lr_scheduler.OneCycleLR, max_lr=6e-2, total_steps=100)
 learner = Learner(model, dls, loss_func, opt_func)
 learner.add_callbacks(
     [
-        LRSchedulerCallback(scheduler),
-        MetricsCallback(["accuracy", "f1_score"]),
-        EarlyStoppingCallback(patience=10),
+        ProgressCallback(),
+        BatchScheduler(sched),
+        MetricsCallback(accuracy=MulticlassAccuracy(nm_classes=10)),
     ]
 )
 
@@ -181,7 +189,7 @@ class CustomCallback(Callback):
 
 **📖 [Full Documentation](https://imaddabbura.github.io/cmn_ai/)**
 
-TODO:
+**TODO**:
 
 - [ ] [API Reference](https://imaddabbura.github.io/cmn_ai/api/)
 - [ ] [Tutorial Notebooks](https://imaddabbura.github.io/cmn_ai/tutorials/)
@@ -213,14 +221,8 @@ poetry run pytest tests/test_learner.py
 ### Code Quality
 
 ```bash
-# Format code
-poetry run black .
-poetry run isort .
-
-# Run linting
-poetry run flake8
-
-# Run all pre-commit hooks
+# pre-commit will take care of all things formatting, linting, syntax errors,
+# tests, etc.
 pre-commit run --all-files
 ```
 
@@ -245,7 +247,7 @@ mkdocs build    # Build documentation
 - [ ] AutoML capabilities
 - [ ] Model deployment tools
 
-🙌 Contributing
+## 🙌 Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
