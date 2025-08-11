@@ -6,22 +6,12 @@
   <img src="https://raw.githubusercontent.com/ImadDabbura/cmn_ai/main/logo.png" width="300" height="200" alt="cmn_ai logo">
 </p>
 
-<div align="center">
-
 [![Python](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![PyPI version](https://img.shields.io/pypi/v/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
 [![Downloads](https://img.shields.io/pypi/dm/cmn_ai.svg)](https://pypi.org/project/cmn_ai/)
 [![Coverage](https://codecov.io/gh/imaddabbura/cmn_ai/branch/main/graph/badge.svg)](https://codecov.io/gh/imaddabbura/cmn_ai)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-
-[Installation](#installation) •
-[Quick Start](#quick-start) •
-[Documentation](https://imaddabbura.github.io/cmn_ai/) •
-[Examples](#examples) •
-[Contributing](#contributing)
-
-</div>
 
 ## Overview
 
