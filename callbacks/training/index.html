@@ -1,0 +1,4692 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../hook/">
+      
+      
+        <link rel="next" href="../schedule/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Training - cmn_ai</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cmn_ai.callbacks.training" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="cmn_ai" class="md-header__button md-logo" aria-label="cmn_ai" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            cmn_ai
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Training
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ImadDabbura/cmn_ai" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ImadDabbura/cmn_ai
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="cmn_ai" class="md-nav__button md-logo" aria-label="cmn_ai" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    cmn_ai
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ImadDabbura/cmn_ai" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ImadDabbura/cmn_ai
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Learner
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Activations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plotting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tabular
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tabular
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tabular/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tabular/eda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EDA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tabular/preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Preprocessing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Vision
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Vision
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vision/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vision/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Text
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Text
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../text/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Callbacks
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Callbacks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Training
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Training
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training" class="md-nav__link">
+    <span class="md-ellipsis">
+      training
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransform" class="md-nav__link">
+    <span class="md-ellipsis">
+      BatchTransform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BatchTransform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransform.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransform.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransformX" class="md-nav__link">
+    <span class="md-ellipsis">
+      BatchTransformX
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BatchTransformX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransformX.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransformX.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      DeviceCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DeviceCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      LRFinder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LRFinder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      MetricsCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MetricsCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.after_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.after_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_validate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mixup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mixup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.loss_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      loss_func
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModelResetter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModelResetter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProgressCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ProgressCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.after_epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_epoch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.set_pb" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_pb
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recorder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recorder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      plot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.plot_loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      plot_loss
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.plot_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      plot_params
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      SingleBatchCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SingleBatchCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchForwardCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      SingleBatchForwardCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SingleBatchForwardCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchForwardCallback.after_loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_loss
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      TrainEvalCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TrainEvalCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schedule
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../losses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Losses
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Utils
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/processors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Processors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training" class="md-nav__link">
+    <span class="md-ellipsis">
+      training
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransform" class="md-nav__link">
+    <span class="md-ellipsis">
+      BatchTransform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BatchTransform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransform.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransform.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransformX" class="md-nav__link">
+    <span class="md-ellipsis">
+      BatchTransformX
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BatchTransformX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransformX.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.BatchTransformX.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      DeviceCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DeviceCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.DeviceCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      LRFinder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LRFinder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.LRFinder.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      MetricsCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MetricsCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.after_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.after_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_validate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.MetricsCallback.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mixup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mixup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.before_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Mixup.loss_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      loss_func
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModelResetter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModelResetter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ModelResetter.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      ProgressCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ProgressCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.after_epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_epoch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.after_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.ProgressCallback.set_pb" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_pb
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recorder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recorder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      plot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.plot_loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      plot_loss
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.Recorder.plot_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      plot_params
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      SingleBatchCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SingleBatchCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchForwardCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      SingleBatchForwardCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SingleBatchForwardCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.SingleBatchForwardCallback.after_loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_loss
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      TrainEvalCallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TrainEvalCallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.after_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      after_batch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.before_fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.before_train" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_train
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.callbacks.training.TrainEvalCallback.before_validate" class="md-nav__link">
+    <span class="md-ellipsis">
+      before_validate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Training</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="cmn_ai.callbacks.training"></a>
+    <div class="doc doc-contents first">
+
+        <p>Training-related callbacks for customizing training and validation loops.</p>
+<p>This module provides a comprehensive collection of callbacks that enhance
+and customize the training process. These callbacks handle various aspects
+of training including device management, progress tracking, metrics computation,
+data augmentation, and learning rate optimization.</p>
+<p>The callbacks are designed to be easily composable and can be used together
+to create sophisticated training pipelines. Each callback has a specific
+execution order to ensure proper sequencing of operations.</p>
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="DeviceCallback (cmn_ai.callbacks.training.DeviceCallback)" href="#cmn_ai.callbacks.training.DeviceCallback">DeviceCallback</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Move model and data to specified device (CPU/GPU).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="TrainEvalCallback (cmn_ai.callbacks.training.TrainEvalCallback)" href="#cmn_ai.callbacks.training.TrainEvalCallback">TrainEvalCallback</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Track training progress and manage training/evaluation modes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="ProgressCallback (cmn_ai.callbacks.training.ProgressCallback)" href="#cmn_ai.callbacks.training.ProgressCallback">ProgressCallback</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Display progress bars and live loss plots during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="Recorder (cmn_ai.callbacks.training.Recorder)" href="#cmn_ai.callbacks.training.Recorder">Recorder</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Record training metrics and optimizer parameters for analysis.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="ModelResetter (cmn_ai.callbacks.training.ModelResetter)" href="#cmn_ai.callbacks.training.ModelResetter">ModelResetter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Reset model parameters at various training stages.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="LRFinder (cmn_ai.callbacks.training.LRFinder)" href="#cmn_ai.callbacks.training.LRFinder">LRFinder</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Find optimal learning rate using exponential scheduling.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="BatchTransform (cmn_ai.callbacks.training.BatchTransform)" href="#cmn_ai.callbacks.training.BatchTransform">BatchTransform</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Apply transformations to entire batches.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="BatchTransformX (cmn_ai.callbacks.training.BatchTransformX)" href="#cmn_ai.callbacks.training.BatchTransformX">BatchTransformX</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Apply transformations to input features only.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="SingleBatchCallback (cmn_ai.callbacks.training.SingleBatchCallback)" href="#cmn_ai.callbacks.training.SingleBatchCallback">SingleBatchCallback</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Run only one batch for debugging purposes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="SingleBatchForwardCallback (cmn_ai.callbacks.training.SingleBatchForwardCallback)" href="#cmn_ai.callbacks.training.SingleBatchForwardCallback">SingleBatchForwardCallback</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Run one batch and stop after forward pass.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="MetricsCallback (cmn_ai.callbacks.training.MetricsCallback)" href="#cmn_ai.callbacks.training.MetricsCallback">MetricsCallback</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Compute and log various metrics during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="Mixup (cmn_ai.callbacks.training.Mixup)" href="#cmn_ai.callbacks.training.Mixup">Mixup</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Implement mixup data augmentation technique.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Basic training with device management and progress tracking:</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.callbacks.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceCallback</span><span class="p">,</span> <span class="n">ProgressCallback</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.callbacks.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrainEvalCallback</span><span class="p">,</span> <span class="n">Recorder</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create callbacks</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">DeviceCallback</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">),</span>  <span class="c1"># Move to GPU</span>
+<span class="gp">... </span>    <span class="n">TrainEvalCallback</span><span class="p">(),</span>            <span class="c1"># Track progress</span>
+<span class="gp">... </span>    <span class="n">ProgressCallback</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>    <span class="c1"># Show progress bars</span>
+<span class="gp">... </span>    <span class="n">Recorder</span><span class="p">(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="s1">&#39;momentum&#39;</span><span class="p">)</span>      <span class="c1"># Record learning rate and momentum</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add to learner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">add_cbs</span><span class="p">(</span><span class="n">callbacks</span><span class="p">)</span>
+</code></pre></div>
+    <p>Learning rate finding:</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.callbacks.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">LRFinder</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Find optimal learning rate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lr_finder</span> <span class="o">=</span> <span class="n">LRFinder</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">num_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">stop_div</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">add_cb</span><span class="p">(</span><span class="n">lr_finder</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Run for 1 epoch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lr_finder</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># Plot lr vs loss</span>
+</code></pre></div>
+    <p>Data augmentation with mixup:</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.callbacks.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mixup</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Add mixup augmentation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mixup</span> <span class="o">=</span> <span class="n">Mixup</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">add_cb</span><span class="p">(</span><span class="n">mixup</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+    <p>Metrics tracking:</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">torcheval.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">MulticlassAccuracy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.callbacks.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetricsCallback</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Track accuracy during training</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">MulticlassAccuracy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics_cb</span> <span class="o">=</span> <span class="n">MetricsCallback</span><span class="p">(</span><span class="n">accuracy</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">add_cb</span><span class="p">(</span><span class="n">metrics_cb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+    <p>Debugging with single batch:</p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.callbacks.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingleBatchCallback</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Run only one batch for debugging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">debug_cb</span> <span class="o">=</span> <span class="n">SingleBatchCallback</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">add_cb</span><span class="p">(</span><span class="n">debug_cb</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Will stop after first batch</span>
+</code></pre></div>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="CancelFitException (cmn_ai.callbacks.core.CancelFitException)" href="../core/#cmn_ai.callbacks.core.CancelFitException">CancelFitException</a></code>
+            –
+          <div class="doc-md-description">
+            <p>Stop training and move to after_fit.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="CancelEpochException">CancelEpochException</span></code>
+            –
+          <div class="doc-md-description">
+            <p>Stop current epoch and move to after_epoch.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="CancelTrainException">CancelTrainException</span></code>
+            –
+          <div class="doc-md-description">
+            <p>Stop training current epoch and move to after_train.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="CancelValidException">CancelValidException</span></code>
+            –
+          <div class="doc-md-description">
+            <p>Stop validation phase and move after_validate.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="CancelBatchException">CancelBatchException</span></code>
+            –
+          <div class="doc-md-description">
+            <p>Stop current batch and move to after_batch.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="CancelStepException">CancelStepException</span></code>
+            –
+          <div class="doc-md-description">
+            <p>Skip stepping the optimizer.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="CancelBackwardException">CancelBackwardException</span></code>
+            –
+          <div class="doc-md-description">
+            <p>Skip the backward pass and move to after_backward.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <ul>
+<li>Callbacks are executed in order based on their <code>order</code> attribute</li>
+<li>Lower order numbers execute earlier</li>
+<li>Some callbacks modify the training loop behavior significantly</li>
+<li>Always test callbacks individually before combining them</li>
+<li>The <code>Recorder</code> callback is essential for post-training analysis</li>
+<li><code>LRFinder</code> should be used before full training to find optimal learning rate</li>
+</ul>
+</details>
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.BatchTransform" class="doc doc-heading">
+            <code>BatchTransform</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Apply transformations to entire batches before processing.</p>
+<p>This callback applies a transformation function to the entire batch
+before it's processed by the model. The transformation runs on the
+device where the data is located.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransform.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (DeviceCallback.order + 1).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransform.tfm">tfm</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Transformation function to apply.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransform.on_train">on_train</span></code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply transformation during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransform.on_valid">on_valid</span></code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply transformation during validation.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.BatchTransform.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">tfm</span><span class="p">,</span> <span class="n">on_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_valid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize BatchTransform.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>tfm</code></b>
+              (<code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Transformation function to apply on the batch.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>on_train</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply the transformation during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>on_valid</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply the transformation during validation.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.BatchTransform.before_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Apply transformation to batch if conditions are met.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.BatchTransformX" class="doc doc-heading">
+            <code>BatchTransformX</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Apply transformations to input features (X) only.</p>
+<p>This callback applies a transformation function specifically to the
+input features (X) of the batch, leaving the targets (Y) unchanged.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransformX.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (DeviceCallback.order + 1).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransformX.tfm">tfm</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Transformation function to apply.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransformX.on_train">on_train</span></code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply transformation during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.BatchTransformX.on_valid">on_valid</span></code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply transformation during validation.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.BatchTransformX.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">tfm</span><span class="p">,</span> <span class="n">on_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_valid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize BatchTransformX.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>tfm</code></b>
+              (<code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Transformation function to apply on the input features.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>on_train</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply the transformation during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>on_valid</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to apply the transformation during validation.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.BatchTransformX.before_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Apply transformation to input features if conditions are met.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.DeviceCallback" class="doc doc-heading">
+            <code>DeviceCallback</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Move batch and model to specified device.</p>
+<p>This callback ensures that both the model and input data are moved to
+the specified device (CPU/GPU) before training begins.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.DeviceCallback.device">device</span></code></b>
+              (<code><span title="str">str</span> | <span title="torch.device">device</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Device to copy batch and model to.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.DeviceCallback.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">DEFAULT_DEVICE</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize DeviceCallback.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>device</code></b>
+              (<code><span title="str">str</span> | <span title="torch.device">device</span></code>, default:
+                  <code>DEFAULT_DEVICE</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Device to copy batch and model to.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.DeviceCallback.before_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Move batch data to specified device before each batch.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.DeviceCallback.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Move model to specified device before training starts.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.LRFinder" class="doc doc-heading">
+            <code>LRFinder</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Find optimal learning rate using exponential schedule.</p>
+<p>This callback implements the learning rate finder technique from
+"Cyclical Learning Rates for Training Neural Networks". It tries
+different learning rates using an exponential schedule to help
+determine the best learning rate for training.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.LRFinder.gamma">gamma</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Multiplicative factor for learning rate increase.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.LRFinder.num_iter">num_iter</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Number of iterations to run the training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.LRFinder.stop_div">stop_div</span></code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to stop training if loss diverges.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.LRFinder.max_mult">max_mult</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Divergence threshold multiplier.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.LRFinder.scheduler">scheduler</span></code></b>
+              (<code><span title="torch.optim.lr_scheduler.ExponentialLR">ExponentialLR</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Learning rate scheduler.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.LRFinder.best_loss">best_loss</span></code></b>
+              (<code><span title="float">float</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Best loss encountered during training.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.LRFinder.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">num_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">stop_div</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_mult</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize LRFinder.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>gamma</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>1.3</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Multiplicative factor for learning rate increase.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>num_iter</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>100</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Number of iterations to run the training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>stop_div</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to stop training if loss diverges (loss &gt; 4 * best_loss).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>max_mult</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>4</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Divergence threshold. If loss &gt;= max_mult * minimum loss, stop
+training.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.LRFinder.after_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update best loss and check for divergence or completion.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.LRFinder.after_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Restore model state and plot learning rate vs loss.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.LRFinder.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set up learning rate scheduler and save initial model state.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.LRFinder.before_validate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_validate</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Skip validation during learning rate finding.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.MetricsCallback" class="doc doc-heading">
+            <code>MetricsCallback</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Compute and log metrics during training and validation.</p>
+<p>This callback computes various metrics after each training/validation
+epoch and logs them using the learner's logger. Metrics must implement
+<code>reset</code> and <code>compute</code> methods. It's recommended to use metrics from
+the <code>torcheval</code> package or inherit from its Metrics base class.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.MetricsCallback.metrics">metrics</span></code></b>
+              (<code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Dictionary of named metrics to compute.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.MetricsCallback.all_metrics">all_metrics</span></code></b>
+              (<code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>All metrics including loss metric.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.MetricsCallback.stats">stats</span></code></b>
+              (<code><span title="list">list</span>[<span title="str">str</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Current statistics to log.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.MetricsCallback.start_time">start_time</span></code></b>
+              (<code><span title="float">float</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Start time for timing calculations.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">metrics</span><span class="p">,</span> <span class="o">**</span><span class="n">named_metrics</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize MetricsCallback.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>*metrics</code></b>
+              (<code><span title="typing.Any">Any</span></code>, default:
+                  <code>()</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Positional metrics to add.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**named_metrics</code></b>
+              (<code><span title="typing.Any">Any</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Named metrics to add.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.after_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update metrics with batch predictions and targets.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.after_train" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_train</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute and log metrics after training epoch.</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Logged statistics string.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.after_validate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_validate</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute and log metrics after validation epoch.</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Logged statistics string.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Log metric names as header before training starts.</p>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Header string with metric names.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.before_train" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_train</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset metrics before training phase.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.MetricsCallback.before_validate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_validate</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset metrics before validation phase.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.Mixup" class="doc doc-heading">
+            <code>Mixup</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Implement mixup data augmentation technique.</p>
+<p>This callback implements the mixup technique where instead of feeding
+raw data to the model, it uses linear combinations of inputs using
+alpha from a beta distribution. The labels are also linear combinations
+of the original labels. Based on the paper "mixup: BEYOND EMPIRICAL
+RISK MINIMIZATION".</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Mixup.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (90).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Mixup.alpha">alpha</span></code></b>
+              (<code><span title="float">float</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Concentration parameter for Beta distribution.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Mixup.distrib">distrib</span></code></b>
+              (<code><span title="torch.distributions.beta.Beta">Beta</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Beta distribution for sampling mixup weights.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Mixup.old_loss_func">old_loss_func</span></code></b>
+              (<code><span title="Callable">Callable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Original loss function before mixup.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Mixup.λ">λ</span></code></b>
+              (<code><span title="torch.Tensor">Tensor</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Mixup weight for current batch.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Mixup.yb1">yb1</span></code></b>
+              (<code><span title="List">List</span>[<span title="torch.Tensor">Tensor</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Shuffled targets for mixup.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Mixup.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize Mixup.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>alpha</code></b>
+              (<code><span title="float">float</span></code>, default:
+                  <code>0.4</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Concentration parameter for Beta distribution.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Mixup.after_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Restore original loss function after training ends.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Mixup.before_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Apply mixup transformation to batch inputs and targets.</p>
+<p>The mixup process involves:
+1. Drawing samples from a beta distribution for each image
+2. Taking the maximum of λ and 1-λ to avoid identical combinations
+3. Shuffling the batch for combination
+4. Creating linear combinations of inputs and targets</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Mixup.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Store original loss function before training starts.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Mixup.loss_func" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">loss_func</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute mixup loss combining original and shuffled targets.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>pred</code></b>
+              (<code><span title="torch.Tensor">Tensor</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Model predictions.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>yb</code></b>
+              (<code><span title="torch.Tensor">Tensor</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Original targets.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="torch.Tensor">Tensor</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Mixup loss value.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.ModelResetter" class="doc doc-heading">
+            <code>ModelResetter</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Reset model parameters at various training stages.</p>
+<p>This callback is particularly useful for NLP models that need to reset
+hidden states. It assumes the model has a <code>reset</code> method that knows
+which parameters to reset and how.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ModelResetter.after_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset model after training ends.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ModelResetter.before_train" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_train</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset model before training phase.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ModelResetter.before_validate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_validate</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset model before validation phase.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.ProgressCallback" class="doc doc-heading">
+            <code>ProgressCallback</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Track training progress with progress bars and live loss plotting.</p>
+<p>This callback provides visual feedback during training by displaying
+progress bars and optionally plotting training and validation losses
+in real-time.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.ProgressCallback.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (-20).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.ProgressCallback.plot">plot</span></code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to plot train/valid losses during training.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.ProgressCallback.train_losses">train_losses</span></code></b>
+              (<code><span title="List">List</span>[<span title="float">float</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of training losses for plotting.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.ProgressCallback.valid_losses">valid_losses</span></code></b>
+              (<code><span title="List">List</span>[<span title="float">float</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of validation losses for plotting.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.ProgressCallback.mbar">mbar</span></code></b>
+              (<code><span title="fastprogress.fastprogress.master_bar">master_bar</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Master progress bar for epochs.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.ProgressCallback.pb">pb</span></code></b>
+              (<code><span title="fastprogress.fastprogress.progress_bar">progress_bar</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Progress bar for batches.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize ProgressCallback.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>plot</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to plot train/valid losses during training.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.after_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update progress bar and optionally plot losses after each batch.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.after_epoch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_epoch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update validation loss plot after each epoch.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.after_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Clean up progress bar after training ends.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize progress tracking and create progress bars.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.before_train" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_train</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set up progress bar before training phase.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.before_validate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_validate</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set up progress bar before validation phase.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.ProgressCallback.set_pb" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_pb</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create and configure progress bar for current phase.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.Recorder" class="doc doc-heading">
+            <code>Recorder</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Record training metrics and optimizer parameters for later analysis.</p>
+<p>This callback keeps track of losses and optimizer parameters (like
+learning rates) throughout training, enabling post-training analysis
+and visualization.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Recorder.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (50).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Recorder.params">params</span></code></b>
+              (<code><span title="List">List</span>[<span title="str">str</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of parameter names to track.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Recorder.params_records">params_records</span></code></b>
+              (<code><span title="Dict">Dict</span>[<span title="str">str</span>, <span title="List">List</span>[<span title="List">List</span>[<span title="float">float</span>]]]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Recorded parameter values for each parameter group.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.Recorder.losses">losses</span></code></b>
+              (<code><span title="List">List</span>[<span title="float">float</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Recorded training losses.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Recorder.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize Recorder.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>*params</code></b>
+              (<code><span title="tuple">tuple</span>[<span title="str">str</span>, ...]</code>, default:
+                  <code>()</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Parameter names to track (e.g., 'lr', 'momentum').</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Recorder.after_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Record parameters and loss after each training batch.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Recorder.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize recording structures before training starts.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Recorder.plot" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="n">pgid</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Plot loss vs learning rate (log-scale).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>pgid</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>-1</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Parameter group index to plot.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>skip_last</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>0</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Number of last losses to skip in plotting.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Recorder.plot_loss" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">plot_loss</span><span class="p">(</span><span class="n">skip_last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Plot training losses.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>skip_last</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>0</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Number of last losses to skip in plotting.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.Recorder.plot_params" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">plot_params</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">pgid</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Plot parameter values across training iterations.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>params</code></b>
+              (<code><span title="str">str</span> | <span title="typing.Iterable">Iterable</span>[<span title="str">str</span>]</code>, default:
+                  <code>&#34;lr&#34;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Parameter name(s) to plot.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>pgid</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>-1</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Parameter group index to plot.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>figsize</code></b>
+              (<code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>, default:
+                  <code>(8, 6)</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Figure size for the plot.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.SingleBatchCallback" class="doc doc-heading">
+            <code>SingleBatchCallback</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Run only one training/validation batch and stop.</p>
+<p>This callback is useful for debugging or when you want to check
+parameters after processing just one batch. It raises CancelFitException
+after the first batch to stop training.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.SingleBatchCallback.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (1).</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.SingleBatchCallback.after_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Stop training after the first batch.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.SingleBatchForwardCallback" class="doc doc-heading">
+            <code>SingleBatchForwardCallback</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Run one batch and stop after forward pass.</p>
+<p>This callback runs one training/validation batch and stops after
+computing the loss (after forward pass) by raising CancelFitException.
+Useful for debugging or checking parameters after one forward pass.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.SingleBatchForwardCallback.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (1).</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.SingleBatchForwardCallback.after_loss" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_loss</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Stop training after computing loss for the first batch.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.callbacks.training.TrainEvalCallback" class="doc doc-heading">
+            <code>TrainEvalCallback</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Callback (cmn_ai.callbacks.core.Callback)" href="../core/#cmn_ai.callbacks.core.Callback">Callback</a></code></p>
+
+
+        <p>Track training progress and manage training/evaluation modes.</p>
+<p>This callback tracks the number of iterations, percentage of training
+completed, and sets the appropriate training or evaluation mode for
+the model.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.callbacks.training.TrainEvalCallback.order">order</span></code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Callback execution order (-10).</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.TrainEvalCallback.after_batch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">after_batch</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update iteration counter and training percentage after each batch.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.TrainEvalCallback.before_fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_fit</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize training counters before training starts.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.TrainEvalCallback.before_train" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_train</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set model to training mode and update training percentage.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.callbacks.training.TrainEvalCallback.before_validate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">before_validate</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set model to evaluation mode before validation.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ImadDabbura/cmn_ai" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ImadPhd" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M459.4 151.7c.3 4.5.3 9.1.3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53C87.4 130.8 165 172.4 252.1 176.9c-1.6-7.8-2.6-15.9-2.6-24C249.5 95.1 296.3 48 354.4 48c30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/imaddabbura/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://medium.com/@ImadPhd" target="_blank" rel="noopener" title="medium.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M369.4 32c43.4 0 78.6 35.2 78.6 78.6v83.8c-1.9-.1-3.8-.2-5.7-.2h-.4c-10 0-22.3 2.4-31.1 6.8-10 4.6-18.7 11.5-26 20.6-11.8 14.6-18.9 34.3-20.6 56.4-.1.7-.1 1.3-.2 2s-.1 1.2-.1 1.9c-.1 1.2-.1 2.4-.1 3.6 0 1.9-.1 3.8 0 5.8 1.2 50.1 28.2 90.2 76.3 90.2 2.7 0 5.3-.1 7.9-.4v20.4c0 43.4-35.2 78.6-78.6 78.6L78.6 480C35.2 480 0 444.8 0 401.4V110.6C0 67.2 35.2 32 78.6 32zM82.3 138.9l.3.1c13.2 3 19.8 7.4 19.8 23.4v187.2c0 16-6.7 20.4-19.9 23.4l-.3.1v2.8H135v-2.8l-.3-.1c-13.2-3-19.9-7.4-19.9-23.4V173.3l86.1 202.5h4.9l88.6-208.2v186.6c-1.1 12.6-7.8 16.5-19.7 19.2l-.3.1v2.7h91.9v-2.7l-.3-.1c-11.9-2.7-18.7-6.6-19.9-19.2l-.1-191.8h.1c0-16 6.7-20.4 19.9-23.4l.3-.1v-2.7h-72.2l-67 157.4-67-157.4H82.3zM448 340.3c-25.1-7.4-43-35.1-41.2-67.8h41.1v67.8zm-6.4-135.6c2.3 0 4.4.3 6.4.9V263h-40.2c1.5-33.6 13.6-57.9 33.8-58.3"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://imaddabbura.github.io/" target="_blank" rel="noopener" title="imaddabbura.github.io" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M351.9 280H161c2.9 64.5 17.2 123.9 37.5 167.4 11.4 24.5 23.7 41.8 35.1 52.4 11.2 10.5 18.9 12.2 22.9 12.2s11.7-1.7 22.9-12.2c11.4-10.6 23.7-28 35.1-52.4 20.3-43.5 34.6-102.9 37.5-167.4zm-191-48h190.9c-2.8-64.5-17.1-123.9-37.4-167.4-11.4-24.4-23.7-41.8-35.1-52.4C268.1 1.7 260.4 0 256.4 0s-11.7 1.7-22.9 12.2c-11.4 10.6-23.7 28-35.1 52.4-20.3 43.5-34.6 102.9-37.5 167.4m-48 0c3.5-85.6 25.6-165.1 57.9-217.3C78.7 47.3 10.9 131.2 1.5 232zM1.5 280c9.4 100.8 77.2 184.7 169.3 217.3-32.3-52.2-54.4-131.7-57.9-217.3zm398.4 0c-3.5 85.6-25.6 165.1-57.9 217.3 92.1-32.7 159.9-116.5 169.3-217.3zm111.4-48C501.9 131.2 434.1 47.3 342 14.7c32.3 52.2 54.4 131.7 57.9 217.3z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

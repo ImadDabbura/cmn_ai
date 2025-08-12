@@ -1,0 +1,4070 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../losses/">
+      
+      
+        <link rel="next" href="../processors/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Data - cmn_ai</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cmn_ai.utils.data" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="cmn_ai" class="md-header__button md-logo" aria-label="cmn_ai" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            cmn_ai
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ImadDabbura/cmn_ai" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ImadDabbura/cmn_ai
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="cmn_ai" class="md-nav__button md-logo" aria-label="cmn_ai" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    cmn_ai
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ImadDabbura/cmn_ai" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ImadDabbura/cmn_ai
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../learner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Learner
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../activations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Activations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plotting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tabular
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Tabular
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tabular/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tabular/eda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EDA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tabular/preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Preprocessing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Vision
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Vision
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vision/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vision/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Text
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Text
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../text/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Callbacks
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Callbacks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../callbacks/core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../callbacks/hook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../callbacks/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Training
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../callbacks/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schedule
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../losses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Losses
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Utils
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data" class="md-nav__link">
+    <span class="md-ellipsis">
+      data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.DataLoaders" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataLoaders
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DataLoaders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.DataLoaders.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.DataLoaders.from_dd" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dd
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList" class="md-nav__link">
+    <span class="md-ellipsis">
+      ItemList
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ItemList">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getitem__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.new" class="md-nav__link">
+    <span class="md-ellipsis">
+      new
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData" class="md-nav__link">
+    <span class="md-ellipsis">
+      LabeledData
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LabeledData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getitem__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.__len__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __len__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.label_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      label_by_func
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.process" class="md-nav__link">
+    <span class="md-ellipsis">
+      process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.x_obj" class="md-nav__link">
+    <span class="md-ellipsis">
+      x_obj
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.y_obj" class="md-nav__link">
+    <span class="md-ellipsis">
+      y_obj
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ListContainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      ListContainer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ListContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ListContainer.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData" class="md-nav__link">
+    <span class="md-ellipsis">
+      SplitData
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SplitData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.__getattr__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getattr__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.__setstate__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __setstate__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.split_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      split_by_func
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.to_dls" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.collate_device" class="md-nav__link">
+    <span class="md-ellipsis">
+      collate_device
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.collate_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      collate_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      compose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.get_dls" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_dls
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.get_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.grandparent_splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      grandparent_splitter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.label_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      label_by_func
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.parent_labeler" class="md-nav__link">
+    <span class="md-ellipsis">
+      parent_labeler
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.random_splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      random_splitter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.split_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      split_by_func
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.to_cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_cpu
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.to_device" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_device
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Processors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data" class="md-nav__link">
+    <span class="md-ellipsis">
+      data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.DataLoaders" class="md-nav__link">
+    <span class="md-ellipsis">
+      DataLoaders
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DataLoaders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.DataLoaders.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.DataLoaders.from_dd" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dd
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList" class="md-nav__link">
+    <span class="md-ellipsis">
+      ItemList
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ItemList">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getitem__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ItemList.new" class="md-nav__link">
+    <span class="md-ellipsis">
+      new
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData" class="md-nav__link">
+    <span class="md-ellipsis">
+      LabeledData
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LabeledData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.__getitem__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getitem__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.__len__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __len__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.label_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      label_by_func
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.process" class="md-nav__link">
+    <span class="md-ellipsis">
+      process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.x_obj" class="md-nav__link">
+    <span class="md-ellipsis">
+      x_obj
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.LabeledData.y_obj" class="md-nav__link">
+    <span class="md-ellipsis">
+      y_obj
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ListContainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      ListContainer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ListContainer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.ListContainer.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData" class="md-nav__link">
+    <span class="md-ellipsis">
+      SplitData
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SplitData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.__getattr__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __getattr__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.__setstate__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __setstate__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.split_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      split_by_func
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.SplitData.to_dls" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.collate_device" class="md-nav__link">
+    <span class="md-ellipsis">
+      collate_device
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.collate_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      collate_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      compose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.get_dls" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_dls
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.get_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.grandparent_splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      grandparent_splitter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.label_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      label_by_func
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.parent_labeler" class="md-nav__link">
+    <span class="md-ellipsis">
+      parent_labeler
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.random_splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      random_splitter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.split_by_func" class="md-nav__link">
+    <span class="md-ellipsis">
+      split_by_func
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.to_cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_cpu
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmn_ai.utils.data.to_device" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_device
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Data</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="cmn_ai.utils.data"></a>
+    <div class="doc doc-contents first">
+
+        <p>Data utilities for PyTorch-based machine learning workflows.</p>
+<p>This module provides utilities for working with data in PyTorch-based machine learning
+pipelines. It includes functions and classes for creating and managing DataLoaders,
+device management for tensors and collections, data collation and preprocessing,
+file system operations for data discovery, dataset splitting and labeling strategies,
+and container classes for organizing data items.</p>
+<p>The module is designed to work seamlessly with PyTorch's Dataset and DataLoader
+classes, as well as Hugging Face datasets.</p>
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.get_dls : Create training and validation DataLoaders">get_dls : Create training and validation DataLoaders</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.to_device : Copy tensor">to_device : Copy tensor</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.to_cpu : Copy tensor">to_cpu : Copy tensor</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.collate_dict : Create collate function for Hugging Face Dataset dictionary">collate_dict : Create collate function for Hugging Face Dataset dictionary</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.collate_device : Create collate function that moves batch to specified device">collate_device : Create collate function that moves batch to specified device</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.compose : Apply transformations in sequence to input">compose : Apply transformations in sequence to input</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.get_files : Get filenames in path with specified extensions">get_files : Get filenames in path with specified extensions</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.random_splitter : Randomly split items with specified probability">random_splitter : Randomly split items with specified probability</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.grandparent_splitter : Split items based on directory structure">grandparent_splitter : Split items based on directory structure</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.split_by_func : Split items into train/valid lists using a function">split_by_func : Split items into train/valid lists using a function</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.parent_labeler : Label a file based on its parent directory">parent_labeler : Label a file based on its parent directory</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="cmn_ai.utils.data.label_by_func : Label split data using a labeling function">label_by_func : Label split data using a labeling function</span></code></b>
+            –
+            <div class="doc-md-description">
+              
+            </div>
+          </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.DataLoaders : Container for training and validation DataLoaders">DataLoaders : Container for training and validation DataLoaders</span></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.ListContainer : Extended list with improved representation">ListContainer : Extended list with improved representation</span></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.ItemList : Base class for all types of datasets">ItemList : Base class for all types of datasets</span></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.SplitData : Split ItemList into train and validation data lists">SplitData : Split ItemList into train and validation data lists</span></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.LabeledData : Create labeled data with input and target ItemLists">LabeledData : Create labeled data with input and target ItemLists</span></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+    </ul>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>This module is part of the cmn_ai library and provides high-level abstractions
+for common data processing tasks in machine learning workflows.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_files</span><span class="p">,</span> <span class="n">to_device</span><span class="p">,</span> <span class="n">compose</span><span class="p">,</span> <span class="n">SplitData</span><span class="p">,</span> <span class="n">LabeledData</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cmn_ai.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ItemList</span><span class="p">,</span> <span class="n">grandparent_splitter</span><span class="p">,</span> <span class="n">parent_labeler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># File operations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">get_files</span><span class="p">(</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;.csv&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Device operations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor_on_gpu</span> <span class="o">=</span> <span class="n">to_device</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Function composition</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">add_one</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">multiply_two</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="n">add_one</span><span class="p">,</span> <span class="n">multiply_two</span><span class="p">])</span>  <span class="c1"># Returns 12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Data splitting</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;train/cat/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;valid/dog/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;train/cat/3.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">split_data</span> <span class="o">=</span> <span class="n">SplitData</span><span class="o">.</span><span class="n">split_by_func</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">grandparent_splitter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">split_data</span><span class="o">.</span><span class="n">train</span><span class="p">)</span><span class="si">}</span><span class="s2">, Valid: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">split_data</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Labeled data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;image1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;image2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labeled_data</span> <span class="o">=</span> <span class="n">LabeledData</span><span class="p">(</span><span class="n">x_items</span><span class="p">,</span> <span class="n">y_items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">labeled_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Returns (&#39;image1.jpg&#39;, &#39;cat&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Labeling with function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;data/cat/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;data/dog/2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labeled</span> <span class="o">=</span> <span class="n">LabeledData</span><span class="o">.</span><span class="n">label_by_func</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">parent_labeler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">labeled</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labeled</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># &#39;cat&#39; &#39;dog&#39;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.utils.data.DataLoaders" class="doc doc-heading">
+            <code>DataLoaders</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Container for training and validation DataLoaders.</p>
+<p>A convenience class that holds training and validation DataLoaders
+and provides easy access to them.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.DataLoaders.train">train</span></code></b>
+              (<code><span title="torch.utils.data.DataLoader">DataLoader</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Training DataLoader.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.DataLoaders.valid">valid</span></code></b>
+              (<code><span title="torch.utils.data.DataLoader">DataLoader</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Validation DataLoader.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">train_dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">valid_dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dls</span> <span class="o">=</span> <span class="n">DataLoaders</span><span class="p">(</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dls</span><span class="o">.</span><span class="n">train</span>  <span class="c1"># Access training DataLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dls</span><span class="o">.</span><span class="n">valid</span>  <span class="c1"># Access validation DataLoader</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.DataLoaders.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">dls</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize DataLoaders with training and validation DataLoaders.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>*dls</code></b>
+              (<code><span title="torch.utils.data.DataLoader">DataLoader</span></code>, default:
+                  <code>()</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>List of DataLoaders. First is assumed to be training,
+second is assumed to be validation.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.DataLoaders.from_dd" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">from_dd</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create DataLoaders from Hugging Face Dataset dictionary.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>dd</code></b>
+              (<code><span title="datasets.dataset_dict.DatasetDict">DatasetDict</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Hugging Face Dataset dictionary. Must have at least two datasets:
+train and valid/test datasets.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>batch_size</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>32</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Batch size passed to DataLoader.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="dict">dict</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional keyword arguments passed to DataLoader.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="DataLoaders (cmn_ai.utils.data.DataLoaders)" href="#cmn_ai.utils.data.DataLoaders">DataLoaders</a></code>
+          –
+          <div class="doc-md-description">
+            <p>DataLoaders instance with train and validation DataLoaders.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatasetDict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dd</span> <span class="o">=</span> <span class="n">DatasetDict</span><span class="p">({</span><span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="n">train_ds</span><span class="p">,</span> <span class="s1">&#39;validation&#39;</span><span class="p">:</span> <span class="n">valid_ds</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dls</span> <span class="o">=</span> <span class="n">DataLoaders</span><span class="o">.</span><span class="n">from_dd</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.utils.data.ItemList" class="doc doc-heading">
+            <code>ItemList</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="ListContainer (cmn_ai.utils.data.ListContainer)" href="#cmn_ai.utils.data.ListContainer">ListContainer</a></code></p>
+
+
+        <p>Base class for all types of datasets such as image, text, etc.</p>
+<p>A container class that holds items and provides functionality for
+applying transformations and retrieving items with transformations
+applied.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.ItemList.path">path</span></code></b>
+              (<code><span title="pathlib.Path">Path</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Path of the items that were used to create the list.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.ItemList.tfms">tfms</span></code></b>
+              (<code>(<span title="callable">callable</span>, <span title="optional">optional</span>)</code>)
+          –
+          <div class="doc-md-description">
+            <p>Transformations to apply on items before returning them.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;file1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;file2.jpg&#39;</span><span class="p">],</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Returns transformed item</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.ItemList.__getitem__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get item(s) with transformations applied.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>idx</code></b>
+              (<code><span title="int">int</span> or <span title="slice">slice</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Index or slice to retrieve.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code>Any or list of Any</code>
+          –
+          <div class="doc-md-description">
+            <p>Item(s) with transformations applied.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.ItemList.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize ItemList with items, path, and transformations.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>items</code></b>
+              (<code><span title="collections.abc.Sequence">Sequence</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Items to create list.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>path</code></b>
+              (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>, default:
+                  <code>&#34;.&#34;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Path of the items that were used to create the list.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>tfms</code></b>
+              (<code><span title="callable">callable</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Transformations to apply on items before returning them.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="dict">dict</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional attributes to set on the instance.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.ItemList.get" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get item without transformations.</p>
+<p>Every class that inherits from <code>ItemList</code> has to override this
+method to provide custom item retrieval logic.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>item</code></b>
+              (<code><span title="typing.Any">Any</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Item to retrieve.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Any">Any</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Retrieved item.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.ItemList.new" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">new</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create a new instance of the ItemList with items.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>items</code></b>
+              (<code><span title="collections.abc.Sequence">Sequence</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The items to create the list from.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>cls</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The class to instantiate. If None, the same class will be used.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>
+          –
+          <div class="doc-md-description">
+            <p>The new instance of the ItemList.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.utils.data.LabeledData" class="doc doc-heading">
+            <code>LabeledData</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Create labeled data with input and target ItemLists.</p>
+<p>A container class that holds input (x) and target (y) ItemLists
+and provides functionality for processing and retrieving labeled data.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.LabeledData.x">x</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Input items to the model.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.LabeledData.y">y</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Label items.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.LabeledData.proc_x">proc_x</span></code></b>
+              (<code>Processor or iterable of Processor, optional</code>)
+          –
+          <div class="doc-md-description">
+            <p>Input items processor(s).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.LabeledData.proc_y">proc_y</span></code></b>
+              (<code>Processor or iterable of Processor, optional</code>)
+          –
+          <div class="doc-md-description">
+            <p>Label items processor(s).</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">x_items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;image1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;image2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labeled_data</span> <span class="o">=</span> <span class="n">LabeledData</span><span class="p">(</span><span class="n">x_items</span><span class="p">,</span> <span class="n">y_items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">labeled_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Get first labeled example</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.__getitem__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get labeled example(s) at index.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>idx</code></b>
+              (<code><span title="int">int</span> or <span title="slice">slice</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Index or slice to retrieve.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code>tuple or list of tuple</code>
+          –
+          <div class="doc-md-description">
+            <p>Labeled example(s) as (x, y) pairs.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">proc_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">proc_y</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize LabeledData with input and target ItemLists.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>x</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Input items to the model.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>y</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Label items.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc_x</code></b>
+              (<code>Processor or iterable of Processor</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Input items processor(s).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc_y</code></b>
+              (<code>Processor or iterable of Processor</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Label items processor(s).</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.__len__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the number of labeled examples.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.label_by_func" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">label_by_func</span><span class="p">(</span><span class="n">item_list</span><span class="p">,</span> <span class="n">label_func</span><span class="p">,</span> <span class="n">proc_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">proc_y</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Label an ItemList using a labeling function.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>item_list</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The ItemList to be labeled.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>label_func</code></b>
+              (<code><span title="callable">callable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The function to be used for labeling.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc_x</code></b>
+              (<code><span title="callable">callable</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The processor to be applied to the input data.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc_y</code></b>
+              (<code><span title="callable">callable</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The processor to be applied to the label data.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="LabeledData (cmn_ai.utils.data.LabeledData)" href="#cmn_ai.utils.data.LabeledData">LabeledData</a></code>
+          –
+          <div class="doc-md-description">
+            <p>The labeled ItemList.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;image1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;image2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labeled</span> <span class="o">=</span> <span class="n">LabeledData</span><span class="o">.</span><span class="n">label_by_func</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">parent_labeler</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.process" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="n">item_list</span><span class="p">,</span> <span class="n">proc</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Apply processors to an ItemList.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>item_list</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The ItemList to process.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc</code></b>
+              (<code>Processor or iterable of Processor</code>)
+          –
+          <div class="doc-md-description">
+            <p>The processor or list of processors to apply.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>
+          –
+          <div class="doc-md-description">
+            <p>The processed ItemList.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.x_obj" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">x_obj</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get input object at index after deprocessing.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>idx</code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Index of the input object to retrieve.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Any">Any</span></code>
+          –
+          <div class="doc-md-description">
+            <p>The input object at index idx after applying all processors
+in proc_x.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.LabeledData.y_obj" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">y_obj</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get label object at index after deprocessing.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>idx</code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Index of the label object to retrieve.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Any">Any</span></code>
+          –
+          <div class="doc-md-description">
+            <p>The label object at index idx after applying all processors
+in proc_y.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.utils.data.ListContainer" class="doc doc-heading">
+            <code>ListContainer</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="collections.UserList">UserList</span></code></p>
+
+
+        <p>Extended list with improved representation.</p>
+<p>Extends builtin list by changing the creation of the list from the given
+items and changing repr to return first 10 items along with total number of
+items and the class name. This will be the base class where other
+containers will inherit from.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.ListContainer.data">data</span></code></b>
+              (<code><span title="list">list</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The underlying list data.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">container</span> <span class="o">=</span> <span class="n">ListContainer</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+<span class="go">ListContainer: (5 items)</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.ListContainer.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">items</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize ListContainer with items.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>items</code></b>
+              (<code><span title="typing.Any">Any</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Items to create list from.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="cmn_ai.utils.data.SplitData" class="doc doc-heading">
+            <code>SplitData</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>Split ItemList into train and validation data lists.</p>
+<p>A container class that holds training and validation ItemLists
+and provides functionality for creating DataLoaders from them.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.SplitData.train">train</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Training items.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="cmn_ai.utils.data.SplitData.valid">valid</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Validation items.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">train_items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;train1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;train2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">valid_items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;valid1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;valid2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">split_data</span> <span class="o">=</span> <span class="n">SplitData</span><span class="p">(</span><span class="n">train_items</span><span class="p">,</span> <span class="n">valid_items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span> <span class="o">=</span> <span class="n">split_data</span><span class="o">.</span><span class="n">to_dls</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.SplitData.__getattr__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__getattr__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Delegate attribute access to training ItemList.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.SplitData.__init__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">valid</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize SplitData with training and validation ItemLists.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>train</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Training items.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>valid</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Validation items.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.SplitData.__setstate__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">__setstate__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set state for pickling.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.SplitData.split_by_func" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">split_by_func</span><span class="p">(</span><span class="n">item_list</span><span class="p">,</span> <span class="n">split_func</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Split ItemList by splitter function.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>item_list</code></b>
+              (<code><a class="autorefs autorefs-internal" title="ItemList (cmn_ai.utils.data.ItemList)" href="#cmn_ai.utils.data.ItemList">ItemList</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>ItemList to split.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>split_func</code></b>
+              (<code><span title="callable">callable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Function to use for splitting items.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="SplitData (cmn_ai.utils.data.SplitData)" href="#cmn_ai.utils.data.SplitData">SplitData</a></code>
+          –
+          <div class="doc-md-description">
+            <p>SplitData object with train and validation ItemLists.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">items</span> <span class="o">=</span> <span class="n">ItemList</span><span class="p">([</span><span class="s1">&#39;train/cat/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;val/dog/2.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">split_data</span> <span class="o">=</span> <span class="n">SplitData</span><span class="o">.</span><span class="n">split_by_func</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">grandparent_splitter</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="cmn_ai.utils.data.SplitData.to_dls" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_dls</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create training and validation DataLoaders.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>batch_size</code></b>
+              (<code><span title="int">int</span></code>, default:
+                  <code>32</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Batch size for DataLoaders.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="dict">dict</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional keyword arguments passed to DataLoader.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="tuple">tuple</span>[<span title="torch.utils.data.DataLoader">DataLoader</span>, <span title="torch.utils.data.DataLoader">DataLoader</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>Training and validation DataLoaders.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.collate_device" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">collate_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create a collate function that moves batch to specified device.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>device</code></b>
+              (<code><span title="str">str</span> or <span title="torch.device">device</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Device to copy batch to.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="callable">callable</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Collate function that returns batch on specified device.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">collate_device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.collate_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">collate_dict</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create a collate function for a Dataset dictionary.</p>
+<p>Creates a collate function that extracts specified keys from a batch
+and applies PyTorch's default collate function.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>*keys</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>()</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Keys to extract from the batch dictionary.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="callable">callable</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Collate function that returns tuple of collated inputs.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">collate_fn</span> <span class="o">=</span> <span class="n">collate_dict</span><span class="p">(</span><span class="s1">&#39;input_ids&#39;</span><span class="p">,</span> <span class="s1">&#39;attention_mask&#39;</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.compose" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compose</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">funcs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Apply transformations in sequence to input.</p>
+<p>Applies transformations in <code>funcs</code> to the input <code>x</code> in the specified order.
+Functions are sorted by their <code>order</code> attribute if present.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>x</code></b>
+              (<code><span title="typing.Any">Any</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Input to transform.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>funcs</code></b>
+              (<code>callable or iterable of callables</code>)
+          –
+          <div class="doc-md-description">
+            <p>Function(s) to apply to input.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>*args</code></b>
+              (<code><span title="tuple">tuple</span></code>, default:
+                  <code>()</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Positional arguments passed to each function.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>order</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>&#39;order&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Attribute name used to determine function order.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="dict">dict</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Keyword arguments passed to each function.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Any">Any</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Transformed input.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">add_one</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">multiply_two</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="n">add_one</span><span class="p">,</span> <span class="n">multiply_two</span><span class="p">])</span>  <span class="c1"># Returns 12</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.get_dls" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_dls</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create training and validation DataLoaders.</p>
+<p>Creates two DataLoaders: one for training and one for validation. The
+validation DataLoader has twice the batch size and doesn't shuffle data.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>train_ds</code></b>
+              (<code><span title="torch.utils.data.Dataset">Dataset</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Training dataset.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>valid_ds</code></b>
+              (<code><span title="torch.utils.data.Dataset">Dataset</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Validation dataset.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>batch_size</code></b>
+              (<code><span title="int">int</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Batch size for the training DataLoader. Validation DataLoader will
+use batch_size * 2.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="dict">dict</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional keyword arguments passed to DataLoader constructor.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="tuple">tuple</span>[<span title="torch.utils.data.DataLoader">DataLoader</span>, <span title="torch.utils.data.DataLoader">DataLoader</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>A tuple containing (train_dataloader, valid_dataloader).</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">train_ds</span> <span class="o">=</span> <span class="n">MyDataset</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">valid_ds</span> <span class="o">=</span> <span class="n">MyDataset</span><span class="p">(</span><span class="n">valid_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.get_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_files</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get filenames in path with specified extensions.</p>
+<p>Get filenames in <code>path</code> that have extension <code>extensions</code> starting
+with <code>path</code> and optionally recurse to subdirectories.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>path</code></b>
+              (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Path for the root directory to search for files.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>extensions</code></b>
+              (<code>str or iterable of str</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Suffixes of filenames to look for (with or without dot).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>include</code></b>
+              (<code>iterable of str</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Top-level directory(ies) under <code>path</code> to use for searching files.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>recurse</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to search subdirectories recursively.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code>list of Path</code>
+          –
+          <div class="doc-md-description">
+            <p>List of file paths that end with specified extensions under <code>path</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">get_files</span><span class="p">(</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;.png&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">get_files</span><span class="p">(</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.grandparent_splitter" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">grandparent_splitter</span><span class="p">(</span><span class="n">f_name</span><span class="p">,</span> <span class="n">valid_name</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">train_name</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Split items based on directory structure.</p>
+<p>Split items based on whether they fall under validation or training
+directories. This assumes that the directory structure is
+train/label/items or valid/label/items.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>f_name</code></b>
+              (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Item's filename.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>valid_name</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>&#34;valid&#34;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Name of the directory that holds the validation items.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>train_name</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>&#34;train&#34;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Name of the directory that holds the training items.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="bool">bool</span> or None</code>
+          –
+          <div class="doc-md-description">
+            <p>True if the item is in validation, False if in training,
+None if neither.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">splitter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">grandparent_splitter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid</span> <span class="o">=</span> <span class="n">splitter</span><span class="p">(</span><span class="s1">&#39;train/cat/image.jpg&#39;</span><span class="p">)</span>  <span class="c1"># Returns False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid</span> <span class="o">=</span> <span class="n">splitter</span><span class="p">(</span><span class="s1">&#39;val/dog/image.jpg&#39;</span><span class="p">)</span>    <span class="c1"># Returns True</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.label_by_func" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">label_by_func</span><span class="p">(</span><span class="n">splitted_data</span><span class="p">,</span> <span class="n">label_func</span><span class="p">,</span> <span class="n">proc_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">proc_y</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Label split data using a labeling function.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>splitted_data</code></b>
+              (<code><a class="autorefs autorefs-internal" title="SplitData (cmn_ai.utils.data.SplitData)" href="#cmn_ai.utils.data.SplitData">SplitData</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The split data to be labeled.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>label_func</code></b>
+              (<code><span title="callable">callable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The function to be used for labeling.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc_x</code></b>
+              (<code><span title="callable">callable</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The processor to be applied to the input data.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>proc_y</code></b>
+              (<code><span title="callable">callable</span></code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The processor to be applied to the label data.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="SplitData (cmn_ai.utils.data.SplitData)" href="#cmn_ai.utils.data.SplitData">SplitData</a></code>
+          –
+          <div class="doc-md-description">
+            <p>The labeled split data.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">split_data</span> <span class="o">=</span> <span class="n">SplitData</span><span class="p">(</span><span class="n">train_items</span><span class="p">,</span> <span class="n">valid_items</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labeled_split</span> <span class="o">=</span> <span class="n">label_by_func</span><span class="p">(</span><span class="n">split_data</span><span class="p">,</span> <span class="n">parent_labeler</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.parent_labeler" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parent_labeler</span><span class="p">(</span><span class="n">f_name</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Label a file based on its parent directory.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>f_name</code></b>
+              (<code><span title="str">str</span> or <span title="pathlib.Path">Path</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Filename to get the parent directory.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span></code>
+          –
+          <div class="doc-md-description">
+            <p>Name of the parent directory.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">parent_labeler</span><span class="p">(</span><span class="s1">&#39;data/cat/image.jpg&#39;</span><span class="p">)</span>  <span class="c1"># Returns &#39;cat&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">parent_labeler</span><span class="p">(</span><span class="s1">&#39;data/dog/image.png&#39;</span><span class="p">)</span>  <span class="c1"># Returns &#39;dog&#39;</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.random_splitter" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">random_splitter</span><span class="p">(</span><span class="n">f_name</span><span class="p">,</span> <span class="n">p_valid</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Randomly split items with specified probability.</p>
+<p>Randomly split items with <code>p_valid</code> probability to be in the
+validation set.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>f_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Item's filename. Not used here, but left for API consistency
+with other splitters.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>p_valid</code></b>
+              (<code><span title="float">float</span></code>, default:
+                  <code>0.2</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Probability of the item to be in the validation set.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="bool">bool</span></code>
+          –
+          <div class="doc-md-description">
+            <p>True if the item is in validation else False (training).</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">splitter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">random_splitter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">p_valid</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid</span> <span class="o">=</span> <span class="n">splitter</span><span class="p">(</span><span class="s1">&#39;file.jpg&#39;</span><span class="p">)</span>  <span class="c1"># Returns True or False</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.split_by_func" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">split_by_func</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Split items into train/valid lists using a function.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>items</code></b>
+              (<code><span title="collections.abc.Iterable">Iterable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Items to be split into train/valid.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>func</code></b>
+              (<code><span title="callable">callable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Split function to split items. Should return True for validation
+items, False for training items, and None to exclude items.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="tuple">tuple</span>[<span title="list">list</span>, <span title="list">list</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>Train and valid item lists.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train/cat/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;val/dog/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;train/cat/3.jpg&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train</span><span class="p">,</span> <span class="n">valid</span> <span class="o">=</span> <span class="n">split_by_func</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">grandparent_splitter</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.to_cpu" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_cpu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Copy tensor(s) to CPU.</p>
+<p>If a tensor is already on the CPU, returns the tensor itself; otherwise,
+returns a copy of the tensor on CPU.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>x</code></b>
+              (<code><span title="torch.Tensor">Tensor</span> or <span title="collections.abc.Iterable">Iterable</span>[<span title="torch.Tensor">Tensor</span>] or <span title="typing.Mapping">Mapping</span>[<span title="str">str</span>, <span title="torch.Tensor">Tensor</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Tensor or collection of tensors to move to CPU.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="torch.Tensor">Tensor</span> or <span title="collections.abc.Iterable">Iterable</span>[<span title="torch.Tensor">Tensor</span>] or <span title="typing.Mapping">Mapping</span>[<span title="str">str</span>, <span title="torch.Tensor">Tensor</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>Copied tensor(s) on CPU.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor_on_cpu</span> <span class="o">=</span> <span class="n">to_cpu</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="cmn_ai.utils.data.to_device" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_device</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">DEFAULT_DEVICE</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Copy tensor(s) to specified device.</p>
+<p>Recursively moves tensors and collections of tensors to the specified device.
+If a tensor is already on the target device, returns the tensor itself.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>x</code></b>
+              (<code><span title="torch.Tensor">Tensor</span> or <span title="collections.abc.Iterable">Iterable</span>[<span title="torch.Tensor">Tensor</span>] or <span title="typing.Mapping">Mapping</span>[<span title="str">str</span>, <span title="torch.Tensor">Tensor</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Tensor or collection of tensors to move to device.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>device</code></b>
+              (<code><span title="str">str</span> or <span title="torch.device">device</span></code>, default:
+                  <code>&#39;cuda&#39; if available else &#39;cpu&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Device to copy the tensor(s) to.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="torch.Tensor">Tensor</span> or <span title="collections.abc.Iterable">Iterable</span>[<span title="torch.Tensor">Tensor</span>] or <span title="typing.Mapping">Mapping</span>[<span title="str">str</span>, <span title="torch.Tensor">Tensor</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>Copied tensor(s) on the specified device.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>This function may fail if iterables contain non-tensor objects that
+don't have a <code>.to()</code> method.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor_on_gpu</span> <span class="o">=</span> <span class="n">to_device</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">tensor</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="n">tensor</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">batch_on_gpu</span> <span class="o">=</span> <span class="n">to_device</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ImadDabbura/cmn_ai" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ImadPhd" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M459.4 151.7c.3 4.5.3 9.1.3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53C87.4 130.8 165 172.4 252.1 176.9c-1.6-7.8-2.6-15.9-2.6-24C249.5 95.1 296.3 48 354.4 48c30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/imaddabbura/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://medium.com/@ImadPhd" target="_blank" rel="noopener" title="medium.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M369.4 32c43.4 0 78.6 35.2 78.6 78.6v83.8c-1.9-.1-3.8-.2-5.7-.2h-.4c-10 0-22.3 2.4-31.1 6.8-10 4.6-18.7 11.5-26 20.6-11.8 14.6-18.9 34.3-20.6 56.4-.1.7-.1 1.3-.2 2s-.1 1.2-.1 1.9c-.1 1.2-.1 2.4-.1 3.6 0 1.9-.1 3.8 0 5.8 1.2 50.1 28.2 90.2 76.3 90.2 2.7 0 5.3-.1 7.9-.4v20.4c0 43.4-35.2 78.6-78.6 78.6L78.6 480C35.2 480 0 444.8 0 401.4V110.6C0 67.2 35.2 32 78.6 32zM82.3 138.9l.3.1c13.2 3 19.8 7.4 19.8 23.4v187.2c0 16-6.7 20.4-19.9 23.4l-.3.1v2.8H135v-2.8l-.3-.1c-13.2-3-19.9-7.4-19.9-23.4V173.3l86.1 202.5h4.9l88.6-208.2v186.6c-1.1 12.6-7.8 16.5-19.7 19.2l-.3.1v2.7h91.9v-2.7l-.3-.1c-11.9-2.7-18.7-6.6-19.9-19.2l-.1-191.8h.1c0-16 6.7-20.4 19.9-23.4l.3-.1v-2.7h-72.2l-67 157.4-67-157.4H82.3zM448 340.3c-25.1-7.4-43-35.1-41.2-67.8h41.1v67.8zm-6.4-135.6c2.3 0 4.4.3 6.4.9V263h-40.2c1.5-33.6 13.6-57.9 33.8-58.3"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://imaddabbura.github.io/" target="_blank" rel="noopener" title="imaddabbura.github.io" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M351.9 280H161c2.9 64.5 17.2 123.9 37.5 167.4 11.4 24.5 23.7 41.8 35.1 52.4 11.2 10.5 18.9 12.2 22.9 12.2s11.7-1.7 22.9-12.2c11.4-10.6 23.7-28 35.1-52.4 20.3-43.5 34.6-102.9 37.5-167.4zm-191-48h190.9c-2.8-64.5-17.1-123.9-37.4-167.4-11.4-24.4-23.7-41.8-35.1-52.4C268.1 1.7 260.4 0 256.4 0s-11.7 1.7-22.9 12.2c-11.4 10.6-23.7 28-35.1 52.4-20.3 43.5-34.6 102.9-37.5 167.4m-48 0c3.5-85.6 25.6-165.1 57.9-217.3C78.7 47.3 10.9 131.2 1.5 232zM1.5 280c9.4 100.8 77.2 184.7 169.3 217.3-32.3-52.2-54.4-131.7-57.9-217.3zm398.4 0c-3.5 85.6-25.6 165.1-57.9 217.3 92.1-32.7 159.9-116.5 169.3-217.3zm111.4-48C501.9 131.2 434.1 47.3 342 14.7c32.3 52.2 54.4 131.7 57.9 217.3z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>
