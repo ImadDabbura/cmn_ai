@@ -1,10 +1,10 @@
 # Run `pre-commit autoupdate` to use the latest versions of the below hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-ast
-      - id: check-byte-order-marker
+      - id: fix-byte-order-marker
       - id: check-case-conflict
       - id: check-docstring-first
       - id: check-executables-have-shebangs
@@ -26,7 +26,7 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=1000"]
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.2
+    rev: 7.3.0
     hooks:
       - id: flake8
   - repo: https://github.com/pycqa/isort
@@ -38,7 +38,7 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.1
+    rev: v3.20.0
     hooks:
       - id: pyupgrade
         args:
@@ -47,11 +47,10 @@ repos:
     rev: 1.19.1
     hooks:
       - id: blacken-docs
-  - repo: https://github.com/python-poetry/poetry
-    rev: 2.1.1
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.8.9
     hooks:
-      - id: poetry-check
-      - id: poetry-lock
+      - id: uv-lock
   - repo: local
     hooks:
       - id: test

@@ -1,12 +1,24 @@
 [project]
 name = "cmn-ai"
 version = "0.1.0"
-description = ""
+description = "A comprehensive machine learning library with utilities for vision, text, and tabular data"
 authors = [
     {name = "ImadDabbura", email = "imad.dabbura@hotmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.13"
+license = {text = "MIT"}
+keywords = ["machine-learning", "deep-learning", "vision", "text", "tabular"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = [
     "pandas>=2.2.0,<3.0.0",
     "seaborn>=0.13.0",
@@ -38,6 +50,9 @@ docs = [
     "mkdocs-material>=9.1.12",
     "mkdocstrings-python>=1.0.0"
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["cmn_ai"]
 
 [tool.black]
 line-length = 79
