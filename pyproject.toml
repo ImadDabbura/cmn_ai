@@ -1,6 +1,6 @@
 [project]
 name = "cmn-ai"
-version = "0.0.2"
+version = "0.1.0"
 description = ""
 authors = [
     {name = "ImadDabbura", email = "imad.dabbura@hotmail.com"}
