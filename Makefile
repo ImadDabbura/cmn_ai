@@ -9,4 +9,20 @@ clean:
 
 .PHONY: test
 test:
-	poetry run pytest
+	uv run pytest
+
+.PHONY: install
+install:
+	uv sync
+
+.PHONY: install-dev
+install-dev:
+	uv sync --extra dev
+
+.PHONY: install-docs
+install-docs:
+	uv sync --extra docs
+
+.PHONY: install-all
+install-all:
+	uv sync --extra dev --extra docs
