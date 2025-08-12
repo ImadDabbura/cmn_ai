@@ -1,12 +1,14 @@
-name: Publish to PyPi
+name: Publish to PyPI
 on:
   push:
     tags:
       - "*"
   workflow_dispatch:
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -18,23 +20,5 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Build package
-        run: uv build
-      - uses: actions/upload-artifact@v4
-        with:
-          path: ./dist
-
-  pypi-publish:
-    needs: ["build"]
-    environment: "publish"
-    name: Upload release to PyPI
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-      - name: Dowloand artifacts from build
-        uses: actions/download-artifact@v4
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: artifact/
+      - name: Build and publish to PyPI
+        run: uv publish

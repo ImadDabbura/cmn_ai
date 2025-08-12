@@ -5,12 +5,15 @@ on:
       - main
     paths:
       - "tests/**"
+      - "cmn_ai/**"
+      - "pyproject.toml"
   pull_request:
     branches:
       - main
     paths:
       - "tests/**"
       - "cmn_ai/**"
+      - "pyproject.toml"
 jobs:
   test-code:
     runs-on: ubuntu-latest
