@@ -663,6 +663,9 @@ class TestMixup:
         # Should create mixup weights and shuffled targets
         assert hasattr(mixup, "λ")
         assert hasattr(mixup, "yb1")
+        assert mixup.λ.shape == (4,)
+        assert mock_learner.xb[0].shape == torch.Size([4, 10])
+        assert mixup.yb1[0].shape == torch.Size([4, 1])
 
     def test_mixup_loss_func(self):
         """Test Mixup loss_func method."""
@@ -691,3 +694,23 @@ class TestMixup:
 
         # Should return a tensor
         assert isinstance(result, torch.Tensor)
+
+    def test_mixup_loss_func_broadcasts_lambda_over_feature_losses(self):
+        """Test Mixup loss broadcasts per-example weights over features."""
+        mixup = Mixup()
+
+        mock_learner = MagicMock()
+        mock_learner.loss_func = nn.MSELoss(reduction="mean")
+        mock_learner.training = True
+
+        mixup.set_learner(mock_learner)
+        mixup.before_fit()
+
+        pred = torch.zeros(4, 2)
+        yb = torch.zeros(4, 2)
+        mixup.yb1 = [torch.ones(4, 2)]
+        mixup.λ = torch.tensor([0.2, 0.4, 0.6, 0.8])
+
+        result = mixup.loss_func(pred, yb)
+
+        assert torch.allclose(result, torch.tensor(0.5))

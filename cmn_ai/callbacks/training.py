@@ -932,19 +932,26 @@ class Mixup(Callback):
         Apply mixup transformation to batch inputs and targets.
 
         The mixup process involves:
-        1. Drawing samples from a beta distribution for each image
+        1. Drawing samples from a beta distribution for each item
         2. Taking the maximum of λ and 1-λ to avoid identical combinations
         3. Shuffling the batch for combination
         4. Creating linear combinations of inputs and targets
         """
-        λ = self.distrib.sample((len(self.xb),)).to(self.xb[0].device)
-        λ = torch.stack([λ, 1 - λ], dim=1)
-        self.λ = λ.max(1)[0].view(-1, 1, 1, 1)
-        shuffle = torch.randperm(len(self.xb[0]))
-        self.learner.xb = [
-            x * self.λ + x[shuffle] * (1 - self.λ) for x in self.xb
-        ]
-        self.yb1 = [y[shuffle] for y in self.yb]
+        bs = self.xb[0].size(0)
+        λ = self.distrib.sample((bs,)).squeeze(-1).to(self.xb[0].device)
+        self.λ = torch.stack([λ, 1 - λ], dim=1).max(1)[0]
+        shuffle = torch.randperm(bs, device=self.xb[0].device)
+
+        mixed_xb = []
+        for x in self.xb:
+            lam = self.λ.to(x.device).view(
+                -1, *([1] * (x.dim() - 1))
+            )
+            idx = shuffle.to(x.device)
+            mixed_xb.append(x * lam + x[idx] * (1 - lam))
+
+        self.learner.xb = mixed_xb
+        self.yb1 = [y[shuffle.to(y.device)] for y in self.yb]
 
     def loss_func(self, pred: torch.Tensor, yb: torch.Tensor) -> torch.Tensor:
         """
@@ -967,7 +974,10 @@ class Mixup(Callback):
         with NoneReduce(self.old_loss_func) as loss_func:
             loss1 = loss_func(pred, yb)
             loss2 = loss_func(pred, *self.yb1)
-        loss = loss1 * self.λ + loss2 * (1 - self.λ)
+        λ = self.λ.to(loss1.device)
+        if loss1.dim() > 0:
+            λ = λ.view(-1, *([1] * (loss1.dim() - 1)))
+        loss = loss1 * λ + loss2 * (1 - λ)
         return reduce_loss(
             loss, getattr(self.old_loss_func, "reduction", "mean")
         )
