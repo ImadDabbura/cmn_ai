@@ -90,8 +90,7 @@ def annealer(func: Callable):
     >>> scheduler = my_scheduler(0.1, 0.01)
     >>> value = scheduler(0.5)  # pos = 0.5
     """
-    wraps(func)
-
+    @wraps(func)
     def annealer_wrapper(*args, **kwargs):
         return partial(func, *args, **kwargs)
 

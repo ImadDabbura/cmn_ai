@@ -45,6 +45,18 @@ class TestSchedulerFunctions:
         assert abs(scheduler(1.0) - 0.01) < 1e-10  # end
         assert abs(scheduler(0.5) - 0.055) < 1e-10  # middle
 
+    def test_annealer_preserves_wrapped_metadata(self):
+        """Test that annealer preserves scheduler metadata."""
+
+        @annealer
+        def test_scheduler(start, end, pos):
+            """Linearly interpolate for tests."""
+            return start + (end - start) * pos
+
+        assert test_scheduler.__name__ == "test_scheduler"
+        assert test_scheduler.__doc__ == "Linearly interpolate for tests."
+        assert lin_sched.__name__ == "lin_sched"
+
     def test_no_sched(self):
         """Test no_sched function."""
         scheduler = no_sched(0.1, 0.01)
