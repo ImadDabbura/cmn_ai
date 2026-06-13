@@ -89,9 +89,8 @@ cmn_ai.text.data : Text data handling utilities
 from __future__ import annotations
 
 from collections import Counter
-from typing import Dict, List
 
-from .utils import listify, uniqueify
+from .utils import listify
 
 
 class Processor:
@@ -228,8 +227,8 @@ class NumericalizeProcessor(Processor):
                 reserved_set.add(token)
                 remaining_slots -= 1
 
-        # Build final vocabulary (uniqueify and sort)
-        self.vocab = uniqueify(vocab_tokens, sort=True)
+        # Preserve the priority order built above while defensively deduping.
+        self.vocab = list(dict.fromkeys(vocab_tokens))
 
         self._create_mappings()
         self._is_fitted = True

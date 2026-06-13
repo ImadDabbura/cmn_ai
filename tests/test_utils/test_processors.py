@@ -308,16 +308,35 @@ class TestNumericalizeProcessor:
         assert all(isinstance(x, int) for x in result2)
         assert all(isinstance(x, int) for x in result3)
 
-    def test_vocabulary_ordering(self) -> None:
-        """Test that vocabulary is properly ordered."""
-        processor = NumericalizeProcessor(min_freq=1)
-        tokens = [["world", "hello", "there"]]
+    def test_vocabulary_preserves_priority_order(self) -> None:
+        """Test that vocabulary preserves unk/reserved/frequency order."""
+        processor = NumericalizeProcessor(
+            min_freq=1, reserved_tokens=["<pad>", "<eos>"]
+        )
+        tokens = [
+            ["zeta", "alpha", "zeta", "beta"],
+            ["zeta", "alpha", "beta", "gamma"],
+            ["zeta", "alpha"],
+        ]
+
         processor.fit(tokens)
 
-        # Vocabulary should be sorted
-        vocab = processor.vocab
-        assert vocab[0] == "<unk>"  # unk_token should be first
-        assert vocab == sorted(vocab)  # Rest should be sorted
+        assert processor.vocab == [
+            "<unk>",
+            "<pad>",
+            "<eos>",
+            "zeta",
+            "alpha",
+            "beta",
+            "gamma",
+        ]
+        assert processor.unk_idx == 0
+
+        in_vocab_tokens = ["zeta", "alpha", "beta", "gamma"]
+        assert (
+            processor.deprocess(processor.process(in_vocab_tokens))
+            == in_vocab_tokens
+        )
 
     def test_max_vocab_limit(self) -> None:
         """Test that max_vocab limit is respected."""
