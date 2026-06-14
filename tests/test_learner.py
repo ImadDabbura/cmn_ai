@@ -404,6 +404,28 @@ class TestLearnerCallbacks:
         assert hasattr(learner, test_callback.name)
         assert getattr(learner, test_callback.name) == test_callback
 
+    def test_add_callback_public_api(self, learner):
+        """Test adding a single callback through the public API."""
+        test_callback = TestCallback()
+
+        learner.add_callback(test_callback)
+
+        assert test_callback in learner.callbacks
+        assert hasattr(learner, test_callback.name)
+        assert getattr(learner, test_callback.name) == test_callback
+
+    def test_add_callbacks_public_api(self, learner):
+        """Test adding multiple callbacks through the public API."""
+        callback1 = TestCallback()
+        callback2 = TestCallback2()
+
+        learner.add_callbacks([callback1, callback2])
+
+        assert callback1 in learner.callbacks
+        assert callback2 in learner.callbacks
+        assert hasattr(learner, callback1.name)
+        assert hasattr(learner, callback2.name)
+
     def test_remove_callbacks(self, learner):
         """Test removing callbacks from learner."""
         test_callback = TestCallback()
@@ -413,6 +435,29 @@ class TestLearnerCallbacks:
 
         assert test_callback not in learner.callbacks
         assert not hasattr(learner, test_callback.name)
+
+    def test_remove_callback_public_api(self, learner):
+        """Test removing a single callback through the public API."""
+        test_callback = TestCallback()
+        learner._add_callbacks([test_callback])
+
+        learner.remove_callback(test_callback)
+
+        assert test_callback not in learner.callbacks
+        assert not hasattr(learner, test_callback.name)
+
+    def test_remove_callbacks_public_api(self, learner):
+        """Test removing multiple callbacks through the public API."""
+        callback1 = TestCallback()
+        callback2 = TestCallback2()
+        learner._add_callbacks([callback1, callback2])
+
+        learner.remove_callbacks([callback1, callback2])
+
+        assert callback1 not in learner.callbacks
+        assert callback2 not in learner.callbacks
+        assert not hasattr(learner, callback1.name)
+        assert not hasattr(learner, callback2.name)
 
     def test_callback_execution(self, learner):
         """Test callback execution order."""

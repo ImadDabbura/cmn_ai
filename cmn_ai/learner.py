@@ -545,11 +545,27 @@ class Learner:
                 added_callbacks.append(cb)
         return added_callbacks
 
+    def add_callback(self, cb: Callback) -> None:
+        """Add a callback to the learner."""
+        self._add_callbacks([cb])
+
+    def add_callbacks(self, cbs: Iterable[Callback] | None) -> None:
+        """Add callbacks to the learner."""
+        self._add_callbacks(cbs)
+
     def _remove_callbacks(self, cbs: Iterable[Callback] | None) -> None:
         """Remove callbacks from the learner."""
         for cb in listify(cbs):
             delattr(self, cb.name)
             self.callbacks.remove(cb)
+
+    def remove_callback(self, cb: Callback) -> None:
+        """Remove a callback from the learner."""
+        self._remove_callbacks([cb])
+
+    def remove_callbacks(self, cbs: Iterable[Callback] | None) -> None:
+        """Remove callbacks from the learner."""
+        self._remove_callbacks(cbs)
 
     def _callback(self, event_nm: str) -> None:
         """Execute all callbacks for a given event."""
