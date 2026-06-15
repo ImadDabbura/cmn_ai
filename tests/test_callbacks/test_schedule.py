@@ -133,6 +133,15 @@ class TestSchedulerFunctions:
             abs(combined(0.99) - 0.01) < 1e-4
         )  # near end of second scheduler
 
+    def test_combine_scheds_allows_floating_point_sum_tolerance(self):
+        """Test combine_scheds tolerates normal floating point sum error."""
+        pcts = [0.1, 0.2, 0.3, 0.3999999999999999]
+        scheds = [no_sched(0.1, 0.01) for _ in pcts]
+
+        combined = combine_scheds(pcts, scheds)
+
+        assert combined(0.05) == 0.1
+
 
 class TestParamScheduler:
     """Test the ParamScheduler callback."""

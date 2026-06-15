@@ -275,7 +275,9 @@ def combine_scheds(pcts, scheds):
     >>> # First 60% of training uses linear scheduler, last 40% uses cosine
     """
     assert len(pcts) == len(scheds), "Each scheduler should have its `pct`."
-    assert sum(pcts) == 1.0, "Sum of the `pcts` should be equal to 1."
+    assert math.isclose(
+        sum(pcts), 1.0
+    ), "Sum of the `pcts` should be equal to 1."
     pcts = torch.tensor([0] + listify(pcts))
     assert (pcts >= 0).all(), "All percentages should be non-negative."
     pcts = torch.cumsum(pcts, 0)
