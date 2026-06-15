@@ -171,6 +171,7 @@ class Callback:
     """
 
     order: int = 0
+    learner: Any = None
 
     def __init__(self):
         """Initialize the callback."""

@@ -100,15 +100,29 @@ class TestCallback:
 
     def test_getattr_without_learner(self):
         """Test __getattr__ when learner is not set."""
-        # This will cause recursion, so we'll skip this test
-        # The __getattr__ method will try to access self.learner.non_existent_attribute
-        # but self.learner is None, causing infinite recursion
-        pass
+        callback = Callback()
 
-    def test_getattr_learner_none(self):
-        """Test __getattr__ when learner is None."""
-        # This will cause recursion, so we'll skip this test
-        pass
+        with pytest.raises(
+            AttributeError,
+            match="'Callback' object has no attribute 'some_attribute'",
+        ):
+            _ = callback.some_attribute
+
+    def test_getattr_without_super_init_does_not_recurse(self):
+        """Test callbacks without super init still have a default learner."""
+
+        class NoSuperCallback(Callback):
+            def __init__(self):
+                self.value = "set"
+
+        callback = NoSuperCallback()
+
+        assert callback.learner is None
+        with pytest.raises(
+            AttributeError,
+            match="'NoSuperCallback' object has no attribute 'some_attribute'",
+        ):
+            _ = callback.some_attribute
 
     def test_name_property(self):
         """Test the name property returns class name."""
