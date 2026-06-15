@@ -306,6 +306,11 @@ class DataLoaders:
         """
         # Assuming first dataloader is training dataloader and the second is
         # valid dataloader
+        if len(dls) < 2:
+            raise ValueError(
+                "DataLoaders requires at least two dataloaders "
+                "(train and valid)"
+            )
         self.train, self.valid = dls[:2]
 
     @classmethod

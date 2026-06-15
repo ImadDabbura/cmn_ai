@@ -15,6 +15,7 @@ import torch
 
 import cmn_ai.utils.data as data_utils
 from cmn_ai.utils.data import (
+    DataLoaders,
     ItemList,
     LabeledData,
     ListContainer,
@@ -83,6 +84,17 @@ class TestDeviceManagement:
             tensor = torch.randn(3, 3)
             result = to_cpu(tensor)
             assert result.device.type == "cpu"
+
+
+class TestDataLoaders:
+    """Test DataLoaders container."""
+
+    def test_requires_at_least_two_dataloaders(self):
+        """Test DataLoaders raises a clear error for missing validation dl."""
+        with pytest.raises(
+            ValueError, match="DataLoaders requires at least two dataloaders"
+        ):
+            DataLoaders(MagicMock())
 
 
 class TestCompose:
