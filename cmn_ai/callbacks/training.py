@@ -53,7 +53,7 @@ Basic training with device management and progress tracking:
 ... ]
 >>>
 >>> # Add to learner
->>> learner.add_cbs(callbacks)
+>>> learner.add_callbacks(callbacks)
 
 Learning rate finding:
 
@@ -61,7 +61,7 @@ Learning rate finding:
 >>>
 >>> # Find optimal learning rate
 >>> lr_finder = LRFinder(gamma=1.3, num_iter=100, stop_div=True)
->>> learner.add_cb(lr_finder)
+>>> learner.add_callback(lr_finder)
 >>> learner.fit(1)  # Run for 1 epoch
 >>> lr_finder.recorder.plot()  # Plot lr vs loss
 
@@ -71,7 +71,7 @@ Data augmentation with mixup:
 >>>
 >>> # Add mixup augmentation
 >>> mixup = Mixup(alpha=0.4)
->>> learner.add_cb(mixup)
+>>> learner.add_callback(mixup)
 >>> learner.fit(10)
 
 Metrics tracking:
@@ -82,7 +82,7 @@ Metrics tracking:
 >>> # Track accuracy during training
 >>> accuracy = MulticlassAccuracy()
 >>> metrics_cb = MetricsCallback(accuracy=accuracy)
->>> learner.add_cb(metrics_cb)
+>>> learner.add_callback(metrics_cb)
 >>> learner.fit(5)
 
 Debugging with single batch:
@@ -91,7 +91,7 @@ Debugging with single batch:
 >>>
 >>> # Run only one batch for debugging
 >>> debug_cb = SingleBatchCallback()
->>> learner.add_cb(debug_cb)
+>>> learner.add_callback(debug_cb)
 >>> learner.fit(1)  # Will stop after first batch
 
 Raises

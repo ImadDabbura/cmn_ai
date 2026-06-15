@@ -24,7 +24,7 @@ A callback can implement actions on the following events:
   said batch. It can be used to do any setup necessary for the batch
   (like hyper-parameter scheduling) or to change the input/target before
   it goes in the model (change of the input with techniques like mixup)
-- `after_pred`: Called after computing the output of the model on the batch.
+- `after_predict`: Called after computing the output of the model on the batch.
   It can be used to change that output before it's fed to the loss function
 - `after_loss`: Called after the loss has been computed, but before the
   backward pass. It can be used to add any penalty to the loss
@@ -52,6 +52,11 @@ A callback can implement actions on the following events:
 - `after_cancel_fit`: Reached immediately after `CancelFitException`
   before proceeding to `after_fit`
 - `after_fit`: Called at the end of training, for any final clean-up
+
+Only the phases executed through `_with_events` have `before_*` and
+`after_cancel_*` event variants: fit, epoch, train, validate, batch, backward,
+and step. The direct `after_predict` and `after_loss` callbacks do not have
+matching `before_` or `after_cancel_` events.
 
 Classes
 -------

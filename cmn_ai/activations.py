@@ -44,14 +44,15 @@ class GeneralRelu(nn.Module):
 
     Parameters
     ----------
-    leak : float, optional
+    leak : float or None, default=0.1
         Negative slope for values less than zero, similar to LeakyReLU.
-        If None (default), standard ReLU behavior is used (all negatives set to 0).
-    sub : float, optional
-        A constant value to subtract from the activation output after applying ReLU/LeakyReLU.
-        If None (default), no subtraction is applied.
-    maxv : float, optional
-        Maximum value to clip the activation output to. If None (default), no clipping is applied.
+        If None, standard ReLU behavior is used (all negatives set to 0).
+    sub : float or None, default=0.4
+        A constant value to subtract from the activation output after applying
+        ReLU/LeakyReLU. If None, no subtraction is applied.
+    maxv : float or None, default=None
+        Maximum value to clip the activation output to. If None, no clipping
+        is applied.
 
     Attributes
     ----------
@@ -70,7 +71,7 @@ class GeneralRelu(nn.Module):
     Examples
     --------
     >>> import torch
-    >>> act = GeneralReLU(leak=0.1, sub=0.4, maxv=6.0)
+    >>> act = GeneralRelu(leak=0.1, sub=0.4, maxv=6.0)
     >>> x = torch.tensor([-2.0, -0.5, 0.5, 2.0])
     >>> act(x)
     tensor([-0.6000, -0.4500,  0.1000,  1.6000])

@@ -68,8 +68,7 @@ pip install cmn-ai
 ```bash
 git clone https://github.com/ImadDabbura/cmn_ai.git
 cd cmn_ai
-pip install poetry
-poetry install
+uv sync --extra dev
 ```
 
 ## Quick Start
@@ -78,14 +77,14 @@ poetry install
 
 ```python
 from cmn_ai.learner import Learner
-from cmn_ai.callbacks.training import DeviceCallBack, Recorder
+from cmn_ai.callbacks.training import DeviceCallback, Recorder
 
 # Create a learner with callbacks
 learner = Learner(model, dls, loss_func, opt_func, callbacks=[Recorder("lr")])
-learner.add_callback(DeviceCallBack("cuda:0"))
+learner.add_callback(DeviceCallback("cuda:0"))
 
 # Train your model
-learner.fit(epochs=10, lr=1e-3)
+learner.fit(n_epochs=10, lr=1e-3)
 ```
 
 ### Vision Tasks
@@ -96,7 +95,7 @@ from cmn_ai.vision import VisionLearner
 # Vision-specific learner with built-in utilities
 vision_learner = VisionLearner(model, dls, loss_func)
 vision_learner.show_batch()  # Visualize training data
-vision_learner.fit(epochs=20, lr=1e-4)
+vision_learner.fit(n_epochs=20, lr=1e-4)
 ```
 
 ### Tabular Data Processing
@@ -121,7 +120,6 @@ tfm.fit_transform(X_train, y_train)
 The `Learner` class provides a flexible foundation for training deep learning models with:
 
 - Exception-based callback system for fine-grained training control
-- Automatic mixed precision support
 - Built-in logging and metrics tracking
 - Memory optimization utilities
 
@@ -166,11 +164,11 @@ learner.add_callbacks(
     [
         ProgressCallback(),
         BatchScheduler(sched),
-        MetricsCallback(accuracy=MulticlassAccuracy(nm_classes=10)),
+        MetricsCallback(accuracy=MulticlassAccuracy(num_classes=10)),
     ]
 )
 
-learner.fit(epochs=50, lr=1e-3)
+learner.fit(n_epochs=50, lr=1e-3)
 ```
 
 ### Custom Callback Creation
@@ -202,20 +200,20 @@ class CustomCallback(Callback):
 ```bash
 git clone https://github.com/ImadDabbura/cmn_ai.git
 cd cmn_ai
-poetry install
+uv sync --extra dev
 ```
 
 ### Run Tests
 
 ```bash
 # Full test suite
-poetry run pytest
+uv run pytest
 
 # With coverage
-poetry run pytest --cov=cmn_ai
+uv run pytest --cov=cmn_ai
 
 # Specific test file
-poetry run pytest tests/test_learner.py
+uv run pytest tests/test_learner.py
 ```
 
 ### Code Quality
