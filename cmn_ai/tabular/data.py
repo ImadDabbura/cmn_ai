@@ -318,12 +318,22 @@ class DataSplitter:
         X = np.asarray(X) if not hasattr(X, "__getitem__") else X
         if y is not None and not hasattr(y, "__len__"):
             y = np.asarray(y)
+        if y is not None and len(X) != len(y):
+            raise ValueError("X and y must have the same length")
         return X, y
 
     def _infer_split_sizes(self, train_size, val_size, test_size):
         """
         Infer missing split sizes to ensure they sum to 1.0.
         """
+        for name, size in [
+            ("train", train_size),
+            ("val", val_size),
+            ("test", test_size),
+        ]:
+            if size is not None and not (0.0 < size < 1.0):
+                raise ValueError(f"{name}_size must be in (0, 1), got {size}")
+
         remainder = 1.0 - train_size
         if val_size is None and test_size is None:
             val_size = remainder / 2.0
@@ -337,6 +347,14 @@ class DataSplitter:
             raise ValueError(
                 "train_size + val_size + test_size must sum to 1.0"
             )
+
+        for name, size in [
+            ("train", train_size),
+            ("val", val_size),
+            ("test", test_size),
+        ]:
+            if not (0.0 < size < 1.0):
+                raise ValueError(f"{name}_size must be in (0, 1), got {size}")
 
         return train_size, val_size, test_size
 

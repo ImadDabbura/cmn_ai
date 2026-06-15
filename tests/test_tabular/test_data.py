@@ -215,6 +215,41 @@ class TestDataSplitting:
         with pytest.raises(ValueError, match="must sum to 1.0"):
             get_data_splits(X, y, train_size=0.5, val_size=0.3, test_size=0.3)
 
+    @pytest.mark.parametrize(
+        ("kwargs", "match"),
+        [
+            (
+                {"train_size": 1.0, "val_size": 0.1, "test_size": -0.1},
+                "train_size must be in \\(0, 1\\)",
+            ),
+            (
+                {"train_size": 0.8, "val_size": 0.0, "test_size": 0.2},
+                "val_size must be in \\(0, 1\\)",
+            ),
+            (
+                {"train_size": 0.8, "val_size": 0.3, "test_size": -0.1},
+                "test_size must be in \\(0, 1\\)",
+            ),
+        ],
+    )
+    def test_size_range_validation(self, kwargs, match):
+        """Test validation that each split size is in range."""
+        X = np.random.rand(20, 5)
+        y = np.random.choice([0, 1], size=20)
+
+        with pytest.raises(ValueError, match=match):
+            get_data_splits(X, y, stratify=False, **kwargs)
+
+    def test_mismatched_x_y_lengths_raise_clear_error(self):
+        """Test validation that X and y have the same length."""
+        X = np.random.rand(10, 5)
+        y = np.random.choice([0, 1], size=9)
+
+        with pytest.raises(
+            ValueError, match="X and y must have the same length"
+        ):
+            get_data_splits(X, y, stratify=False)
+
     def test_groups_with_stratify_error(self):
         """Test that groups with stratify raises an error."""
         X = np.random.rand(100, 5)
