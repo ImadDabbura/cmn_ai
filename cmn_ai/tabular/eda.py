@@ -80,8 +80,6 @@ from scipy.cluster import hierarchy
 from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 
-sns.set()
-
 
 def na_percentages(
     df: pd.DataFrame, formatted: bool = True

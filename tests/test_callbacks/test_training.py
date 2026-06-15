@@ -233,6 +233,20 @@ class TestRecorder:
         assert recorder.params == ["lr", "momentum"]
         assert recorder.order == 50
 
+    def test_recorder_init_does_not_set_global_seaborn_style(
+        self, monkeypatch
+    ):
+        """Test Recorder construction does not mutate global seaborn style."""
+        calls = []
+        monkeypatch.setattr(
+            "cmn_ai.callbacks.training.sns.set",
+            lambda *args, **kwargs: calls.append((args, kwargs)),
+        )
+
+        Recorder("lr")
+
+        assert calls == []
+
     def test_recorder_init_no_params(self):
         """Test Recorder initialization without parameters."""
         recorder = Recorder()

@@ -385,7 +385,6 @@ class Recorder(Callback):
         """
         super().__init__()
         self.params = listify(params)
-        sns.set()
 
     def before_fit(self) -> None:
         """
