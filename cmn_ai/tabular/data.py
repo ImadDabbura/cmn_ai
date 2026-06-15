@@ -69,7 +69,7 @@ from sklearn.model_selection import GroupShuffleSplit, train_test_split
 
 def _suggest_sizes(
     train_size: float, val_size: float, test_size: float, y
-) -> tuple[float, float, float]:
+) -> tuple[float | None, float | None, float | None]:
     """
     Suggest minimally adjusted split sizes for stratified splitting feasibility.
 

@@ -320,7 +320,7 @@ def plot_corr_matrix(
 
 def plot_featurebased_hier_clustering(
     X: np.ndarray | pd.DataFrame,
-    feature_names: np.ndarray | list[str] = None,
+    feature_names: np.ndarray | list[str] | None = None,
     linkage_method: str = "single",
     figsize: tuple[int, int] = (16, 12),
 ) -> None:

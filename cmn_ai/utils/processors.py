@@ -162,6 +162,16 @@ class NumericalizeProcessor(Processor):
         else:
             self._is_fitted = False
 
+    def _get_token_to_idx(self) -> dict[str, int]:
+        if self._token_to_idx is None:
+            raise ValueError("Token mapping has not been created")
+        return self._token_to_idx
+
+    def _get_idx_to_token(self) -> dict[int, str]:
+        if self._idx_to_token is None:
+            raise ValueError("Index mapping has not been created")
+        return self._idx_to_token
+
     def __call__(self, items: list[str | list[str]]) -> list[int | list[int]]:
         """
         Process a list of items, building vocabulary if needed.
@@ -195,7 +205,7 @@ class NumericalizeProcessor(Processor):
             return
 
         # Count token frequencies
-        self.token_freqs = Counter()
+        self.token_freqs: Counter[str] = Counter()
         for item in items:
             if isinstance(item, (list, tuple)):
                 self.token_freqs.update(item)
@@ -264,9 +274,10 @@ class NumericalizeProcessor(Processor):
 
         if isinstance(items, (list, tuple)):
             return [
-                self._token_to_idx.get(item, self.unk_idx) for item in items
+                self._get_token_to_idx().get(item, self.unk_idx)
+                for item in items
             ]
-        return self._token_to_idx.get(items, self.unk_idx)
+        return self._get_token_to_idx().get(items, self.unk_idx)
 
     def deprocess(self, indices: int | list[int]) -> str | list[str]:
         """
@@ -287,9 +298,10 @@ class NumericalizeProcessor(Processor):
 
         if isinstance(indices, (list, tuple)):
             return [
-                self._idx_to_token.get(idx, self.unk_token) for idx in indices
+                self._get_idx_to_token().get(idx, self.unk_token)
+                for idx in indices
             ]
-        return self._idx_to_token.get(indices, self.unk_token)
+        return self._get_idx_to_token().get(indices, self.unk_token)
 
     def __len__(self) -> int:
         """Return the size of the vocabulary."""
@@ -346,7 +358,7 @@ class NumericalizeProcessor(Processor):
         """
         if not self.is_fitted:
             raise ValueError("Processor must be fitted before getting tokens")
-        return self._idx_to_token.get(idx, self.unk_token)
+        return self._get_idx_to_token().get(idx, self.unk_token)
 
     def get_index(self, token: str) -> int:
         """
@@ -364,7 +376,7 @@ class NumericalizeProcessor(Processor):
         """
         if not self.is_fitted:
             raise ValueError("Processor must be fitted before getting indices")
-        return self._token_to_idx.get(token, self.unk_idx)
+        return self._get_token_to_idx().get(token, self.unk_idx)
 
     @property
     def token_to_idx(self) -> dict[str, int]:
@@ -373,7 +385,7 @@ class NumericalizeProcessor(Processor):
             raise ValueError(
                 "Processor must be fitted before accessing mappings"
             )
-        return self._token_to_idx
+        return self._get_token_to_idx()
 
     @property
     def idx_to_token(self) -> dict[int, str]:
@@ -382,7 +394,7 @@ class NumericalizeProcessor(Processor):
             raise ValueError(
                 "Processor must be fitted before accessing mappings"
             )
-        return self._idx_to_token
+        return self._get_idx_to_token()
 
     @property
     def is_fitted(self) -> bool:
@@ -397,7 +409,7 @@ class NumericalizeProcessor(Processor):
                 "Processor must be fitted before accessing unk_idx"
             )
         # If unk_token is not in vocabulary, return index 0 as fallback
-        return self._token_to_idx.get(self.unk_token, 0)
+        return self._get_token_to_idx().get(self.unk_token, 0)
 
     @property
     def unk(self) -> int:

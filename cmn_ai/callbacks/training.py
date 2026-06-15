@@ -126,7 +126,7 @@ import time
 from copy import copy
 from functools import partial
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, cast
 
 import fastcore.all as fc
 import matplotlib.pyplot as plt
@@ -271,8 +271,8 @@ class ProgressCallback(Callback):
         """
         Initialize progress tracking and create progress bars.
         """
-        self.train_losses = []
-        self.valid_losses = []
+        self.train_losses: list[float] = []
+        self.valid_losses: list[float] = []
         self.learner.epochs = self.mbar = master_bar(range(self.n_epochs))
         self.mbar.on_iter_begin()
         # Overwrite default learner logger
@@ -374,13 +374,13 @@ class Recorder(Callback):
 
     order = 50
 
-    def __init__(self, *params: tuple[str, ...]) -> None:
+    def __init__(self, *params: str) -> None:
         """
         Initialize Recorder.
 
         Parameters
         ----------
-        *params : tuple[str, ...]
+        *params : str
             Parameter names to track (e.g., 'lr', 'momentum').
         """
         super().__init__()
@@ -390,11 +390,11 @@ class Recorder(Callback):
         """
         Initialize recording structures before training starts.
         """
-        self.params_records = {
+        self.params_records: dict[str, list[list[float]]] = {
             params: [[] for _ in self.opt.param_groups]
             for params in self.params
         }
-        self.losses = []
+        self.losses: list[float] = []
 
     def after_batch(self) -> None:
         """
@@ -406,7 +406,7 @@ class Recorder(Callback):
                     self.opt.param_groups, param_records
                 ):
                     param_record.append(pg[param])
-            self.losses.append(to_cpu(self.loss.item()))
+            self.losses.append(float(to_cpu(self.loss.item())))
 
     def plot_params(
         self,
@@ -526,7 +526,7 @@ class LRFinder(Callback):
 
     def __init__(
         self,
-        gamma: int = 1.3,
+        gamma: float = 1.3,
         num_iter: int = 100,
         stop_div: bool = True,
         max_mult: int = 4,
@@ -536,7 +536,7 @@ class LRFinder(Callback):
 
         Parameters
         ----------
-        gamma : int, default=1.3
+        gamma : float, default=1.3
             Multiplicative factor for learning rate increase.
         num_iter : int, default=100
             Number of iterations to run the training.
@@ -849,7 +849,8 @@ class MetricsCallback(Callback):
         for metric in self.metrics.values():
             metric.update(to_cpu(self.preds), to_cpu(*self.yb))
         self.all_metrics["loss"].update(
-            to_cpu(self.learner.loss), weight=len(self.learner.xb[0])
+            cast(torch.Tensor, to_cpu(self.learner.loss)),
+            weight=len(self.learner.xb[0]),
         )
 
 

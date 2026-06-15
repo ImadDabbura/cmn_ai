@@ -99,7 +99,7 @@ class TextList(ItemList):
         encoding : str, default="utf8"
             Character encoding used to read text files.
         """
-        super().__init__(items, path, tfms)
+        super().__init__(list(items), path, tfms)
         self.encoding = encoding
 
     @classmethod
@@ -194,6 +194,6 @@ class TextList(ItemList):
         """
         path = Path(item)
         if os.path.exists(path):
-            with open(item, encoding=self.encoding) as f:
+            with open(path, encoding=self.encoding) as f:
                 return f.read()
-        return item
+        return str(item)

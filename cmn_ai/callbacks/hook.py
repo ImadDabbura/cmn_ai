@@ -61,6 +61,8 @@ from ..plot import get_grid, show_image
 from ..utils.utils import listify
 from .core import Callback
 
+Stats = tuple[list[Tensor], list[Tensor], list[Tensor]]
+
 
 class Hook:
     """
@@ -111,6 +113,7 @@ class Hook:
             Additional keyword arguments to pass to the hook function.
         """
         self.is_forward = is_forward
+        self.stats: Stats | None = None
         if self.is_forward:
             self.hook = module.register_forward_hook(
                 partial(func, self, **kwargs)
@@ -313,13 +316,19 @@ def compute_stats(
     - `hook.stats[1]`: List of standard deviation values
     - `hook.stats[2]`: List of histogram tensors
     """
-    if not hasattr(hook, "stats"):
+    if hook.stats is None:
         hook.stats = ([], [], [])
     if not hook.is_forward:
         inp, outp = inp[0], outp[0]
     hook.stats[0].append(outp.data.mean().cpu())
     hook.stats[1].append(outp.data.std().cpu())
     hook.stats[2].append(outp.data.cpu().histc(bins, *bins_range))
+
+
+def _get_stats(hook: Hook) -> Stats:
+    if hook.stats is None:
+        raise ValueError("Hook statistics have not been computed")
+    return hook.stats
 
 
 def get_hist(hook: Hook) -> Tensor:
@@ -337,7 +346,7 @@ def get_hist(hook: Hook) -> Tensor:
         Matrix of histogram data ready for plotting as a heatmap.
         Shape is (bins, timesteps) with log1p applied for better visualization.
     """
-    return torch.stack(hook.stats[2]).t().float().log1p()
+    return torch.stack(_get_stats(hook)[2]).t().float().log1p()
 
 
 def get_min(hook: Hook, bins_range: list | tuple) -> Tensor:
@@ -368,7 +377,7 @@ def get_min(hook: Hook, bins_range: list | tuple) -> Tensor:
     >>> dead_percentage = get_min(hook, [0, 5])
     >>> print(f"Dead activations: {dead_percentage.mean():.2%}")
     """
-    res = torch.stack(hook.stats[2]).t().float()
+    res = torch.stack(_get_stats(hook)[2]).t().float()
     return res[slice(*bins_range)].sum(0) / res.sum(0)
 
 
@@ -596,8 +605,9 @@ class ActivationStats(HooksCallback):
         """
         _, axes = plt.subplots(1, 2, figsize=figsize)
         for h in self:
-            axes[0].plot(h.stats[0])
-            axes[1].plot(h.stats[1])
+            stats = _get_stats(h)
+            axes[0].plot(stats[0])
+            axes[1].plot(stats[1])
         axes[0].set_title(
             f"Means of {'activations' if self.is_forward else 'gradients'}"
         )

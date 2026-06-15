@@ -245,9 +245,10 @@ def clean_ipython_history() -> None:
     --------
     >>> clean_ipython_history()  # Clears history if in IPython
     """
-    if "get_ipython" not in globals():
+    get_ipython_func = globals().get("get_ipython")
+    if not callable(get_ipython_func):
         return
-    ip = get_ipython()  # noqa: F821
+    ip = get_ipython_func()
     user_ns = ip.user_ns
     ip.displayhook.flush()
     pc = ip.displayhook.prompt_count + 1

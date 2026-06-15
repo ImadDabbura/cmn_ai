@@ -120,7 +120,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as opt
-from torch import tensor
+from torch import Tensor
 from torch.utils.data import DataLoader
 from torchinfo import summary
 
@@ -221,8 +221,10 @@ class Learner:
         model: nn.Module,
         dls: DataLoaders,
         n_inp: int = 1,
-        loss_func: Callable[[tensor, tensor], tensor] = F.mse_loss,
-        opt_func: opt.Optimizer = opt.SGD,
+        loss_func: Callable[..., Tensor] = F.mse_loss,
+        opt_func: Callable[
+            [Iterable[nn.Parameter], float], opt.Optimizer
+        ] = opt.SGD,
         lr: float = 1e-2,
         splitter: Callable[
             [nn.Module], Iterable[nn.Parameter]
@@ -242,9 +244,9 @@ class Learner:
             Training and validation data loaders.
         n_inp : int, default=1
             Number of inputs to the model.
-        loss_func : Callable[[tensor, tensor], tensor], default=F.mse_loss
+        loss_func : Callable[..., Tensor], default=F.mse_loss
             Loss function that takes predictions and targets.
-        opt_func : opt.Optimizer, default=opt.SGD
+        opt_func : callable, default=opt.SGD
             Optimizer class (not instance).
         lr : float, default=1e-2
             Learning rate for training.
@@ -272,12 +274,18 @@ class Learner:
         self.splitter = splitter
         self.path = Path(path)
         self.model_dir_path = self.path / Path(model_dir)
+        self.loss: Tensor
         self.logger: Any = print
         self.callbacks: list[Callback] = []
         callbacks = listify(callbacks) + [
             TrainEvalCallback(),
         ]
         self._add_callbacks(callbacks)
+
+    def _require_opt(self) -> opt.Optimizer:
+        if self.opt is None:
+            raise RuntimeError("Optimizer has not been initialized")
+        return self.opt
 
     def _with_events(
         self, func: Callable[[], None], event_nm: str, exc: type[Exception]
@@ -297,7 +305,7 @@ class Learner:
 
     def _step(self) -> None:
         """Perform optimizer step."""
-        self.opt.step()
+        self._require_opt().step()
 
     def _one_batch(self) -> None:
         """Process one batch through the model."""
@@ -310,7 +318,7 @@ class Learner:
                 self._backward, "backward", CancelBackwardException
             )
             self._with_events(self._step, "step", CancelStepException)
-            self.opt.zero_grad()
+            self._require_opt().zero_grad()
 
     def _all_batches(self) -> None:
         """Process all batches in the current data loader."""
@@ -503,7 +511,9 @@ class Learner:
             "model_state_dict": self.model.state_dict(),
         }
         if with_opt:
-            checkpoint["optimizer_state_dict"] = self.opt.state_dict()
+            checkpoint["optimizer_state_dict"] = (
+                self._require_opt().state_dict()
+            )
         if with_epoch:
             checkpoint["epoch"] = self.epoch
         if with_loss:
@@ -541,7 +551,9 @@ class Learner:
         checkpoint = torch.load(path, weights_only=False)
         self.model.load_state_dict(checkpoint["model_state_dict"])
         if with_opt:
-            self.opt.load_state_dict(checkpoint["optimizer_state_dict"])
+            self._require_opt().load_state_dict(
+                checkpoint["optimizer_state_dict"]
+            )
         if with_epoch:
             self.epoch = checkpoint["epoch"]
         if with_loss:

@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.axes._axes import Axes
 from matplotlib.figure import Figure
-from matplotlib.image import AxesImage
 
 
 @fc.delegates(plt.Axes.imshow)
@@ -24,7 +23,7 @@ def show_image(
     title: str | None = None,
     noframe: bool = True,
     **kwargs,
-) -> AxesImage:
+) -> Axes:
     """
     Show a PIL or PyTorch image on `ax`.
 
@@ -70,9 +69,9 @@ def show_image(
 def subplots(
     nrows: int = 1,
     ncols: int = 1,
-    figsize: tuple = None,
+    figsize: tuple | None = None,
     imsize: int = 3,
-    suptitle: str = None,
+    suptitle: str | None = None,
     **kwargs,
 ) -> tuple[Figure, Axes]:
     """
@@ -111,9 +110,9 @@ def subplots(
 @fc.delegates(subplots)
 def get_grid(
     n: int,
-    nrows: int = None,
-    ncols: int = None,
-    title: str = None,
+    nrows: int | None = None,
+    ncols: int | None = None,
+    title: str | None = None,
     weight: str = "bold",
     size: int = 14,
     **kwargs,

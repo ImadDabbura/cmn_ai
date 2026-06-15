@@ -74,13 +74,12 @@ from collections import UserList
 from collections.abc import Iterable, Sequence
 from operator import itemgetter
 from pathlib import Path
-from typing import Any, Callable, Mapping
+from typing import Any, Callable, Mapping, cast
 
 import numpy as np
 import torch
 from datasets.dataset_dict import DatasetDict
-from torch import Tensor
-from torch.utils.data import DataLoader, Dataset, default_collate
+from torch.utils.data import DataLoader, default_collate
 
 from .processors import Processor
 from .utils import listify
@@ -102,7 +101,7 @@ DEFAULT_DEVICE = _default_device()
 
 
 def get_dls(
-    train_ds: Dataset, valid_ds: Dataset, batch_size: int, **kwargs
+    train_ds: Any, valid_ds: Any, batch_size: int, **kwargs
 ) -> tuple[DataLoader, DataLoader]:
     """
     Create training and validation DataLoaders.
@@ -142,9 +141,9 @@ def get_dls(
 
 
 def to_device(
-    x: Tensor | Iterable[Tensor] | Mapping[str, Tensor],
+    x: Any,
     device: str | torch.device = DEFAULT_DEVICE,
-) -> Tensor | Iterable[Tensor] | Mapping[str, Tensor]:
+) -> Any:
     """
     Copy tensor(s) to specified device.
 
@@ -180,13 +179,11 @@ def to_device(
     if isinstance(x, Mapping):
         return {k: to_device(v, device) for k, v in x.items()}
     if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
-        return type(x)(to_device(o, device) for o in x)
+        return cast(Any, type(x))(to_device(o, device) for o in x)
     return x
 
 
-def to_cpu(
-    x: Tensor | Iterable[Tensor] | Mapping[str, Tensor],
-) -> Tensor | Iterable[Tensor] | Mapping[str, Tensor]:
+def to_cpu(x: Any) -> Any:
     """
     Copy tensor(s) to CPU.
 
@@ -341,19 +338,19 @@ class DataLoaders:
         >>> dd = DatasetDict({'train': train_ds, 'validation': valid_ds})
         >>> dls = DataLoaders.from_dd(dd, batch_size=32)
         """
+        dsets = list(dd.values())
         return cls(
             *get_dls(
-                *dd.values(),
-                batch_size=batch_size,
+                dsets[0],
+                dsets[1],
+                batch_size,
                 collate_fn=collate_dict(*dd["train"].features),
                 **kwargs,
             )
         )
 
 
-def compose(
-    x: Any, funcs: Callable, *args, order: str = "order", **kwargs
-) -> Any:
+def compose(x: Any, funcs: Any, *args, order: str = "order", **kwargs) -> Any:
     """
     Apply transformations in sequence to input.
 
@@ -461,7 +458,7 @@ def get_files(
                 d[:] = [o for o in d if o in include]
             else:
                 d[:] = [o for o in d if not o.startswith(".")]
-            res += _get_files(p, fs, extensions)
+            res += _get_files(Path(p), fs, extensions)
         return res
     else:
         fs = [o.name for o in os.scandir(path) if o.is_file()]
@@ -621,7 +618,7 @@ class ItemList(ListContainer):
         """
         return compose(self.get(item), self.tfms)
 
-    def __getitem__(self, idx: int | slice) -> Any | list[Any]:
+    def __getitem__(self, idx: int | slice) -> Any | list[Any]:  # type: ignore[override]
         """
         Get item(s) with transformations applied.
 
@@ -761,7 +758,7 @@ class SplitData:
     >>> train_dl, valid_dl = split_data.to_dls(batch_size=32)
     """
 
-    def __init__(self, train: ItemList, valid: ItemList) -> None:
+    def __init__(self, train: Any, valid: Any) -> None:
         """
         Initialize SplitData with training and validation ItemLists.
 
@@ -875,8 +872,8 @@ class LabeledData:
         self,
         x: ItemList,
         y: ItemList,
-        proc_x: Processor | Iterable[Processor] | None = None,
-        proc_y: Processor | Iterable[Processor] | None = None,
+        proc_x: Any = None,
+        proc_y: Any = None,
     ) -> None:
         """
         Initialize LabeledData with input and target ItemLists.
@@ -900,7 +897,7 @@ class LabeledData:
     def process(
         self,
         item_list: ItemList,
-        proc: Processor | Iterable[Processor] | None,
+        proc: Any,
     ) -> ItemList:
         """
         Apply processors to an ItemList.
@@ -1034,8 +1031,8 @@ class LabeledData:
         cls,
         item_list: ItemList,
         label_func: Callable,
-        proc_x: Callable | None = None,
-        proc_y: Callable | None = None,
+        proc_x: Any = None,
+        proc_y: Any = None,
     ) -> LabeledData:
         """
         Label an ItemList using a labeling function.
@@ -1094,8 +1091,8 @@ def parent_labeler(f_name: str | Path) -> str:
 def label_by_func(
     splitted_data: SplitData,
     label_func: Callable,
-    proc_x: Callable | None = None,
-    proc_y: Callable | None = None,
+    proc_x: Any = None,
+    proc_y: Any = None,
 ) -> SplitData:
     """
     Label split data using a labeling function.
