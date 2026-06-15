@@ -19,6 +19,7 @@ from cmn_ai.callbacks.core import (
     CancelEpochException,
     CancelFitException,
 )
+from cmn_ai.callbacks.schedule import BatchScheduler
 from cmn_ai.callbacks.training import TrainEvalCallback
 from cmn_ai.learner import Learner, params_getter
 from cmn_ai.utils.data import DataLoaders
@@ -219,6 +220,34 @@ class TestLearnerTraining:
             # Callback should be removed after fit
             assert test_callback not in learner.callbacks
             assert not hasattr(learner, test_callback.name)
+
+    def test_fit_one_cycle_adds_batch_scheduler(self, learner):
+        """Test fit_one_cycle delegates to fit with a OneCycle batch scheduler."""
+        test_callback = TestCallback()
+
+        with patch.object(learner, "fit") as mock_fit:
+            learner.fit_one_cycle(
+                n_epochs=2,
+                max_lr=0.05,
+                callbacks=[test_callback],
+                lr=0.001,
+                run_valid=False,
+            )
+
+        mock_fit.assert_called_once()
+        kwargs = mock_fit.call_args.kwargs
+        callbacks = kwargs["callbacks"]
+
+        assert kwargs["n_epochs"] == 2
+        assert kwargs["lr"] == 0.001
+        assert kwargs["run_valid"] is False
+        assert isinstance(callbacks[0], BatchScheduler)
+        assert callbacks[0].scheduler.func is torch.optim.lr_scheduler.OneCycleLR
+        assert callbacks[0].scheduler.keywords["max_lr"] == 0.05
+        assert callbacks[0].scheduler.keywords["total_steps"] == 2 * len(
+            learner.dls.train
+        )
+        assert callbacks[1] is test_callback
 
 
 class TestLearnerTrainingMode:

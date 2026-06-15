@@ -107,6 +107,7 @@ from __future__ import annotations
 
 import pickle
 from collections.abc import Callable, Iterable
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -128,6 +129,7 @@ from .callbacks.core import (
     CancelTrainException,
     CancelValidateException,
 )
+from .callbacks.schedule import BatchScheduler
 from .callbacks.training import (
     LRFinder,
     ProgressCallback,
@@ -384,6 +386,36 @@ class Learner:
             self._with_events(self._fit, "fit", CancelFitException)
         finally:
             self._remove_callbacks(callbacks)
+
+    def fit_one_cycle(
+        self,
+        n_epochs: int = 1,
+        max_lr: float = 1e-2,
+        callbacks: Iterable[Callback] | None = None,
+        **kwargs: Any,
+    ) -> None:
+        """
+        Fit the model using PyTorch's one-cycle learning rate schedule.
+
+        Parameters
+        ----------
+        n_epochs : int, default=1
+            Number of epochs to train the model.
+        max_lr : float, default=1e-2
+            Upper learning rate bound passed to `OneCycleLR`.
+        callbacks : Iterable[Callback] | None, default=None
+            Additional callbacks to include during training.
+        **kwargs : Any
+            Additional keyword arguments passed to `fit`.
+        """
+        total_steps = n_epochs * len(self.dls.train)
+        sched = partial(
+            opt.lr_scheduler.OneCycleLR,
+            max_lr=max_lr,
+            total_steps=total_steps,
+        )
+        callbacks = [BatchScheduler(sched)] + listify(callbacks)
+        self.fit(n_epochs=n_epochs, callbacks=callbacks, **kwargs)
 
     def lr_find(
         self,
