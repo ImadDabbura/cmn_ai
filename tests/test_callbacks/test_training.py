@@ -15,6 +15,7 @@ import torch.nn as nn
 from cmn_ai.callbacks.core import CancelFitException
 from cmn_ai.callbacks.training import (
     BatchTransform,
+    DEFAULT_DEVICE,
     BatchTransformX,
     DeviceCallback,
     LRFinder,
@@ -55,7 +56,7 @@ class TestDeviceCallback:
     def test_device_callback_init_default(self):
         """Test DeviceCallback initialization with default device."""
         callback = DeviceCallback()
-        assert callback.device == "cpu"  # Assuming DEFAULT_DEVICE is 'cpu'
+        assert callback.device == DEFAULT_DEVICE
 
     def test_device_callback_before_fit(self):
         """Test DeviceCallback before_fit method."""
