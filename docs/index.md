@@ -177,11 +177,11 @@ class CustomCallback(Callback):
 
 **📖 [Full Documentation](https://imaddabbura.github.io/cmn_ai/)**
 
-**TODO**:
+**Planned documentation** (not published yet):
 
-- [ ] [API Reference](https://imaddabbura.github.io/cmn_ai/api/)
-- [ ] [Tutorial Notebooks](https://imaddabbura.github.io/cmn_ai/tutorials/)
-- [ ] [Advanced Usage](https://imaddabbura.github.io/cmn_ai/advanced/)
+- API reference pages
+- Tutorial notebooks
+- Advanced usage guides
 
 ## Development
 
@@ -209,16 +209,18 @@ uv run pytest tests/test_learner.py
 ### Code Quality
 
 ```bash
-# pre-commit will take care of all things formatting, linting, syntax errors,
-# tests, etc.
+# Formatting, linting, static checks, and syntax checks
 pre-commit run --all-files
+
+# Full test suite hook, configured for pre-push
+pre-commit run --hook-stage pre-push test
 ```
 
 ### Build Documentation
 
 ```bash
-mkdocs serve    # Local development server
-mkdocs build    # Build documentation
+uv run mkdocs serve           # Local development server
+uv run mkdocs build --strict  # Build documentation
 ```
 
 ## Requirements
@@ -227,7 +229,9 @@ mkdocs build    # Build documentation
 - **Core Dependencies**: PyTorch, scikit-learn, NumPy, pandas
 - **Optional**: matplotlib, seaborn (for plotting)
 
-## Roadmap
+## Planned Roadmap
+
+These items are directionally planned, not committed to a release schedule.
 
 - [ ] Distributed training support
 - [ ] Additional vision architectures
@@ -239,9 +243,7 @@ mkdocs build    # Build documentation
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-If you have suggestions for adding or removing projects, please fork the repo, make your changes, and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-**Stay tuned for contribution guidelines!**
+If you have suggestions or fixes, please open an issue or pull request.
 
 ## License
 
