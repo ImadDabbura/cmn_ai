@@ -66,10 +66,17 @@ class TestHook:
     def test_hook_register_backward(self):
         """Test registering a backward hook."""
         model = SimpleModel()
-        hook = Hook(model.linear1, compute_stats, is_forward=False)
+        hook_handle = MagicMock()
 
-        # Hook is automatically registered in __init__
-        assert hook.hook is not None
+        with patch.object(
+            model.linear1,
+            "register_full_backward_hook",
+            return_value=hook_handle,
+        ) as register_full_backward_hook:
+            hook = Hook(model.linear1, compute_stats, is_forward=False)
+
+        register_full_backward_hook.assert_called_once()
+        assert hook.hook is hook_handle
 
     def test_hook_remove(self):
         """Test hook removal."""

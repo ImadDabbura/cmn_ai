@@ -116,7 +116,7 @@ class Hook:
                 partial(func, self, **kwargs)
             )
         else:
-            self.hook = module.register_backward_hook(
+            self.hook = module.register_full_backward_hook(
                 partial(func, self, **kwargs)
             )
 
