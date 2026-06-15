@@ -79,7 +79,8 @@ class TestDateTransformer:
         transformer = DateTransformer()
         fitted_transformer = transformer.fit(self.df_with_dates)
 
-        assert fitted_transformer.date_feats == ["date"]
+        assert fitted_transformer.date_feats is None
+        assert fitted_transformer.date_feats_ == ["date"]
         assert fitted_transformer is transformer
 
     def test_fit_with_specified_features(self):
@@ -88,13 +89,18 @@ class TestDateTransformer:
         fitted_transformer = transformer.fit(self.df_with_dates)
 
         assert fitted_transformer.date_feats == ["date"]
+        assert fitted_transformer.date_feats_ == ["date"]
 
     def test_fit_with_multiple_dates(self):
         """Test fitting with multiple date columns."""
         transformer = DateTransformer()
         fitted_transformer = transformer.fit(self.df_multiple_dates)
 
-        assert set(fitted_transformer.date_feats) == {"start_date", "end_date"}
+        assert fitted_transformer.date_feats is None
+        assert set(fitted_transformer.date_feats_) == {
+            "start_date",
+            "end_date",
+        }
 
     def test_fit_with_no_dates(self):
         """Test fitting with dataframe containing no date columns."""
@@ -105,7 +111,38 @@ class TestDateTransformer:
         transformer = DateTransformer()
         fitted_transformer = transformer.fit(df_no_dates)
 
-        assert fitted_transformer.date_feats == []
+        assert fitted_transformer.date_feats is None
+        assert fitted_transformer.date_feats_ == []
+
+    def test_fit_relearns_auto_detected_features_without_mutating_param(self):
+        """Test repeated fit updates learned date features only."""
+        transformer = DateTransformer()
+        transformer.fit(self.df_with_dates)
+
+        df_other_dates = pd.DataFrame(
+            {
+                "other_date": pd.to_datetime(["2024-01-01", "2024-01-02"]),
+                "value": [1, 2],
+            }
+        )
+        transformer.fit(df_other_dates)
+
+        assert transformer.date_feats is None
+        assert transformer.date_feats_ == ["other_date"]
+
+    def test_fit_detects_timezone_aware_datetimes(self):
+        """Test fitting detects timezone-aware datetime columns."""
+        df_tz = pd.DataFrame(
+            {
+                "date": pd.date_range("2024-01-01", periods=2, tz="UTC"),
+                "value": [1, 2],
+            }
+        )
+
+        transformer = DateTransformer()
+        transformer.fit(df_tz)
+
+        assert transformer.date_feats_ == ["date"]
 
     def test_transform_basic(self):
         """Test basic transformation without time features."""
@@ -210,6 +247,16 @@ class TestDateTransformer:
         assert "date_Year" in result.columns
         assert "date_Hour" in result.columns
         assert "date" not in result.columns
+
+    def test_get_feature_names_out_matches_transformed_columns(self):
+        """Test get_feature_names_out returns transformed dataframe columns."""
+        transformer = DateTransformer(time=False, drop=True)
+        transformer.fit(self.df_with_dates)
+        result = transformer.transform(self.df_with_dates)
+
+        assert transformer.get_feature_names_out().tolist() == list(
+            result.columns
+        )
 
     def test_get_params(self):
         """Test get_params method for scikit-learn compatibility."""

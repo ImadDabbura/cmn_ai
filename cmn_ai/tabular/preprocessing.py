@@ -88,7 +88,10 @@ class DateTransformer(TransformerMixin, BaseEstimator):
     Attributes
     ----------
     date_feats : Iterable[str] | None, default=None
-        list of date feature column names to transform.
+        Date feature column names to transform. If None, they are learned
+        during fit and stored in `date_feats_`.
+    date_feats_ : list[str]
+        Learned date feature column names used during transformation.
     time : bool
         Whether to include time-related features (Hour, Minute, Second).
     drop : bool
@@ -174,9 +177,10 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         """
         Fit the transformer by identifying date features.
 
-        This method populates the date_feats attribute if not provided at
+        This method populates the date_feats_ attribute if not provided at
         initialization. It scans the input dataframe for columns with
-        datetime64 data type and stores them for transformation.
+        datetime64 or timezone-aware datetime data type and stores them for
+        transformation.
 
         Parameters
         ----------
@@ -190,7 +194,7 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         Returns
         -------
         self : DateTransformer
-            Fitted transformer instance with populated date_feats attribute.
+            Fitted transformer instance with populated date_feats_ attribute.
 
         Examples
         --------
@@ -201,11 +205,16 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         ... })
         >>> transformer = DateTransformer()
         >>> fitted_transformer = transformer.fit(df)
-        >>> print(fitted_transformer.date_feats)
+        >>> print(fitted_transformer.date_feats_)
         ['date']
         """
-        if not self.date_feats:
-            self.date_feats = X.select_dtypes("datetime64").columns.tolist()
+        if self.date_feats is None:
+            self.date_feats_ = X.select_dtypes(
+                include=["datetime64[ns]", "datetimetz"]
+            ).columns.tolist()
+        else:
+            self.date_feats_ = list(self.date_feats)
+        self.feature_names_in_ = X.columns.to_numpy(dtype=object)
         return self
 
     def transform(
@@ -252,7 +261,7 @@ class DateTransformer(TransformerMixin, BaseEstimator):
         [1, 2]
         """
         X_tr = X.copy()
-        for col, attr in product(self.date_feats, self.attrs):
+        for col, attr in product(self.date_feats_, self.attrs):
             if attr == "Week" and hasattr(X_tr[col].dt, "isocalendar"):
                 X_tr[f"{col}_{attr}"] = (
                     X_tr[col]
@@ -261,8 +270,35 @@ class DateTransformer(TransformerMixin, BaseEstimator):
                 )
                 continue
             X_tr[f"{col}_{attr}"] = getattr(X_tr[col].dt, attr.lower())
-        for col in self.date_feats:
+        for col in self.date_feats_:
             X_tr[f"{col}_na_indicator"] = X_tr[col].isna().astype(np.int8)
         if self.drop:
-            return X_tr.drop(columns=self.date_feats)
+            return X_tr.drop(columns=self.date_feats_)
         return X_tr
+
+    def get_feature_names_out(self, input_features=None) -> np.ndarray:
+        """
+        Return output feature names for transformed data.
+
+        Parameters
+        ----------
+        input_features : array-like of str, optional
+            Input feature names. If None, uses feature names seen during fit.
+
+        Returns
+        -------
+        np.ndarray
+            Output feature names in the same order as `transform`.
+        """
+        if input_features is None:
+            input_features = self.feature_names_in_
+        names = list(input_features)
+        names.extend(
+            f"{col}_{attr}"
+            for col, attr in product(self.date_feats_, self.attrs)
+        )
+        names.extend(f"{col}_na_indicator" for col in self.date_feats_)
+
+        if self.drop:
+            names = [name for name in names if name not in self.date_feats_]
+        return np.asarray(names, dtype=object)
