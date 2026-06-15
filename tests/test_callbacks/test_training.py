@@ -5,6 +5,7 @@ This module contains comprehensive tests for the training-related callbacks
 that enhance and customize the training process.
 """
 
+import inspect
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -555,6 +556,12 @@ class TestMetricsCallback:
         mock_metric = MagicMock()
         callback = MetricsCallback(accuracy=mock_metric)
         assert "accuracy" in callback.metrics
+
+    def test_metrics_callback_logging_methods_return_none_annotations(self):
+        """Test logging callback annotations match their None return value."""
+        for method_name in ["before_fit", "after_train", "after_validate"]:
+            signature = inspect.signature(getattr(MetricsCallback, method_name))
+            assert signature.return_annotation is None
 
     def test_metrics_callback_before_fit(self):
         """Test MetricsCallback before_fit method."""

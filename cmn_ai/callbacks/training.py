@@ -804,14 +804,9 @@ class MetricsCallback(Callback):
         self.stats = [str(self.epoch + 1)]
         self.start_time = time.time()
 
-    def before_fit(self) -> str:
+    def before_fit(self) -> None:
         """
         Log metric names as header before training starts.
-
-        Returns
-        -------
-        str
-            Header string with metric names.
         """
         names = (
             ["epoch"]
@@ -834,26 +829,16 @@ class MetricsCallback(Callback):
         """
         self._reset()
 
-    def after_train(self) -> str:
+    def after_train(self) -> None:
         """
         Compute and log metrics after training epoch.
-
-        Returns
-        -------
-        str
-            Logged statistics string.
         """
         self._compute()
         self.logger(self.stats)
 
-    def after_validate(self) -> str:
+    def after_validate(self) -> None:
         """
         Compute and log metrics after validation epoch.
-
-        Returns
-        -------
-        str
-            Logged statistics string.
         """
         self._compute()
         self.logger(self.stats)
