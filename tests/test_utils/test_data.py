@@ -13,6 +13,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import torch
 
+import cmn_ai.utils.data as data_utils
 from cmn_ai.utils.data import (
     ItemList,
     LabeledData,
@@ -31,6 +32,19 @@ from cmn_ai.utils.data import (
 
 class TestDeviceManagement:
     """Test device management functions."""
+
+    def test_default_device_prefers_mps_when_cuda_unavailable(
+        self, monkeypatch
+    ):
+        """Test default device selection supports Apple Silicon MPS."""
+        monkeypatch.setattr(
+            data_utils.torch.cuda, "is_available", lambda: False
+        )
+        monkeypatch.setattr(
+            data_utils.torch.backends.mps, "is_available", lambda: True
+        )
+
+        assert data_utils._default_device() == "mps"
 
     def test_to_device_tensor(self):
         """Test to_device with a single tensor."""

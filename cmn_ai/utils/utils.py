@@ -300,7 +300,7 @@ def clean_memory() -> None:
     1. Cleaning traceback objects
     2. Clearing IPython history
     3. Running garbage collection
-    4. Emptying PyTorch's CUDA cache
+    4. Emptying available PyTorch device caches
 
     Notes
     -----
@@ -315,7 +315,14 @@ def clean_memory() -> None:
     clean_traceback()
     clean_ipython_history()
     gc.collect()
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    if (
+        hasattr(torch.backends, "mps")
+        and torch.backends.mps.is_available()
+        and hasattr(torch, "mps")
+    ):
+        torch.mps.empty_cache()
 
 
 def set_printoptions(

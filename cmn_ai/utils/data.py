@@ -85,7 +85,20 @@ from torch.utils.data import DataLoader, Dataset, default_collate
 from .processors import Processor
 from .utils import listify
 
-DEFAULT_DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+def _default_device() -> str:
+    """Return the best available torch device."""
+    if torch.cuda.is_available():
+        return "cuda"
+    if (
+        hasattr(torch.backends, "mps")
+        and torch.backends.mps.is_available()
+    ):
+        return "mps"
+    return "cpu"
+
+
+DEFAULT_DEVICE = _default_device()
 
 
 def get_dls(
