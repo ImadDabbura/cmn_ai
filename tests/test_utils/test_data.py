@@ -316,7 +316,7 @@ class TestItemList:
     def test_new(self):
         """Test ItemList new method."""
         items = ["file1.txt", "file2.txt"]
-        item_list = ItemList(items, path="./data")
+        item_list = ItemList(items, path="./data", custom_attr="kept")
 
         new_items = ["file3.txt", "file4.txt"]
         new_list = item_list.new(new_items)
@@ -325,6 +325,7 @@ class TestItemList:
         assert new_list.data == new_items
         assert new_list.path == item_list.path
         assert new_list.tfms == item_list.tfms
+        assert new_list.custom_attr == "kept"
 
     def test_get(self):
         """Test ItemList get method."""

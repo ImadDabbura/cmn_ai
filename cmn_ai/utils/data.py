@@ -559,7 +559,9 @@ class ItemList(ListContainer):
     def __repr__(self) -> str:
         return super().__repr__() + f"\nPath: {self.path.resolve()}"
 
-    def new(self, items: Sequence, cls: ItemList | None = None) -> ItemList:
+    def new(
+        self, items: Sequence, cls: type[ItemList] | None = None
+    ) -> ItemList:
         """
         Create a new instance of the ItemList with items.
 
@@ -577,7 +579,12 @@ class ItemList(ListContainer):
         """
         if cls is None:
             cls = self.__class__
-        return cls(items, self.path, self.tfms)
+        extras = {
+            k: v
+            for k, v in self.__dict__.items()
+            if k not in {"data", "path", "tfms"}
+        }
+        return cls(items, self.path, self.tfms, **extras)
 
     def get(self, item: Any) -> Any:
         """
