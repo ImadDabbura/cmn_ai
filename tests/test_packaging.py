@@ -31,3 +31,18 @@ def test_package_version_matches_project_metadata() -> None:
 
     assert cmn_ai.__version__ == pyproject["project"]["version"]
     assert "__version__" in cmn_ai.__all__
+
+
+def test_python_requires_is_capped_to_tested_versions() -> None:
+    """Test Python support has an explicit upper bound."""
+    pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text())
+
+    assert pyproject["project"]["requires-python"] == ">=3.13,<3.15"
+
+
+def test_docs_extra_includes_versioning_provider() -> None:
+    """Test docs dependencies include the mkdocs version provider."""
+    pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    docs_deps = pyproject["project"]["optional-dependencies"]["docs"]
+
+    assert any(dep.startswith("mike") for dep in docs_deps)
