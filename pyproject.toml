@@ -80,7 +80,7 @@ line_length = 79
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
-addopts = "--strict-markers --disable-pytest-warnings -ra"
+addopts = "--strict-markers -ra"
 xfail_strict = true
 
 [tool.mypy]

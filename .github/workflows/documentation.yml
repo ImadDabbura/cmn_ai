@@ -17,10 +17,32 @@ on:
       - "mkdocs.yml"
       - "pyproject.toml"
 permissions:
-  contents: write
+  contents: read
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install docs dependencies
+        run: |
+          uv sync --extra docs
+      - name: Build documentation
+        run: uv run mkdocs build --strict
+  deploy-docs:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    permissions:
+      contents: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
