@@ -3,6 +3,8 @@
 from pathlib import Path
 import tomllib
 
+import cmn_ai
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,3 +23,11 @@ def test_project_license_metadata_matches_license_file() -> None:
     assert "License :: OSI Approved :: MIT License" not in project[
         "classifiers"
     ]
+
+
+def test_package_version_matches_project_metadata() -> None:
+    """Test the public package version matches pyproject metadata."""
+    pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text())
+
+    assert cmn_ai.__version__ == pyproject["project"]["version"]
+    assert "__version__" in cmn_ai.__all__
