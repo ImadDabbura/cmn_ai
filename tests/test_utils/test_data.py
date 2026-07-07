@@ -18,7 +18,6 @@ from cmn_ai.utils.data import (
     DataLoaders,
     ItemList,
     LabeledData,
-    ListContainer,
     SplitData,
     compose,
     get_files,
@@ -259,37 +258,6 @@ class TestSplitters:
         assert result == "dog"
 
 
-class TestListContainer:
-    """Test ListContainer class."""
-
-    def test_init_with_list(self):
-        """Test ListContainer initialization with list."""
-        items = [1, 2, 3, 4, 5]
-        container = ListContainer(items)
-        assert len(container) == 5
-        assert container.data == items
-
-    def test_init_with_single_item(self):
-        """Test ListContainer initialization with single item."""
-        container = ListContainer(42)
-        assert len(container) == 1
-        assert container.data == [42]
-
-    def test_repr_short_list(self):
-        """Test ListContainer repr with short list."""
-        container = ListContainer([1, 2, 3])
-        repr_str = repr(container)
-        assert "ListContainer: (3 items)" in repr_str
-        assert "[1, 2, 3]" in repr_str
-
-    def test_repr_long_list(self):
-        """Test ListContainer repr with long list."""
-        container = ListContainer(list(range(15)))
-        repr_str = repr(container)
-        assert "ListContainer: (15 items)" in repr_str
-        assert "..." in repr_str  # Should truncate
-
-
 class TestItemList:
     """Test ItemList class."""
 
@@ -299,8 +267,16 @@ class TestItemList:
         item_list = ItemList(items, path="./data")
 
         assert len(item_list) == 2
+        assert item_list.data == items
         assert item_list.path == Path("./data")
         assert item_list.tfms is None
+
+    def test_init_with_single_item(self):
+        """Test ItemList initialization with single item."""
+        item_list = ItemList(42)
+
+        assert len(item_list) == 1
+        assert item_list.data == [42]
 
     def test_init_with_transforms(self):
         """Test ItemList initialization with transforms."""
@@ -355,8 +331,18 @@ class TestItemList:
         item_list = ItemList(items, path="./data")
 
         repr_str = repr(item_list)
-        assert "ItemList" in repr_str
+        assert "ItemList: (2 items)" in repr_str
+        assert "['file1.txt', 'file2.txt']" in repr_str
         assert "Path:" in repr_str
+
+    def test_repr_long_list(self):
+        """Test ItemList repr truncates long lists."""
+        item_list = ItemList(list(range(15)))
+
+        repr_str = repr(item_list)
+
+        assert "ItemList: (15 items)" in repr_str
+        assert "..." in repr_str
 
 
 class TestSplitData:

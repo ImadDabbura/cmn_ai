@@ -28,7 +28,6 @@ label_by_func : Label split data using a labeling function
 Classes
 -------
 DataLoaders : Container for training and validation DataLoaders
-ListContainer : Extended list with improved representation
 ItemList : Base class for all types of datasets
 SplitData : Split ItemList into train and validation data lists
 LabeledData : Create labeled data with input and target ItemLists
@@ -89,10 +88,7 @@ def _default_device() -> str:
     """Return the best available torch device."""
     if torch.cuda.is_available():
         return "cuda"
-    if (
-        hasattr(torch.backends, "mps")
-        and torch.backends.mps.is_available()
-    ):
+    if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
         return "mps"
     return "cpu"
 
@@ -465,48 +461,7 @@ def get_files(
         return _get_files(path, fs, extensions)
 
 
-class ListContainer(UserList):
-    """
-    Extended list with improved representation.
-
-    Extends builtin list by changing the creation of the list from the given
-    items and changing repr to return first 10 items along with total number of
-    items and the class name. This will be the base class where other
-    containers will inherit from.
-
-    Attributes
-    ----------
-    data : list
-        The underlying list data.
-
-    Examples
-    --------
-    >>> container = ListContainer([1, 2, 3, 4, 5])
-    >>> print(container)
-    ListContainer: (5 items)
-    [1, 2, 3, 4, 5]
-    """
-
-    def __init__(self, items: Any) -> None:
-        """
-        Initialize ListContainer with items.
-
-        Parameters
-        ----------
-        items : Any
-            Items to create list from.
-        """
-        self.data = listify(items)
-
-    def __repr__(self) -> str:
-        cls_nm = self.__class__.__name__
-        res = f"{cls_nm}: ({len(self.data) :,} items)\n{self.data[:10]}"  # noqa: E231
-        if len(self) > 10:
-            res = res[:-1] + ", ...]"
-        return res
-
-
-class ItemList(ListContainer):
+class ItemList(UserList):
     """
     Base class for all types of datasets such as image, text, etc.
 
@@ -529,7 +484,7 @@ class ItemList(ListContainer):
 
     def __init__(
         self,
-        items: Sequence,
+        items: Any,
         path: str | Path = ".",
         tfms: Callable | None = None,
         **kwargs,
@@ -539,7 +494,7 @@ class ItemList(ListContainer):
 
         Parameters
         ----------
-        items : Sequence
+        items : Any
             Items to create list.
         path : str or Path, default="."
             Path of the items that were used to create the list.
@@ -548,13 +503,17 @@ class ItemList(ListContainer):
         **kwargs : dict
             Additional attributes to set on the instance.
         """
-        super().__init__(items)
+        self.data = listify(items)
         self.path = Path(path)
         self.tfms = tfms
         self.__dict__.update(kwargs)
 
     def __repr__(self) -> str:
-        return super().__repr__() + f"\nPath: {self.path.resolve()}"
+        cls_nm = self.__class__.__name__
+        res = f"{cls_nm}: ({len(self.data) :,} items)\n{self.data[:10]}"  # noqa: E231
+        if len(self) > 10:
+            res = res[:-1] + ", ...]"
+        return res + f"\nPath: {self.path.resolve()}"
 
     def new(
         self, items: Sequence, cls: type[ItemList] | None = None
