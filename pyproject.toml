@@ -1,6 +1,6 @@
 [project]
 name = "cmn-ai"
-version = "0.1.0"
+version = "0.2.0"
 description = "A comprehensive machine learning library with utilities for vision, text, and tabular data"
 authors = [
     {name = "ImadDabbura", email = "imad.dabbura@hotmail.com"}
